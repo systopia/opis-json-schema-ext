@@ -1,0 +1,37 @@
+parameters:
+	paths:
+		- src
+		- tests
+	scanFiles:
+		- tools/phpunit/vendor/bin/.phpunit/phpunit/src/Framework/TestCase.php
+	scanDirectories:
+		- tools/phpunit/vendor/bin/.phpunit/phpunit/src/Framework
+	bootstrapFiles:
+		- tools/phpunit/vendor/bin/.phpunit/phpunit/vendor/autoload.php
+	level: 8
+	checkTooWideReturnTypesInProtectedAndPublicMethods: true
+	checkUninitializedProperties: true
+	checkMissingCallableSignature: true
+	treatPhpDocTypesAsCertain: false
+	exceptions:
+		check:
+			missingCheckedExceptionInThrows: true
+			tooWideThrowType: true
+		checkedExceptionClasses:
+			- '\Webmozart\Assert\InvalidArgumentException'
+#	implicitThrows: false
+	ignoreErrors:
+		# false positives
+		-
+			message: "#^Method [^ ]+\\\\ExpressionVariablesContainer::parse\\(\\) has [^ ]+\\\\ParseException in PHPDoc @throws tag but it's not thrown.$#"
+			paths:
+				- src/Expression/ExpressionVariablesContainer.php
+		-
+			message: "#^Method [^ ]+\\\\ExpressionVariablesContainer::getValues\\(\\) has [^ ]+\\\\(ReferencedDataHasViolationException|VariableResolveException) in PHPDoc @throws tag but it's not thrown.$#"
+			paths:
+				- src/Expression/ExpressionVariablesContainer.php
+		- 
+			message: "~^Parameter #6 \\$errors of method [^ ]+::error\\(\\) expects .+ [^ ]+\\\\ErrorContainer given.$~"
+			paths:
+				- src/Keywords/*.php
+	tmpDir: .phpstan

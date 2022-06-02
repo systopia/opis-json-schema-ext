@@ -1,0 +1,76 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Systopia\OpisJsonSchemaExt\Parsers\Keywords;
+
+use Assert\Assertion;
+use Opis\JsonSchema\Exceptions\ParseException;
+use Opis\JsonSchema\Helper;
+use Opis\JsonSchema\Info\SchemaInfo;
+use Opis\JsonSchema\Keyword;
+use Opis\JsonSchema\Parsers\KeywordParser;
+use Opis\JsonSchema\Parsers\SchemaParser;
+use Systopia\OpisJsonSchemaExt\Expression\ExpressionVariablesContainer;
+use Systopia\OpisJsonSchemaExt\Expression\Variables\Variable;
+use Systopia\OpisJsonSchemaExt\Keywords\ValidationsKeyword;
+use Systopia\OpisJsonSchemaExt\Parsers\EnsurePropertyTrait;
+
+final class ValidationsKeywordParser extends KeywordParser
+{
+    use EnsurePropertyTrait;
+
+    public function __construct(string $keyword = '$validations')
+    {
+        parent::__construct($keyword);
+    }
+
+    public function type(): string
+    {
+        return self::TYPE_APPEND;
+    }
+
+    /**
+     * @throws ParseException
+     */
+    public function parse(SchemaInfo $info, SchemaParser $parser, object $shared): ?Keyword
+    {
+        if (!$this->keywordExists($info)) {
+            return null;
+        }
+
+        $validations = [];
+        foreach ($this->keywordValue($info) as $validation) {
+            $this->assertPropertyExists($validation, 'keyword', $info);
+            $this->assertPropertyExists($validation, 'value', $info);
+
+            $validation = Helper::cloneValue($validation);
+            $validation->value = $this->createValidationValue($validation->value, $parser);
+            $validations[] = $validation;
+        }
+
+        return new ValidationsKeyword($validations);
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @throws ParseException
+     *
+     * @return mixed
+     */
+    private function createValidationValue($value, SchemaParser $parser)
+    {
+        if (!$value instanceof \stdClass) {
+            Assertion::notNull($value);
+
+            return $value;
+        }
+
+        if (property_exists($value, '$calculate') || property_exists($value, '$data')) {
+            return Variable::create($value, $parser);
+        }
+
+        return ExpressionVariablesContainer::parse($value, $parser);
+    }
+}

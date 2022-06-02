@@ -1,0 +1,86 @@
+{
+    "name": "systopia/opis-json-schema-ext",
+    "type": "library",
+    "description": "Extension for Opis JSON Schema",
+    "keywords": [
+        "json",
+        "schema",
+        "json-schema",
+        "validation",
+        "validator"
+    ],
+    "homepage": "https://github.com/systopia/opis-json-schema-ext",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Dominic Tubach",
+            "email": "tubach@systopia.de"
+        }
+    ],
+    "require": {
+        "php": "^7.4 || ^8",
+        "beberlei/assert": "^3 || ^4",
+        "opis/json-schema": "^2"
+    },
+    "require-dev": {
+        "symfony/expression-language": "^5 || ^6"
+    },
+    "suggest": {
+        "symfony/expression-language": "To use Symfony ExpressionLanguage Component for calculations and evaluations"
+    },
+    "autoload": {
+        "psr-4": {
+            "Systopia\\OpisJsonSchemaExt\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Systopia\\OpisJsonSchemaExt\\Test\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "composer-php-cs-fixer": [
+            "@composer --working-dir=tools/php-cs-fixer"
+        ],
+        "composer-phpstan": [
+            "@composer --working-dir=tools/phpstan"
+        ],
+        "composer-phpunit": [
+            "@composer --working-dir=tools/phpunit"
+        ],
+        "composer-tools": [
+            "@composer-php-cs-fixer",
+            "@composer-phpstan",
+            "@composer-phpunit"
+        ],
+        "post-install-cmd": [
+            "@composer-tools install"
+        ],
+        "post-update-cmd": [
+            "@composer-tools update"
+        ],
+        "php-cs-fixer": [
+            "@php tools/php-cs-fixer/vendor/bin/php-cs-fixer"
+        ],
+        "php-cs-fix": [
+            "@php-cs-fixer fix -v --diff"
+        ],
+        "phpstan": [
+            "@php tools/phpstan/vendor/bin/phpstan"
+        ],
+        "phpunit": [
+            "@php tools/phpunit/vendor/bin/simple-phpunit --coverage-clover clover.xml",
+            "@php tools/phpunit/vendor/bin/coverage-check clover.xml 95"
+        ],
+        "test": [
+            "@php-cs-fix --dry-run",
+            "@phpstan",
+            "@phpunit"
+        ]
+    }
+}
