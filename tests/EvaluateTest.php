@@ -3,7 +3,7 @@
 /** @noinspection PhpUnhandledExceptionInspection */
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Test;
+namespace Systopia\JsonSchema\Test;
 
 use Opis\JsonSchema\Exceptions\InvalidKeywordException;
 use Opis\JsonSchema\Parsers\DefaultVocabulary;
@@ -11,14 +11,14 @@ use Opis\JsonSchema\Parsers\SchemaParser;
 use Opis\JsonSchema\SchemaLoader;
 use Opis\JsonSchema\Validator;
 use PHPUnit\Framework\TestCase;
-use Systopia\OpisJsonSchemaExt\Expression\SymfonyExpressionHandler;
-use Systopia\OpisJsonSchemaExt\Parsers\Keywords\EvaluateKeywordParser;
-use Systopia\OpisJsonSchemaExt\Parsers\KeywordValidators\CollectErrorsKeywordValidatorParser;
-use Systopia\OpisJsonSchemaExt\SystopiaValidator;
+use Systopia\JsonSchema\Expression\SymfonyExpressionHandler;
+use Systopia\JsonSchema\Parsers\Keywords\EvaluateKeywordParser;
+use Systopia\JsonSchema\Parsers\KeywordValidators\CollectErrorsKeywordValidatorParser;
+use Systopia\JsonSchema\SystopiaValidator;
 
 /**
- * @covers \Systopia\OpisJsonSchemaExt\Keywords\EvaluateKeyword
- * @covers \Systopia\OpisJsonSchemaExt\Parsers\Keywords\EvaluateKeywordParser
+ * @covers \Systopia\JsonSchema\Keywords\EvaluateKeyword
+ * @covers \Systopia\JsonSchema\Parsers\Keywords\EvaluateKeywordParser
  */
 final class EvaluateTest extends TestCase
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Parsers\Keywords;
+namespace Systopia\JsonSchema\Parsers\Keywords;
 
 use Assert\Assertion;
 use Opis\JsonSchema\Exceptions\InvalidKeywordException;
@@ -10,9 +10,9 @@ use Opis\JsonSchema\Exceptions\ParseException;
 use Opis\JsonSchema\Info\SchemaInfo;
 use Opis\JsonSchema\Parsers\KeywordParser;
 use Opis\JsonSchema\Parsers\SchemaParser;
-use Systopia\OpisJsonSchemaExt\Expression\Evaluation;
-use Systopia\OpisJsonSchemaExt\Expression\EvaluatorInterface;
-use Systopia\OpisJsonSchemaExt\Keywords\EvaluateKeyword;
+use Systopia\JsonSchema\Expression\Evaluation;
+use Systopia\JsonSchema\Expression\EvaluatorInterface;
+use Systopia\JsonSchema\Keywords\EvaluateKeyword;
 
 final class EvaluateKeywordParser extends KeywordParser
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Exceptions;
+namespace Systopia\JsonSchema\Exceptions;
 
 class VariableException extends \RuntimeException implements ExceptionInterface
 {

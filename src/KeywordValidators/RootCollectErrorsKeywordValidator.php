@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\KeywordValidators;
+namespace Systopia\JsonSchema\KeywordValidators;
 
 use Opis\JsonSchema\Errors\ValidationError;
 use Opis\JsonSchema\ValidationContext;
-use Systopia\OpisJsonSchemaExt\Errors\ErrorCollector;
+use Systopia\JsonSchema\Errors\ErrorCollector;
 
 final class RootCollectErrorsKeywordValidator extends CollectErrorsKeywordValidator
 {

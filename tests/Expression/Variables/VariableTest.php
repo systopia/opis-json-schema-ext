@@ -3,22 +3,22 @@
 /** @noinspection PhpUnhandledExceptionInspection */
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Test\Expression\Variables;
+namespace Systopia\JsonSchema\Test\Expression\Variables;
 
 use Assert\Assertion;
 use Opis\JsonSchema\Exceptions\ParseException;
 use Opis\JsonSchema\JsonPointer;
 use Opis\JsonSchema\Parsers\SchemaParser;
 use PHPUnit\Framework\TestCase;
-use Systopia\OpisJsonSchemaExt\Expression\Calculation;
-use Systopia\OpisJsonSchemaExt\Expression\Variables\CalculationVariable;
-use Systopia\OpisJsonSchemaExt\Expression\Variables\IdentityVariable;
-use Systopia\OpisJsonSchemaExt\Expression\Variables\JsonPointerVariable;
-use Systopia\OpisJsonSchemaExt\Expression\Variables\Variable;
-use Systopia\OpisJsonSchemaExt\Parsers\SystopiaSchemaParser;
+use Systopia\JsonSchema\Expression\Calculation;
+use Systopia\JsonSchema\Expression\Variables\CalculationVariable;
+use Systopia\JsonSchema\Expression\Variables\IdentityVariable;
+use Systopia\JsonSchema\Expression\Variables\JsonPointerVariable;
+use Systopia\JsonSchema\Expression\Variables\Variable;
+use Systopia\JsonSchema\Parsers\SystopiaSchemaParser;
 
 /**
- * @covers \Systopia\OpisJsonSchemaExt\Expression\Variables\Variable
+ * @covers \Systopia\JsonSchema\Expression\Variables\Variable
  */
 final class VariableTest extends TestCase
 {

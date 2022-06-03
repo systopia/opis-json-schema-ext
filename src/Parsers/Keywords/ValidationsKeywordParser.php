@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Parsers\Keywords;
+namespace Systopia\JsonSchema\Parsers\Keywords;
 
 use Assert\Assertion;
 use Opis\JsonSchema\Exceptions\ParseException;
@@ -11,10 +11,10 @@ use Opis\JsonSchema\Info\SchemaInfo;
 use Opis\JsonSchema\Keyword;
 use Opis\JsonSchema\Parsers\KeywordParser;
 use Opis\JsonSchema\Parsers\SchemaParser;
-use Systopia\OpisJsonSchemaExt\Expression\ExpressionVariablesContainer;
-use Systopia\OpisJsonSchemaExt\Expression\Variables\Variable;
-use Systopia\OpisJsonSchemaExt\Keywords\ValidationsKeyword;
-use Systopia\OpisJsonSchemaExt\Parsers\EnsurePropertyTrait;
+use Systopia\JsonSchema\Expression\ExpressionVariablesContainer;
+use Systopia\JsonSchema\Expression\Variables\Variable;
+use Systopia\JsonSchema\Keywords\ValidationsKeyword;
+use Systopia\JsonSchema\Parsers\EnsurePropertyTrait;
 
 final class ValidationsKeywordParser extends KeywordParser
 {

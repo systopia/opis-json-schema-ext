@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Keywords;
+namespace Systopia\JsonSchema\Keywords;
 
 use Opis\JsonSchema\Errors\ValidationError;
 use Opis\JsonSchema\Keyword;
 use Opis\JsonSchema\Keywords\ErrorTrait;
 use Opis\JsonSchema\Schema;
 use Opis\JsonSchema\ValidationContext;
-use Systopia\OpisJsonSchemaExt\Exceptions\ReferencedDataHasViolationException;
-use Systopia\OpisJsonSchemaExt\Exceptions\VariableResolveException;
-use Systopia\OpisJsonSchemaExt\Expression\Evaluation;
-use Systopia\OpisJsonSchemaExt\Expression\EvaluatorInterface;
-use Systopia\OpisJsonSchemaExt\Expression\Variables\Variable;
+use Systopia\JsonSchema\Exceptions\ReferencedDataHasViolationException;
+use Systopia\JsonSchema\Exceptions\VariableResolveException;
+use Systopia\JsonSchema\Expression\Evaluation;
+use Systopia\JsonSchema\Expression\EvaluatorInterface;
+use Systopia\JsonSchema\Expression\Variables\Variable;
 
 final class EvaluateKeyword implements Keyword
 {

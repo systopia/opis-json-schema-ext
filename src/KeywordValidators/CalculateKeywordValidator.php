@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\KeywordValidators;
+namespace Systopia\JsonSchema\KeywordValidators;
 
 use Assert\Assertion;
 use Opis\JsonSchema\Errors\ValidationError;
@@ -10,12 +10,12 @@ use Opis\JsonSchema\Keywords\ErrorTrait;
 use Opis\JsonSchema\KeywordValidators\AbstractKeywordValidator;
 use Opis\JsonSchema\Schema;
 use Opis\JsonSchema\ValidationContext;
-use Systopia\OpisJsonSchemaExt\Exceptions\ReferencedDataHasViolationException;
-use Systopia\OpisJsonSchemaExt\Exceptions\VariableResolveException;
-use Systopia\OpisJsonSchemaExt\Expression\Calculation;
-use Systopia\OpisJsonSchemaExt\Expression\Variables\CalculationVariable;
-use Systopia\OpisJsonSchemaExt\Expression\Variables\Variable;
-use Systopia\OpisJsonSchemaExt\Keywords\SetValueTrait;
+use Systopia\JsonSchema\Exceptions\ReferencedDataHasViolationException;
+use Systopia\JsonSchema\Exceptions\VariableResolveException;
+use Systopia\JsonSchema\Expression\Calculation;
+use Systopia\JsonSchema\Expression\Variables\CalculationVariable;
+use Systopia\JsonSchema\Expression\Variables\Variable;
+use Systopia\JsonSchema\Keywords\SetValueTrait;
 
 final class CalculateKeywordValidator extends AbstractKeywordValidator
 {

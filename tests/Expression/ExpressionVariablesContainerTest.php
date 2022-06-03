@@ -3,7 +3,7 @@
 /** @noinspection PhpUnhandledExceptionInspection */
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Test\Expression;
+namespace Systopia\JsonSchema\Test\Expression;
 
 use Assert\Assertion;
 use Opis\JsonSchema\JsonPointer;
@@ -11,13 +11,13 @@ use Opis\JsonSchema\Parsers\SchemaParser;
 use Opis\JsonSchema\SchemaLoader;
 use Opis\JsonSchema\ValidationContext;
 use PHPUnit\Framework\TestCase;
-use Systopia\OpisJsonSchemaExt\Expression\ExpressionVariablesContainer;
-use Systopia\OpisJsonSchemaExt\Expression\Variables\IdentityVariable;
-use Systopia\OpisJsonSchemaExt\Expression\Variables\JsonPointerVariable;
-use Systopia\OpisJsonSchemaExt\Parsers\SystopiaSchemaParser;
+use Systopia\JsonSchema\Expression\ExpressionVariablesContainer;
+use Systopia\JsonSchema\Expression\Variables\IdentityVariable;
+use Systopia\JsonSchema\Expression\Variables\JsonPointerVariable;
+use Systopia\JsonSchema\Parsers\SystopiaSchemaParser;
 
 /**
- * @covers \Systopia\OpisJsonSchemaExt\Expression\ExpressionVariablesContainer
+ * @covers \Systopia\JsonSchema\Expression\ExpressionVariablesContainer
  */
 final class ExpressionVariablesContainerTest extends TestCase
 {

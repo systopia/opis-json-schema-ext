@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Expression;
+namespace Systopia\JsonSchema\Expression;
 
 use Opis\JsonSchema\Exceptions\ParseException;
 use Opis\JsonSchema\Parsers\SchemaParser;
 use Opis\JsonSchema\ValidationContext;
-use Systopia\OpisJsonSchemaExt\Exceptions\ReferencedDataHasViolationException;
-use Systopia\OpisJsonSchemaExt\Exceptions\VariableResolveException;
-use Systopia\OpisJsonSchemaExt\Expression\Variables\Variable;
+use Systopia\JsonSchema\Exceptions\ReferencedDataHasViolationException;
+use Systopia\JsonSchema\Exceptions\VariableResolveException;
+use Systopia\JsonSchema\Expression\Variables\Variable;
 
 final class ExpressionVariablesContainer
 {

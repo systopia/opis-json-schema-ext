@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Parsers;
+namespace Systopia\JsonSchema\Parsers;
 
 use Opis\JsonSchema\Parsers\SchemaParser;
-use Systopia\OpisJsonSchemaExt\Expression\SymfonyExpressionHandler;
+use Systopia\JsonSchema\Expression\SymfonyExpressionHandler;
 
 /**
  * @codeCoverageIgnore

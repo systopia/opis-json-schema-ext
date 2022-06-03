@@ -3,15 +3,15 @@
 /** @noinspection PhpUnhandledExceptionInspection */
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Test;
+namespace Systopia\JsonSchema\Test;
 
 use Opis\JsonSchema\Exceptions\InvalidKeywordException;
 use PHPUnit\Framework\TestCase;
-use Systopia\OpisJsonSchemaExt\SystopiaValidator;
+use Systopia\JsonSchema\SystopiaValidator;
 
 /**
- * @covers \Systopia\OpisJsonSchemaExt\Keywords\ValidationsKeyword
- * @covers \Systopia\OpisJsonSchemaExt\Parsers\Keywords\ValidationsKeywordParser
+ * @covers \Systopia\JsonSchema\Keywords\ValidationsKeyword
+ * @covers \Systopia\JsonSchema\Parsers\Keywords\ValidationsKeywordParser
  */
 final class ValidationsTest extends TestCase
 {

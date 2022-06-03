@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Expression\Variables;
+namespace Systopia\JsonSchema\Expression\Variables;
 
 use Assert\Assertion;
 use Opis\JsonSchema\Exceptions\ParseException;
 use Opis\JsonSchema\JsonPointer;
 use Opis\JsonSchema\Parsers\SchemaParser;
 use Opis\JsonSchema\ValidationContext;
-use Systopia\OpisJsonSchemaExt\Errors\ErrorCollectorUtil;
-use Systopia\OpisJsonSchemaExt\Exceptions\ReferencedDataHasViolationException;
-use Systopia\OpisJsonSchemaExt\Exceptions\VariableResolveException;
+use Systopia\JsonSchema\Errors\ErrorCollectorUtil;
+use Systopia\JsonSchema\Exceptions\ReferencedDataHasViolationException;
+use Systopia\JsonSchema\Exceptions\VariableResolveException;
 
 final class JsonPointerVariable extends Variable
 {

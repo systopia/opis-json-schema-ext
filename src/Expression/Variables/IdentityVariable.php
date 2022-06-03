@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Expression\Variables;
+namespace Systopia\JsonSchema\Expression\Variables;
 
 use Opis\JsonSchema\ValidationContext;
 

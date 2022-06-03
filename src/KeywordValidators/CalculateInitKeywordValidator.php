@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\KeywordValidators;
+namespace Systopia\JsonSchema\KeywordValidators;
 
 use Assert\Assertion;
 use Opis\JsonSchema\Errors\ValidationError;
 use Opis\JsonSchema\KeywordValidators\AbstractKeywordValidator;
 use Opis\JsonSchema\ValidationContext;
-use Systopia\OpisJsonSchemaExt\Keywords\SetValueTrait;
+use Systopia\JsonSchema\Keywords\SetValueTrait;
 
 /**
  * Ensures that calculated properties exists so that the calculation will be

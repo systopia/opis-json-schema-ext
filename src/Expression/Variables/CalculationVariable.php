@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Expression\Variables;
+namespace Systopia\JsonSchema\Expression\Variables;
 
 use Opis\JsonSchema\Exceptions\ParseException;
 use Opis\JsonSchema\Parsers\SchemaParser;
 use Opis\JsonSchema\ValidationContext;
-use Systopia\OpisJsonSchemaExt\Exceptions\ReferencedDataHasViolationException;
-use Systopia\OpisJsonSchemaExt\Exceptions\VariableResolveException;
-use Systopia\OpisJsonSchemaExt\Expression\Calculation;
-use Systopia\OpisJsonSchemaExt\Expression\CalculatorUtil;
+use Systopia\JsonSchema\Exceptions\ReferencedDataHasViolationException;
+use Systopia\JsonSchema\Exceptions\VariableResolveException;
+use Systopia\JsonSchema\Expression\Calculation;
+use Systopia\JsonSchema\Expression\CalculatorUtil;
 
 final class CalculationVariable extends Variable
 {

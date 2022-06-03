@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Errors;
+namespace Systopia\JsonSchema\Errors;
 
 use Opis\JsonSchema\Errors\ValidationError;
 use Opis\JsonSchema\JsonPointer;

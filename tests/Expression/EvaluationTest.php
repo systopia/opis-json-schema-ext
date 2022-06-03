@@ -3,17 +3,17 @@
 /** @noinspection PhpUnhandledExceptionInspection */
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Test\Expression;
+namespace Systopia\JsonSchema\Test\Expression;
 
 use Opis\JsonSchema\Exceptions\SchemaException;
 use Opis\JsonSchema\Parsers\SchemaParser;
 use Opis\JsonSchema\SchemaLoader;
 use Opis\JsonSchema\ValidationContext;
 use PHPUnit\Framework\TestCase;
-use Systopia\OpisJsonSchemaExt\Expression\Evaluation;
+use Systopia\JsonSchema\Expression\Evaluation;
 
 /**
- * @covers \Systopia\OpisJsonSchemaExt\Expression\Evaluation
+ * @covers \Systopia\JsonSchema\Expression\Evaluation
  */
 final class EvaluationTest extends TestCase
 {

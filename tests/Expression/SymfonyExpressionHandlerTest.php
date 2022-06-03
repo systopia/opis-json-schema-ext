@@ -3,15 +3,15 @@
 /** @noinspection PhpUnhandledExceptionInspection */
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Test\Expression;
+namespace Systopia\JsonSchema\Test\Expression;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
-use Systopia\OpisJsonSchemaExt\Expression\SymfonyExpressionHandler;
+use Systopia\JsonSchema\Expression\SymfonyExpressionHandler;
 
 /**
- * @covers \Systopia\OpisJsonSchemaExt\Expression\SymfonyExpressionHandler
+ * @covers \Systopia\JsonSchema\Expression\SymfonyExpressionHandler
  */
 final class SymfonyExpressionHandlerTest extends TestCase
 {

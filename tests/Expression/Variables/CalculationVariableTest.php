@@ -3,7 +3,7 @@
 /** @noinspection PhpUnhandledExceptionInspection */
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Test\Expression\Variables;
+namespace Systopia\JsonSchema\Test\Expression\Variables;
 
 use Opis\JsonSchema\Errors\ValidationError;
 use Opis\JsonSchema\Exceptions\ParseException;
@@ -14,15 +14,15 @@ use Opis\JsonSchema\SchemaLoader;
 use Opis\JsonSchema\Schemas\EmptySchema;
 use Opis\JsonSchema\ValidationContext;
 use PHPUnit\Framework\TestCase;
-use Systopia\OpisJsonSchemaExt\Errors\ErrorCollector;
-use Systopia\OpisJsonSchemaExt\Exceptions\ReferencedDataHasViolationException;
-use Systopia\OpisJsonSchemaExt\Exceptions\VariableResolveException;
-use Systopia\OpisJsonSchemaExt\Expression\Variables\CalculationVariable;
-use Systopia\OpisJsonSchemaExt\Expression\Variables\Variable;
-use Systopia\OpisJsonSchemaExt\Parsers\SystopiaSchemaParser;
+use Systopia\JsonSchema\Errors\ErrorCollector;
+use Systopia\JsonSchema\Exceptions\ReferencedDataHasViolationException;
+use Systopia\JsonSchema\Exceptions\VariableResolveException;
+use Systopia\JsonSchema\Expression\Variables\CalculationVariable;
+use Systopia\JsonSchema\Expression\Variables\Variable;
+use Systopia\JsonSchema\Parsers\SystopiaSchemaParser;
 
 /**
- * @covers \Systopia\OpisJsonSchemaExt\Expression\Variables\CalculationVariable
+ * @covers \Systopia\JsonSchema\Expression\Variables\CalculationVariable
  */
 final class CalculationVariableTest extends TestCase
 {

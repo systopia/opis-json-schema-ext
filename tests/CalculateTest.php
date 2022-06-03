@@ -3,7 +3,7 @@
 /** @noinspection PhpUnhandledExceptionInspection */
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Test;
+namespace Systopia\JsonSchema\Test;
 
 use Opis\JsonSchema\Exceptions\InvalidKeywordException;
 use Opis\JsonSchema\JsonPointer;
@@ -12,14 +12,14 @@ use Opis\JsonSchema\Parsers\SchemaParser;
 use Opis\JsonSchema\SchemaLoader;
 use Opis\JsonSchema\Validator;
 use PHPUnit\Framework\TestCase;
-use Systopia\OpisJsonSchemaExt\Parsers\KeywordValidators\CalculateKeywordValidationParser;
-use Systopia\OpisJsonSchemaExt\Parsers\KeywordValidators\CollectErrorsKeywordValidatorParser;
-use Systopia\OpisJsonSchemaExt\SystopiaValidator;
+use Systopia\JsonSchema\Parsers\KeywordValidators\CalculateKeywordValidationParser;
+use Systopia\JsonSchema\Parsers\KeywordValidators\CollectErrorsKeywordValidatorParser;
+use Systopia\JsonSchema\SystopiaValidator;
 
 /**
- * @covers \Systopia\OpisJsonSchemaExt\KeywordValidators\CalculateInitKeywordValidator
- * @covers \Systopia\OpisJsonSchemaExt\KeywordValidators\CalculateKeywordValidator
- * @covers \Systopia\OpisJsonSchemaExt\Parsers\KeywordValidators\CalculateKeywordValidationParser
+ * @covers \Systopia\JsonSchema\KeywordValidators\CalculateInitKeywordValidator
+ * @covers \Systopia\JsonSchema\KeywordValidators\CalculateKeywordValidator
+ * @covers \Systopia\JsonSchema\Parsers\KeywordValidators\CalculateKeywordValidationParser
  */
 final class CalculateTest extends TestCase
 {

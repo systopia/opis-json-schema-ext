@@ -3,17 +3,17 @@
 /** @noinspection PhpUnhandledExceptionInspection */
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Test;
+namespace Systopia\JsonSchema\Test;
 
 use PHPUnit\Framework\TestCase;
-use Systopia\OpisJsonSchemaExt\Errors\ErrorCollector;
-use Systopia\OpisJsonSchemaExt\SystopiaValidator;
+use Systopia\JsonSchema\Errors\ErrorCollector;
+use Systopia\JsonSchema\SystopiaValidator;
 
 /**
- * @covers \Systopia\OpisJsonSchemaExt\Errors\ErrorCollector
- * @covers \Systopia\OpisJsonSchemaExt\KeywordValidators\CollectErrorsKeywordValidator
- * @covers \Systopia\OpisJsonSchemaExt\KeywordValidators\RootCollectErrorsKeywordValidator
- * @covers \Systopia\OpisJsonSchemaExt\Parsers\KeywordValidators\CollectErrorsKeywordValidatorParser
+ * @covers \Systopia\JsonSchema\Errors\ErrorCollector
+ * @covers \Systopia\JsonSchema\KeywordValidators\CollectErrorsKeywordValidator
+ * @covers \Systopia\JsonSchema\KeywordValidators\RootCollectErrorsKeywordValidator
+ * @covers \Systopia\JsonSchema\Parsers\KeywordValidators\CollectErrorsKeywordValidatorParser
  */
 final class CollectErrorsTest extends TestCase
 {

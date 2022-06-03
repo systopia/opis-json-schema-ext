@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Parsers;
+namespace Systopia\JsonSchema\Parsers;
 
 use Opis\JsonSchema\Parsers\DefaultVocabulary;
 use Opis\JsonSchema\Parsers\KeywordParser;
 use Opis\JsonSchema\Parsers\KeywordValidatorParser;
 use Opis\JsonSchema\Parsers\PragmaParser;
-use Systopia\OpisJsonSchemaExt\Parsers\Keywords\EvaluateKeywordParser;
-use Systopia\OpisJsonSchemaExt\Parsers\Keywords\ValidationsKeywordParser;
-use Systopia\OpisJsonSchemaExt\Parsers\KeywordValidators\CalculateKeywordValidationParser;
-use Systopia\OpisJsonSchemaExt\Parsers\KeywordValidators\CollectErrorsKeywordValidatorParser;
+use Systopia\JsonSchema\Parsers\Keywords\EvaluateKeywordParser;
+use Systopia\JsonSchema\Parsers\Keywords\ValidationsKeywordParser;
+use Systopia\JsonSchema\Parsers\KeywordValidators\CalculateKeywordValidationParser;
+use Systopia\JsonSchema\Parsers\KeywordValidators\CollectErrorsKeywordValidatorParser;
 
 /**
  * @codeCoverageIgnore

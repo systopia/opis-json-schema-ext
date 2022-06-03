@@ -3,17 +3,17 @@
 /** @noinspection PhpUnhandledExceptionInspection */
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Test\Expression;
+namespace Systopia\JsonSchema\Test\Expression;
 
 use Opis\JsonSchema\Parsers\SchemaParser;
 use Opis\JsonSchema\SchemaLoader;
 use Opis\JsonSchema\ValidationContext;
 use PHPUnit\Framework\TestCase;
-use Systopia\OpisJsonSchemaExt\Expression\CalculatorInterface;
-use Systopia\OpisJsonSchemaExt\Expression\CalculatorUtil;
+use Systopia\JsonSchema\Expression\CalculatorInterface;
+use Systopia\JsonSchema\Expression\CalculatorUtil;
 
 /**
- * @covers \Systopia\OpisJsonSchemaExt\Expression\CalculatorUtil
+ * @covers \Systopia\JsonSchema\Expression\CalculatorUtil
  */
 final class CalculatorUtilTest extends TestCase
 {

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Test\Errors;
+namespace Systopia\JsonSchema\Test\Errors;
 
 use Opis\JsonSchema\SchemaLoader;
 use Opis\JsonSchema\ValidationContext;
 use PHPUnit\Framework\TestCase;
-use Systopia\OpisJsonSchemaExt\Errors\ErrorCollector;
-use Systopia\OpisJsonSchemaExt\Errors\ErrorCollectorUtil;
+use Systopia\JsonSchema\Errors\ErrorCollector;
+use Systopia\JsonSchema\Errors\ErrorCollectorUtil;
 
 /**
- * @covers \Systopia\OpisJsonSchemaExt\Errors\ErrorCollectorUtil
+ * @covers \Systopia\JsonSchema\Errors\ErrorCollectorUtil
  */
 final class ErrorCollectorUtilTest extends TestCase
 {

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt;
+namespace Systopia\JsonSchema;
 
 use Opis\JsonSchema\SchemaLoader;
 use Opis\JsonSchema\Validator;
-use Systopia\OpisJsonSchemaExt\Parsers\SystopiaSchemaParser;
+use Systopia\JsonSchema\Parsers\SystopiaSchemaParser;
 
 /**
  * @codeCoverageIgnore

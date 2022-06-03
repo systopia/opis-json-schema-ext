@@ -18,8 +18,8 @@ parameters:
 			missingCheckedExceptionInThrows: true
 			tooWideThrowType: true
 		checkedExceptionClasses:
-			- '\Webmozart\Assert\InvalidArgumentException'
-#	implicitThrows: false
+			- '\Assert\AssertionFailedException'
+		implicitThrows: false
 	ignoreErrors:
 		# false positives
 		-

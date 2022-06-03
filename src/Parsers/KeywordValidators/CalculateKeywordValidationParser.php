@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Parsers\KeywordValidators;
+namespace Systopia\JsonSchema\Parsers\KeywordValidators;
 
 use Opis\JsonSchema\Exceptions\InvalidKeywordException;
 use Opis\JsonSchema\Exceptions\ParseException;
@@ -10,10 +10,10 @@ use Opis\JsonSchema\Info\SchemaInfo;
 use Opis\JsonSchema\KeywordValidator;
 use Opis\JsonSchema\Parsers\KeywordValidatorParser;
 use Opis\JsonSchema\Parsers\SchemaParser;
-use Systopia\OpisJsonSchemaExt\Expression\Calculation;
-use Systopia\OpisJsonSchemaExt\Expression\CalculatorUtil;
-use Systopia\OpisJsonSchemaExt\KeywordValidators\CalculateInitKeywordValidator;
-use Systopia\OpisJsonSchemaExt\KeywordValidators\CalculateKeywordValidator;
+use Systopia\JsonSchema\Expression\Calculation;
+use Systopia\JsonSchema\Expression\CalculatorUtil;
+use Systopia\JsonSchema\KeywordValidators\CalculateInitKeywordValidator;
+use Systopia\JsonSchema\KeywordValidators\CalculateKeywordValidator;
 
 final class CalculateKeywordValidationParser extends KeywordValidatorParser
 {

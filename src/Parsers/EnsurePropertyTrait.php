@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Parsers;
+namespace Systopia\JsonSchema\Parsers;
 
 use Opis\JsonSchema\Exceptions\InvalidKeywordException;
 use Opis\JsonSchema\Info\SchemaInfo;

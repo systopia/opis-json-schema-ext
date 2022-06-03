@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Systopia\OpisJsonSchemaExt\Expression;
+namespace Systopia\JsonSchema\Expression;
 
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
