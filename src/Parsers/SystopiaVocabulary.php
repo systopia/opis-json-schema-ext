@@ -9,6 +9,7 @@ use Opis\JsonSchema\Parsers\KeywordParser;
 use Opis\JsonSchema\Parsers\KeywordValidatorParser;
 use Opis\JsonSchema\Parsers\PragmaParser;
 use Systopia\JsonSchema\Parsers\Keywords\EvaluateKeywordParser;
+use Systopia\JsonSchema\Parsers\Keywords\PrecisionKeywordParser;
 use Systopia\JsonSchema\Parsers\Keywords\ValidationsKeywordParser;
 use Systopia\JsonSchema\Parsers\KeywordValidators\CalculateKeywordValidationParser;
 use Systopia\JsonSchema\Parsers\KeywordValidators\CollectErrorsKeywordValidatorParser;
@@ -27,6 +28,7 @@ class SystopiaVocabulary extends DefaultVocabulary
     {
         $keywords = array_merge($keywords, [
             new EvaluateKeywordParser(),
+            new PrecisionKeywordParser(),
             new ValidationsKeywordParser(),
         ]);
 
