@@ -12,8 +12,9 @@ $config = new PhpCsFixer\Config();
 return $config->setRules([
     '@PhpCsFixer' => true,
     '@PhpCsFixer:risky' => true,
-    'phpdoc_align' => ['align' => 'left'],
     'comment_to_phpdoc' => ['ignored_tags' => ['phpstan-ignore-next-line']],
+    'phpdoc_align' => ['align' => 'left'],
+    'phpdoc_to_comment' => ['ignored_tags' => ['noinspection']],
     'php_unit_internal_class' => false,
     'php_unit_strict' => false,
 ])
