@@ -5,8 +5,10 @@ It provides the following additional keywords:
 
 * `$calculate`
 * `evaluate`
+* `precision`
 * `$validations`
 
-The `SystopiaValidator` already provides those keywords. To use them in a
-different validator class you might want to use `SystopiaSchemaParser` or
-`SystopiaVocabulary`.
+The [`SystopiaValidator`](./src/SystopiaValidator.php) already provides those
+keywords. To use them in a different validator class you might want to use
+[`SystopiaSchemaParser`](./src/Parsers/SystopiaSchemaParser.php) or
+[`SystopiaVocabulary`](./src/Parsers/SystopiaVocabulary.php).
