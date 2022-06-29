@@ -33,7 +33,7 @@ final class PrecisionTest extends TestCase
 {
     use AssertValidationErrorTrait;
 
-    public function test01(): void
+    public function testSimple(): void
     {
         $schema = <<<'JSON'
 {
@@ -47,6 +47,8 @@ JSON;
         static::assertTrue($validator->validate(2.3, $schema)->isValid());
         static::assertTrue($validator->validate(2.34, $schema)->isValid());
         static::assertTrue($validator->validate(-2.34, $schema)->isValid());
+        static::assertTrue($validator->validate(2.0, $schema)->isValid());
+        static::assertTrue($validator->validate(-2.0, $schema)->isValid());
 
         $validationResult = $validator->validate(2.345, $schema);
         $error = $validationResult->error();
