@@ -69,7 +69,7 @@ final class PrecisionKeyword implements Keyword
             return null;
         }
 
-        $pattern = sprintf('/^-?\d+\.\d{0,%d}$/', $precision);
+        $pattern = sprintf('/^-?\d+(\.\d{0,%d})?$/', $precision);
 
         return 1 !== preg_match($pattern, (string) $data) ? $this->error(
             $schema,
