@@ -26,7 +26,7 @@ interface ErrorCollectorInterface
     public function addError(ValidationError $error): void;
 
     /**
-     * @return array<string, ValidationError[]>
+     * @return array<string, non-empty-array<ValidationError>>
      */
     public function getErrors(): array;
 
@@ -45,7 +45,7 @@ interface ErrorCollectorInterface
     public function hasErrorAt($path): bool;
 
     /**
-     * @return array<string, ValidationError[]>
+     * @return array<string, non-empty-array<ValidationError>>
      */
     public function getLeafErrors(): array;
 

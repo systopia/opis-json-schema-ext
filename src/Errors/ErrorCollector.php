@@ -25,12 +25,12 @@ use Opis\JsonSchema\JsonPointer;
 final class ErrorCollector implements ErrorCollectorInterface
 {
     /**
-     * @var array<ValidationError[]>
+     * @var array<non-empty-array<ValidationError>>
      */
     private array $errors = [];
 
     /**
-     * @var array<string, ValidationError[]>
+     * @var array<string, non-empty-array<ValidationError>>
      */
     private array $leafErrors = [];
 
