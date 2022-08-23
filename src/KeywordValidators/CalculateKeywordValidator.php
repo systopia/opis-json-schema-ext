@@ -25,7 +25,6 @@ use Opis\JsonSchema\Keywords\ErrorTrait;
 use Opis\JsonSchema\KeywordValidators\AbstractKeywordValidator;
 use Opis\JsonSchema\Schema;
 use Opis\JsonSchema\ValidationContext;
-use Systopia\JsonSchema\Exceptions\ReferencedDataHasViolationException;
 use Systopia\JsonSchema\Exceptions\VariableResolveException;
 use Systopia\JsonSchema\Expression\Calculation;
 use Systopia\JsonSchema\Expression\Variables\CalculationVariable;
@@ -51,9 +50,9 @@ final class CalculateKeywordValidator extends AbstractKeywordValidator
         try {
             $value = $calculationVariable->getValue(
                 $context,
-                Variable::FLAG_FAIL_ON_UNRESOLVED | Variable::FLAG_FAIL_ON_VIOLATION
+                Variable::FLAG_FAIL_ON_UNRESOLVED
             );
-        } catch (VariableResolveException|ReferencedDataHasViolationException $e) {
+        } catch (VariableResolveException $e) {
             $value = null;
         }
 

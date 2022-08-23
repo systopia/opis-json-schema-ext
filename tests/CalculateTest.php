@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Systopia\JsonSchema\Test;
 
 use Opis\JsonSchema\Exceptions\InvalidKeywordException;
-use Opis\JsonSchema\JsonPointer;
 use Opis\JsonSchema\Parsers\DefaultVocabulary;
 use Opis\JsonSchema\Parsers\SchemaParser;
 use Opis\JsonSchema\SchemaLoader;
@@ -220,39 +219,6 @@ final class CalculateTest extends TestCase
         $validationResult = $validator->validate($data, $schema);
         static::assertTrue($validationResult->isValid());
         static::assertSame(-1, $data->calculated);
-    }
-
-    public function testNoCalculationIfReferencedDataHasViolation(): void
-    {
-        $schema = <<<'JSON'
-            {
-                "type": "object",
-                "properties": {
-                    "multiplicand": { "type": "integer" },
-                    "calculated": {
-                        "type": "integer",
-                        "$calculate": {
-                            "expression": "2 * a",
-                            "variables": { "a": { "$data": "/multiplicand" } }
-                        }
-                    }
-                }
-            }
-            JSON;
-
-        $data = (object) ['multiplicand' => '2', 'calculated' => -3];
-
-        $validator = new SystopiaValidator();
-        $validator->setMaxErrors(2);
-        $validationResult = $validator->validate($data, $schema);
-        static::assertNotNull($validationResult->error());
-        static::assertCount(1, $validationResult->error()->subErrors());
-        static::assertSame('type', $validationResult->error()->subErrors()[0]->keyword());
-        static::assertSame(
-            '/multiplicand',
-            JsonPointer::pathToString($validationResult->error()->subErrors()[0]->data()->fullPath())
-        );
-        static::assertObjectNotHasAttribute('calculated', $data);
     }
 
     public function testKeywordIgnoredWithoutCalculator(): void
