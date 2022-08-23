@@ -132,4 +132,29 @@ final class CollectErrorsTest extends TestCase
         static::assertErrorKeyword('minLength', $leafErrors[0]);
         static::assertErrorKeyword('pattern', $leafErrors[1]);
     }
+
+    public function testMultipleErrorSameDepth(): void
+    {
+        $data = (object) [
+            'a' => 1,
+        ];
+
+        $schema = (object) [
+            'type' => 'object',
+            'properties' => (object) [
+                'a' => (object) ['type' => 'string'],
+                'b' => (object) ['type' => 'string'],
+            ],
+            'required' => ['a', 'b'],
+        ];
+
+        $errorCollector = new ErrorCollector();
+        $globals = ['errorCollector' => $errorCollector];
+
+        $validator = new SystopiaValidator();
+        $validator->validate($data, $schema, $globals);
+
+        $leafErrors = $errorCollector->getLeafErrors();
+        static::assertCount(2, $leafErrors);
+    }
 }

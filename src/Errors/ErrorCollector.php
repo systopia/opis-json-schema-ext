@@ -36,6 +36,10 @@ final class ErrorCollector implements ErrorCollectorInterface
 
     public function addError(ValidationError $error): void
     {
+        if ('schema' === $error->keyword()) {
+            array_map(fn (ValidationError $subError) => $this->addError($subError), $error->subErrors());
+        }
+
         $path = $this->pathToString($error->data()->fullPath());
         if (isset($this->errors[$path])) {
             $this->errors[$path][] = $error;
