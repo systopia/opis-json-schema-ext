@@ -210,10 +210,6 @@ final class EvaluateTest extends TestCase
         self::assertErrorKeyword('type', $error);
     }
 
-    /**
-     * Note: As of now (opis/json-schema v2.3.0) no property validations are
-     * performed at all if "required" fails.
-     */
     public function testNoEvaluationIfVariableHasViolation2(): void
     {
         $schema = <<<'JSON'
@@ -237,8 +233,14 @@ final class EvaluateTest extends TestCase
         $validator->setMaxErrors(2);
         $validationResult = $validator->validate((object) ['evaluated' => 3], $schema);
         static::assertNotNull($validationResult->error());
-        self::assertSubErrorsCount(0, $validationResult->error());
-        self::assertErrorKeyword('required', $validationResult->error());
+        self::assertErrorKeyword('schema', $validationResult->error());
+        $subErrors = $validationResult->error()->subErrors();
+        static::assertCount(2, $subErrors);
+        self::assertErrorKeyword('required', $subErrors[0]);
+        self::assertErrorKeyword('properties', $subErrors[1]);
+        $propertiesErrors = $subErrors[1]->subErrors();
+        static::assertCount(1, $propertiesErrors);
+        self::assertErrorKeyword('evaluate', $propertiesErrors[0]);
     }
 
     public function testNoEvaluationWithoutEvaluator(): void

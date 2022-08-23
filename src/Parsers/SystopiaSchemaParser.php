@@ -19,8 +19,15 @@ declare(strict_types=1);
 
 namespace Systopia\JsonSchema\Parsers;
 
+use Opis\JsonSchema\Info\SchemaInfo;
+use Opis\JsonSchema\Keyword;
+use Opis\JsonSchema\KeywordValidator;
+use Opis\JsonSchema\Parsers\KeywordParser;
 use Opis\JsonSchema\Parsers\SchemaParser;
+use Opis\JsonSchema\Schema;
+use Opis\JsonSchema\Schemas\EmptySchema;
 use Systopia\JsonSchema\Expression\SymfonyExpressionHandler;
+use Systopia\JsonSchema\Schemas\MultiErrorObjectSchema;
 
 /**
  * @codeCoverageIgnore
@@ -53,5 +60,123 @@ class SystopiaSchemaParser extends SchemaParser
         }
 
         return $options;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * This overridden implementation uses MultiErrorObjectSchema instead of
+     * ObjectSchema.
+     *
+     * @see MultiErrorObjectSchema
+     */
+    protected function parseSchemaKeywords(
+        SchemaInfo $info,
+        ?KeywordValidator $keywordValidator,
+        array $parsers,
+        object $shared,
+        bool $hasRef = false
+    ): Schema {
+        /** @var Keyword[] $prepend */
+        $prepend = [];
+        /** @var Keyword[] $append */
+        $append = [];
+        /** @var Keyword[] $before */
+        $before = [];
+        /** @var Keyword[] $after */
+        $after = [];
+        /** @var Keyword[][] $types */
+        $types = [];
+        /** @var Keyword[] $ref */
+        $ref = [];
+
+        if ($hasRef) {
+            foreach ($parsers as $parser) {
+                $kType = $parser->type();
+
+                if ($kType === KeywordParser::TYPE_APPEND) {
+                    $container = &$append;
+                } elseif ($kType === KeywordParser::TYPE_AFTER_REF) {
+                    $container = &$ref;
+                } elseif ($kType === KeywordParser::TYPE_PREPEND) {
+                    $container = &$prepend;
+                } else {
+                    continue;
+                }
+
+                if ($keyword = $parser->parse($info, $this, $shared)) {
+                    $container[] = $keyword;
+                }
+
+                unset($container, $keyword, $kType);
+            }
+        } else {
+            foreach ($parsers as $parser) {
+                $keyword = $parser->parse($info, $this, $shared);
+                if ($keyword === null) {
+                    continue;
+                }
+
+                $kType = $parser->type();
+
+                switch ($kType) {
+                    case KeywordParser::TYPE_PREPEND:
+                        $prepend[] = $keyword;
+                        break;
+                    case KeywordParser::TYPE_APPEND:
+                        $append[] = $keyword;
+                        break;
+                    case KeywordParser::TYPE_BEFORE:
+                        $before[] = $keyword;
+                        break;
+                    case KeywordParser::TYPE_AFTER:
+                        $after[] = $keyword;
+                        break;
+                    case KeywordParser::TYPE_AFTER_REF:
+                        $ref[] = $keyword;
+                        break;
+                    default:
+                        if (!isset($types[$kType])) {
+                            $types[$kType] = [];
+                        }
+                        $types[$kType][] = $keyword;
+                        break;
+
+                }
+            }
+        }
+
+        unset($shared);
+
+        if ($prepend) {
+            $before = array_merge($prepend, $before);
+        }
+        unset($prepend);
+
+        if ($ref) {
+            $after = array_merge($after, $ref);
+        }
+        unset($ref);
+
+        if ($append) {
+            $after = array_merge($after, $append);
+        }
+        unset($append);
+
+        if (empty($before)) {
+            $before = null;
+        }
+        if (empty($after)) {
+            $after = null;
+        }
+        if (empty($types)) {
+            $types = null;
+        }
+
+        if (empty($types) && empty($before) && empty($after)) {
+            return new EmptySchema($info, $keywordValidator);
+        }
+
+        return new MultiErrorObjectSchema($info, $keywordValidator, $types, $before, $after);
     }
 }
