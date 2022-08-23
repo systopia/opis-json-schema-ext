@@ -16,7 +16,7 @@ final class MultiErrorObjectSchemaTest extends TestCase
 {
     public function test(): void
     {
-        $validator = new SystopiaValidator([], 20);
+        $validator = new SystopiaValidator();
         $data = (object) [
             'a' => 1,
         ];
