@@ -3,6 +3,10 @@
 declare(strict_types=1);
 
 $finder = PhpCsFixer\Finder::create()
+    ->filter(function (SplFileInfo $fileInfo) {
+        // ignore code copied from upstream
+        return 'SystopiaSchemaParser.php' !== $fileInfo->getFilename();
+    })
     ->in(__DIR__.'/src')
     ->in(__DIR__.'/tests')
 ;
