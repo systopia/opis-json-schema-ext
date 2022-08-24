@@ -5,6 +5,8 @@ It provides the following additional keywords:
 
 * `$calculate`
 * `evaluate`
+* `maxDate`
+* `minDate`
 * `precision`
 * `$validations`
 
