@@ -157,4 +157,89 @@ final class CollectErrorsTest extends TestCase
         $leafErrors = $errorCollector->getLeafErrors();
         static::assertCount(2, $leafErrors);
     }
+
+    public function testOneOfIgnoreSubValidation(): void
+    {
+        $schema = <<<'JSON'
+            {
+                "type": "object",
+                "properties": {
+                    "test": {
+                        "oneOf": [{"const": 1}, {"type": "string"}]
+                    }
+                }
+            }
+            JSON;
+
+        $errorCollector = new ErrorCollector();
+        $globals = ['errorCollector' => $errorCollector];
+
+        $validator = new SystopiaValidator();
+
+        $validator->validate((object) ['test' => 1], $schema, $globals);
+        static::assertFalse($errorCollector->hasErrors());
+
+        $validator->validate((object) ['test' => 'foo'], $schema, $globals);
+        static::assertFalse($errorCollector->hasErrors());
+    }
+
+    public function testOneOfErrors(): void
+    {
+        $schema = <<<'JSON'
+            {
+                "type": "object",
+                "properties": {
+                    "test": {
+                        "oneOf": [{"const": 1}, {"type": "string"}]
+                    }
+                }
+            }
+            JSON;
+
+        $errorCollector = new ErrorCollector();
+        $globals = ['errorCollector' => $errorCollector];
+
+        $validator = new SystopiaValidator();
+
+        $validator->validate((object) ['test' => 3], $schema, $globals);
+        static::assertTrue($errorCollector->hasErrors());
+        $leafErrors = $errorCollector->getLeafErrorsAt(['test']);
+        static::assertCount(1, $leafErrors);
+        static::assertErrorKeyword('oneOf', $leafErrors[0]);
+        static::assertSubErrorsCount(2, $leafErrors[0]);
+
+        $errors = $errorCollector->getErrorsAt(['test']);
+        static::assertCount(1, $errors);
+        static::assertSame($leafErrors, $errors);
+    }
+
+    public function testAnyOfErrors(): void
+    {
+        $schema = <<<'JSON'
+            {
+                "type": "object",
+                "properties": {
+                    "test": {
+                        "anyOf": [{"const": 1}, {"type": "string"}]
+                    }
+                }
+            }
+            JSON;
+
+        $errorCollector = new ErrorCollector();
+        $globals = ['errorCollector' => $errorCollector];
+
+        $validator = new SystopiaValidator();
+
+        $validator->validate((object) ['test' => 3], $schema, $globals);
+        static::assertTrue($errorCollector->hasErrors());
+        $leafErrors = $errorCollector->getLeafErrorsAt(['test']);
+        static::assertCount(1, $leafErrors);
+        static::assertErrorKeyword('anyOf', $leafErrors[0]);
+        static::assertSubErrorsCount(2, $leafErrors[0]);
+
+        $errors = $errorCollector->getErrorsAt(['test']);
+        static::assertCount(1, $errors);
+        static::assertSame($leafErrors, $errors);
+    }
 }

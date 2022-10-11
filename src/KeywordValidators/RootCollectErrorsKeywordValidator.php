@@ -35,4 +35,9 @@ final class RootCollectErrorsKeywordValidator extends CollectErrorsKeywordValida
 
         return parent::validate($context);
     }
+
+    protected function shouldIgnoreError(ValidationContext $context): bool
+    {
+        return false;
+    }
 }

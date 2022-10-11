@@ -22,6 +22,7 @@ namespace Systopia\JsonSchema\KeywordValidators;
 use Opis\JsonSchema\Errors\ValidationError;
 use Opis\JsonSchema\KeywordValidators\AbstractKeywordValidator;
 use Opis\JsonSchema\ValidationContext;
+use Systopia\JsonSchema\Errors\ErrorCollector;
 use Systopia\JsonSchema\Errors\ErrorCollectorUtil;
 
 class CollectErrorsKeywordValidator extends AbstractKeywordValidator
@@ -29,10 +30,31 @@ class CollectErrorsKeywordValidator extends AbstractKeywordValidator
     public function validate(ValidationContext $context): ?ValidationError
     {
         $error = null === $this->next ? null : $this->next->validate($context);
-        if (null !== $error) {
+        if (null !== $error && !$this->shouldIgnoreError($context)) {
             ErrorCollectorUtil::getErrorCollector($context)->addError($error);
         }
 
         return $error;
+    }
+
+    /**
+     * @return bool true if an error should not be added to the error collector,
+     *              e.g. if the parent is a oneOf keyword.
+     */
+    protected function shouldIgnoreError(ValidationContext $context): bool
+    {
+        $schema = $context->schema();
+        if (null === $schema) {
+            return false;
+        }
+
+        $path = $schema->info()->path();
+        foreach (ErrorCollector::getExtraLeafErrorKeywords() as $leafErrorKeyword) {
+            if (\in_array($leafErrorKeyword, $path, true)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
