@@ -58,9 +58,9 @@ abstract class Variable
     }
 
     /**
-     * @throws ReferencedDataHasViolationException|VariableResolveException
-     *
      * @return null|mixed
+     *
+     * @throws ReferencedDataHasViolationException|VariableResolveException
      */
     abstract public function getValue(ValidationContext $context, int $flags = 0);
 }

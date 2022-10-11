@@ -109,9 +109,9 @@ final class ValidationsKeyword implements Keyword
     /**
      * @param mixed $value
      *
-     * @throws ReferencedDataHasViolationException|VariableResolveException
-     *
      * @return mixed
+     *
+     * @throws ReferencedDataHasViolationException|VariableResolveException
      */
     private function getValidationValue(ValidationContext $context, $value)
     {

@@ -61,9 +61,9 @@ final class ExpressionVariablesContainer
     }
 
     /**
-     * @throws ReferencedDataHasViolationException|VariableResolveException
-     *
      * @return array<string, mixed>
+     *
+     * @throws ReferencedDataHasViolationException|VariableResolveException
      */
     public function getValues(ValidationContext $context, int $flags = 0): array
     {

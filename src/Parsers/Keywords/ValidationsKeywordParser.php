@@ -70,9 +70,9 @@ final class ValidationsKeywordParser extends KeywordParser
     /**
      * @param mixed $value
      *
-     * @throws ParseException
-     *
      * @return mixed
+     *
+     * @throws ParseException
      */
     private function createValidationValue($value, SchemaParser $parser)
     {
