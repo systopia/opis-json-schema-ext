@@ -66,9 +66,9 @@ final class Evaluation
     }
 
     /**
-     * @throws ReferencedDataHasViolationException|VariableResolveException
-     *
      * @return array<string, mixed>
+     *
+     * @throws ReferencedDataHasViolationException|VariableResolveException
      */
     public function getVariables(ValidationContext $context, int $flags = 0): array
     {
