@@ -25,7 +25,13 @@ use Opis\JsonSchema\JsonPointer;
 final class ErrorCollector implements ErrorCollectorInterface
 {
     /**
-     * @var array<non-empty-array<ValidationError>>
+     * @var array<string> keywords that should be treated as leaf errors even
+     *                    though they have sub errors
+     */
+    private static array $extraLeafErrorKeywords = ['anyOf', 'oneOf'];
+
+    /**
+     * @var array<string, non-empty-array<ValidationError>>
      */
     private array $errors = [];
 
@@ -33,6 +39,24 @@ final class ErrorCollector implements ErrorCollectorInterface
      * @var array<string, non-empty-array<ValidationError>>
      */
     private array $leafErrors = [];
+
+    /**
+     * @param string $keyword Keyword that should be treated as leaf error even t
+     *                        hough it has sub errors
+     */
+    public static function addExtraLeafErrorKeywords(string $keyword): void
+    {
+        self::$extraLeafErrorKeywords[] = $keyword;
+    }
+
+    /**
+     * @return array<string> keywords that should be treated as leaf errors even
+     *                       though they have sub errors
+     */
+    public static function getExtraLeafErrorKeywords(): array
+    {
+        return static::$extraLeafErrorKeywords;
+    }
 
     public function addError(ValidationError $error): void
     {
@@ -117,7 +141,7 @@ final class ErrorCollector implements ErrorCollectorInterface
 
     private function isLeafError(ValidationError $error): bool
     {
-        return [] === $error->subErrors();
+        return [] === $error->subErrors() || \in_array($error->keyword(), static::$extraLeafErrorKeywords, true);
     }
 
     /**

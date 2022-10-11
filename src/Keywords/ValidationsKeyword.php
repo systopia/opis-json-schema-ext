@@ -54,7 +54,7 @@ final class ValidationsKeyword implements Keyword
         $errors = new ErrorContainer($context->maxErrors());
         foreach ($this->validations as $validation) {
             $validationSchema = $this->createValidationSchema($context, $schema->info(), $validation);
-            if (null !== $error = $validationSchema->validate($context)) {
+            if (null !== $error = $context->validateSchemaWithoutEvaluated($validationSchema)) {
                 $errors->add($this->createError($validationSchema, $context, $validation, $error));
                 if ($errors->isFull()) {
                     break;
