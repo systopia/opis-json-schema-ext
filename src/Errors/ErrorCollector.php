@@ -55,7 +55,7 @@ final class ErrorCollector implements ErrorCollectorInterface
      */
     public static function getExtraLeafErrorKeywords(): array
     {
-        return static::$extraLeafErrorKeywords;
+        return self::$extraLeafErrorKeywords;
     }
 
     public function addError(ValidationError $error): void
@@ -141,7 +141,7 @@ final class ErrorCollector implements ErrorCollectorInterface
 
     private function isLeafError(ValidationError $error): bool
     {
-        return [] === $error->subErrors() || \in_array($error->keyword(), static::$extraLeafErrorKeywords, true);
+        return [] === $error->subErrors() || \in_array($error->keyword(), self::$extraLeafErrorKeywords, true);
     }
 
     /**

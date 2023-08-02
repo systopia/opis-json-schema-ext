@@ -42,14 +42,14 @@ final class MinDateTest extends TestCase
 JSON;
 
         $validator = new SystopiaValidator();
-        static::assertTrue($validator->validate('1970-01-02', $schema)->isValid());
-        static::assertTrue($validator->validate('1970-01-03', $schema)->isValid());
+        self::assertTrue($validator->validate('1970-01-02', $schema)->isValid());
+        self::assertTrue($validator->validate('1970-01-03', $schema)->isValid());
 
         $validationResult = $validator->validate('1970-01-01', $schema);
         $error = $validationResult->error();
-        static::assertNotNull($error);
-        static::assertErrorKeyword('minDate', $error);
-        static::assertFormattedErrorMessage('Date must not be before 1970-01-02', $error);
+        self::assertNotNull($error);
+        self::assertErrorKeyword('minDate', $error);
+        self::assertFormattedErrorMessage('Date must not be before 1970-01-02', $error);
     }
 
     public function testInvalidMinDate(): void
@@ -66,8 +66,8 @@ JSON;
 JSON;
 
         $validator = new SystopiaValidator();
-        static::expectException(InvalidKeywordException::class);
-        static::expectExceptionMessage('minDate must contain a date in the form YYYY-MM-DD');
+        self::expectException(InvalidKeywordException::class);
+        self::expectExceptionMessage('minDate must contain a date in the form YYYY-MM-DD');
 
         $validator->validate([1], $schema);
     }
@@ -82,7 +82,7 @@ JSON;
 JSON;
 
         $validator = new SystopiaValidator();
-        static::assertTrue($validator->validate('1970-01-01', $schema)->isValid());
+        self::assertTrue($validator->validate('1970-01-01', $schema)->isValid());
     }
 
     public function testMinDateReferencesMissingValue(): void
@@ -104,12 +104,12 @@ JSON;
         $validator = new SystopiaValidator();
         $validationResult = $validator->validate((object) ['value' => '1970-01-01'], $schema);
         $error = $validationResult->error();
-        static::assertNotNull($error);
-        static::assertCount(1, $error->subErrors());
+        self::assertNotNull($error);
+        self::assertCount(1, $error->subErrors());
         $minDateError = $error->subErrors()[0];
-        static::assertNotNull($minDateError);
-        static::assertErrorKeyword('minDate', $minDateError);
-        static::assertFormattedErrorMessage('Failed to resolve minDate', $minDateError);
+        self::assertNotNull($minDateError);
+        self::assertErrorKeyword('minDate', $minDateError);
+        self::assertFormattedErrorMessage('Failed to resolve minDate', $minDateError);
     }
 
     public function testMinDateReferencesInvalidValue(): void
@@ -131,12 +131,12 @@ JSON;
         $validator = new SystopiaValidator();
         $validationResult = $validator->validate((object) ['value' => '1970-01-01', 'minDate' => 'invalid'], $schema);
         $error = $validationResult->error();
-        static::assertNotNull($error);
-        static::assertCount(1, $error->subErrors());
+        self::assertNotNull($error);
+        self::assertCount(1, $error->subErrors());
         $minDateError = $error->subErrors()[0];
-        static::assertNotNull($minDateError);
-        static::assertErrorKeyword('minDate', $minDateError);
-        static::assertFormattedErrorMessage('Invalid minDate invalid', $minDateError);
+        self::assertNotNull($minDateError);
+        self::assertErrorKeyword('minDate', $minDateError);
+        self::assertFormattedErrorMessage('Invalid minDate invalid', $minDateError);
     }
 
     public function testMinDateFallback(): void
@@ -158,11 +158,11 @@ JSON;
         $validator = new SystopiaValidator();
         $validationResult = $validator->validate((object) ['value' => '1970-01-01'], $schema);
         $error = $validationResult->error();
-        static::assertNotNull($error);
-        static::assertCount(1, $error->subErrors());
+        self::assertNotNull($error);
+        self::assertCount(1, $error->subErrors());
         $minDateError = $error->subErrors()[0];
-        static::assertNotNull($minDateError);
-        static::assertErrorKeyword('minDate', $minDateError);
-        static::assertFormattedErrorMessage('Date must not be before 1970-01-02', $minDateError);
+        self::assertNotNull($minDateError);
+        self::assertErrorKeyword('minDate', $minDateError);
+        self::assertFormattedErrorMessage('Date must not be before 1970-01-02', $minDateError);
     }
 }

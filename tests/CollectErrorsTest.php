@@ -62,20 +62,20 @@ final class CollectErrorsTest extends TestCase
 
         $errorCollector = new ErrorCollector();
         $globals = ['errorCollector' => $errorCollector];
-        static::assertFalse($errorCollector->hasErrors());
+        self::assertFalse($errorCollector->hasErrors());
 
         $validator = new SystopiaValidator();
         $validator->setMaxErrors(2);
         $validator->validate($data, $schema, $globals);
 
-        static::assertTrue($errorCollector->hasErrors());
-        static::assertCount(4, $errorCollector->getErrors());
-        static::assertTrue($errorCollector->hasErrorAt([]));
-        static::assertTrue($errorCollector->hasErrorAt(['parent']));
-        static::assertTrue($errorCollector->hasErrorAt(['parent', 'child2']));
-        static::assertTrue($errorCollector->hasErrorAt('/parent/child2'));
-        static::assertTrue($errorCollector->hasErrorAt(['string']));
-        static::assertFalse($errorCollector->hasErrorAt(['parent', 'child1']));
+        self::assertTrue($errorCollector->hasErrors());
+        self::assertCount(4, $errorCollector->getErrors());
+        self::assertTrue($errorCollector->hasErrorAt([]));
+        self::assertTrue($errorCollector->hasErrorAt(['parent']));
+        self::assertTrue($errorCollector->hasErrorAt(['parent', 'child2']));
+        self::assertTrue($errorCollector->hasErrorAt('/parent/child2'));
+        self::assertTrue($errorCollector->hasErrorAt(['string']));
+        self::assertFalse($errorCollector->hasErrorAt(['parent', 'child1']));
 
         $expectedErrorKeys = [
             '/parent/child2',
@@ -83,21 +83,21 @@ final class CollectErrorsTest extends TestCase
             '/string',
             '/',
         ];
-        static::assertSame($expectedErrorKeys, array_keys($errorCollector->getErrors()));
+        self::assertSame($expectedErrorKeys, array_keys($errorCollector->getErrors()));
 
         $stringErrors = $errorCollector->getErrorsAt(['string']);
-        static::assertCount(1, $stringErrors);
-        static::assertErrorKeyword('type', $stringErrors[0]);
+        self::assertCount(1, $stringErrors);
+        self::assertErrorKeyword('type', $stringErrors[0]);
 
-        static::assertCount(2, $errorCollector->getLeafErrors());
-        static::assertTrue($errorCollector->hasLeafErrorAt('/parent/child2'));
-        static::assertFalse($errorCollector->hasLeafErrorAt('/parent'));
-        static::assertTrue($errorCollector->hasLeafErrorAt(['string']));
-        static::assertSame(['/parent/child2', '/string'], array_keys($errorCollector->getLeafErrors()));
+        self::assertCount(2, $errorCollector->getLeafErrors());
+        self::assertTrue($errorCollector->hasLeafErrorAt('/parent/child2'));
+        self::assertFalse($errorCollector->hasLeafErrorAt('/parent'));
+        self::assertTrue($errorCollector->hasLeafErrorAt(['string']));
+        self::assertSame(['/parent/child2', '/string'], array_keys($errorCollector->getLeafErrors()));
 
         $child2Errors = $errorCollector->getLeafErrorsAt(['parent', 'child2']);
-        static::assertCount(1, $child2Errors);
-        static::assertErrorKeyword('minLength', $child2Errors[0]);
+        self::assertCount(1, $child2Errors);
+        self::assertErrorKeyword('minLength', $child2Errors[0]);
     }
 
     public function testMultipleViolations(): void
@@ -119,18 +119,18 @@ final class CollectErrorsTest extends TestCase
         $validator->setMaxErrors(2);
         $validator->validate('foo', $schema, $globals);
 
-        static::assertCount(1, $errorCollector->getErrors());
+        self::assertCount(1, $errorCollector->getErrors());
         $stringErrors = $errorCollector->getErrorsAt('/');
-        static::assertCount(3, $stringErrors);
-        static::assertErrorKeyword('minLength', $stringErrors[0]);
-        static::assertErrorKeyword('pattern', $stringErrors[1]);
-        static::assertErrorKeyword('$validations', $stringErrors[2]);
+        self::assertCount(3, $stringErrors);
+        self::assertErrorKeyword('minLength', $stringErrors[0]);
+        self::assertErrorKeyword('pattern', $stringErrors[1]);
+        self::assertErrorKeyword('$validations', $stringErrors[2]);
 
-        static::assertCount(1, $errorCollector->getLeafErrors());
+        self::assertCount(1, $errorCollector->getLeafErrors());
         $leafErrors = $errorCollector->getLeafErrorsAt('/');
-        static::assertCount(2, $leafErrors);
-        static::assertErrorKeyword('minLength', $leafErrors[0]);
-        static::assertErrorKeyword('pattern', $leafErrors[1]);
+        self::assertCount(2, $leafErrors);
+        self::assertErrorKeyword('minLength', $leafErrors[0]);
+        self::assertErrorKeyword('pattern', $leafErrors[1]);
     }
 
     public function testMultipleErrorSameDepth(): void
@@ -155,7 +155,7 @@ final class CollectErrorsTest extends TestCase
         $validator->validate($data, $schema, $globals);
 
         $leafErrors = $errorCollector->getLeafErrors();
-        static::assertCount(2, $leafErrors);
+        self::assertCount(2, $leafErrors);
     }
 
     public function testOneOfIgnoreSubValidation(): void
@@ -177,10 +177,10 @@ final class CollectErrorsTest extends TestCase
         $validator = new SystopiaValidator();
 
         $validator->validate((object) ['test' => 1], $schema, $globals);
-        static::assertFalse($errorCollector->hasErrors());
+        self::assertFalse($errorCollector->hasErrors());
 
         $validator->validate((object) ['test' => 'foo'], $schema, $globals);
-        static::assertFalse($errorCollector->hasErrors());
+        self::assertFalse($errorCollector->hasErrors());
     }
 
     public function testOneOfErrors(): void
@@ -202,15 +202,15 @@ final class CollectErrorsTest extends TestCase
         $validator = new SystopiaValidator();
 
         $validator->validate((object) ['test' => 3], $schema, $globals);
-        static::assertTrue($errorCollector->hasErrors());
+        self::assertTrue($errorCollector->hasErrors());
         $leafErrors = $errorCollector->getLeafErrorsAt(['test']);
-        static::assertCount(1, $leafErrors);
-        static::assertErrorKeyword('oneOf', $leafErrors[0]);
-        static::assertSubErrorsCount(2, $leafErrors[0]);
+        self::assertCount(1, $leafErrors);
+        self::assertErrorKeyword('oneOf', $leafErrors[0]);
+        self::assertSubErrorsCount(2, $leafErrors[0]);
 
         $errors = $errorCollector->getErrorsAt(['test']);
-        static::assertCount(1, $errors);
-        static::assertSame($leafErrors, $errors);
+        self::assertCount(1, $errors);
+        self::assertSame($leafErrors, $errors);
     }
 
     public function testAnyOfErrors(): void
@@ -232,14 +232,14 @@ final class CollectErrorsTest extends TestCase
         $validator = new SystopiaValidator();
 
         $validator->validate((object) ['test' => 3], $schema, $globals);
-        static::assertTrue($errorCollector->hasErrors());
+        self::assertTrue($errorCollector->hasErrors());
         $leafErrors = $errorCollector->getLeafErrorsAt(['test']);
-        static::assertCount(1, $leafErrors);
-        static::assertErrorKeyword('anyOf', $leafErrors[0]);
-        static::assertSubErrorsCount(2, $leafErrors[0]);
+        self::assertCount(1, $leafErrors);
+        self::assertErrorKeyword('anyOf', $leafErrors[0]);
+        self::assertSubErrorsCount(2, $leafErrors[0]);
 
         $errors = $errorCollector->getErrorsAt(['test']);
-        static::assertCount(1, $errors);
-        static::assertSame($leafErrors, $errors);
+        self::assertCount(1, $errors);
+        self::assertSame($leafErrors, $errors);
     }
 }

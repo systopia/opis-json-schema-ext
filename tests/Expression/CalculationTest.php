@@ -48,10 +48,10 @@ final class CalculationTest extends TestCase
     {
         $calculation = Calculation::parse('2 * 5', $this->schemaParser);
 
-        static::assertSame('2 * 5', $calculation->getExpression());
-        static::assertNull($calculation->getFallback());
-        static::assertSame([], $calculation->getVariableNames());
-        static::assertSame([], $calculation->getVariables($this->validationContext));
+        self::assertSame('2 * 5', $calculation->getExpression());
+        self::assertNull($calculation->getFallback());
+        self::assertSame([], $calculation->getVariableNames());
+        self::assertSame([], $calculation->getVariables($this->validationContext));
     }
 
     public function testParseSimple(): void
@@ -61,10 +61,10 @@ final class CalculationTest extends TestCase
         ];
         $calculation = Calculation::parse($data, $this->schemaParser);
 
-        static::assertSame('2 * 5', $calculation->getExpression());
-        static::assertNull($calculation->getFallback());
-        static::assertSame([], $calculation->getVariableNames());
-        static::assertSame([], $calculation->getVariables($this->validationContext));
+        self::assertSame('2 * 5', $calculation->getExpression());
+        self::assertNull($calculation->getFallback());
+        self::assertSame([], $calculation->getVariableNames());
+        self::assertSame([], $calculation->getVariables($this->validationContext));
     }
 
     public function testParse(): void
@@ -79,10 +79,10 @@ final class CalculationTest extends TestCase
         ];
         $calculation = Calculation::parse($data, $this->schemaParser);
 
-        static::assertSame('a * b', $calculation->getExpression());
-        static::assertSame(4, $calculation->getFallback());
-        static::assertSame(['a', 'b'], $calculation->getVariableNames());
-        static::assertSame(['a' => 3, 'b' => 2], $calculation->getVariables($this->validationContext));
+        self::assertSame('a * b', $calculation->getExpression());
+        self::assertSame(4, $calculation->getFallback());
+        self::assertSame(['a', 'b'], $calculation->getVariableNames());
+        self::assertSame(['a' => 3, 'b' => 2], $calculation->getVariables($this->validationContext));
     }
 
     public function testParseNoExpression(): void

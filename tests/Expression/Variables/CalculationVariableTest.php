@@ -54,15 +54,15 @@ final class CalculationVariableTest extends TestCase
 
     public function testIsAllowed(): void
     {
-        static::assertFalse(CalculationVariable::isAllowed(new SchemaParser()));
-        static::assertTrue(CalculationVariable::isAllowed($this->schemaParser));
+        self::assertFalse(CalculationVariable::isAllowed(new SchemaParser()));
+        self::assertTrue(CalculationVariable::isAllowed($this->schemaParser));
     }
 
     public function testParse(): void
     {
         $variable = CalculationVariable::parse((object) ['$calculate' => '2 * 5'], $this->schemaParser);
         $context = new ValidationContext((object) ['x' => 'foo'], $this->schemaLoader);
-        static::assertSame(10, $variable->getValue($context));
+        self::assertSame(10, $variable->getValue($context));
     }
 
     public function testFallback1(): void
@@ -76,7 +76,7 @@ final class CalculationVariableTest extends TestCase
         ];
         $variable = CalculationVariable::parse($data, $this->schemaParser);
         $context = new ValidationContext('', $this->schemaLoader);
-        static::assertSame(3, $variable->getValue($context));
+        self::assertSame(3, $variable->getValue($context));
     }
 
     public function testFallback2(): void
@@ -90,7 +90,7 @@ final class CalculationVariableTest extends TestCase
         ];
         $variable = CalculationVariable::parse($data, $this->schemaParser);
         $context = new ValidationContext('', $this->schemaLoader);
-        static::assertSame(5, $variable->getValue($context));
+        self::assertSame(5, $variable->getValue($context));
     }
 
     public function testFailOnUnresolved(): void

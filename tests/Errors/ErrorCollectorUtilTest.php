@@ -41,6 +41,6 @@ final class ErrorCollectorUtilTest extends TestCase
             null,
             ['errorCollector' => $errorCollector]
         );
-        static::assertSame($errorCollector, ErrorCollectorUtil::getErrorCollector($context));
+        self::assertSame($errorCollector, ErrorCollectorUtil::getErrorCollector($context));
     }
 }

@@ -21,6 +21,10 @@ return $config->setRules([
     'phpdoc_to_comment' => ['ignored_tags' => ['noinspection']],
     'php_unit_internal_class' => false,
     'php_unit_strict' => false,
+    'no_superfluous_phpdoc_tags' => [
+        'allow_mixed' => true,
+        'remove_inheritdoc' => false,
+    ],
 ])
     ->setRiskyAllowed(true)
     ->setFinder($finder)
