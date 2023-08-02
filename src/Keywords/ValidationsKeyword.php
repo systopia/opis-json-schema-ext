@@ -109,7 +109,7 @@ final class ValidationsKeyword implements Keyword
     /**
      * @param mixed $value
      *
-     * @return mixed
+     * @return null|mixed
      *
      * @throws ReferencedDataHasViolationException|VariableResolveException
      */

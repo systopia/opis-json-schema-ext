@@ -55,8 +55,8 @@ final class JsonPointerVariableTest extends TestCase
 
     public function testIsAllowed(): void
     {
-        static::assertFalse(JsonPointerVariable::isAllowed(new SchemaParser([], ['allowDataKeyword' => false])));
-        static::assertTrue(JsonPointerVariable::isAllowed($this->schemaParser));
+        self::assertFalse(JsonPointerVariable::isAllowed(new SchemaParser([], ['allowDataKeyword' => false])));
+        self::assertTrue(JsonPointerVariable::isAllowed($this->schemaParser));
     }
 
     public function test(): void
@@ -64,24 +64,24 @@ final class JsonPointerVariableTest extends TestCase
         $variable = JsonPointerVariable::parse((object) ['$data' => '/x'], $this->schemaParser);
         $pointer = JsonPointer::parse('/x');
         Assertion::notNull($pointer);
-        static::assertEquals(new JsonPointerVariable($pointer), $variable);
+        self::assertEquals(new JsonPointerVariable($pointer), $variable);
 
         $context = new ValidationContext((object) ['x' => 'foo'], $this->schemaLoader);
-        static::assertSame('foo', $variable->getValue($context));
+        self::assertSame('foo', $variable->getValue($context));
     }
 
     public function testUnresolved(): void
     {
         $variable = JsonPointerVariable::parse((object) ['$data' => '/x'], $this->schemaParser);
         $context = new ValidationContext('', $this->schemaLoader);
-        static::assertNull($variable->getValue($context));
+        self::assertNull($variable->getValue($context));
     }
 
     public function testFallback(): void
     {
         $variable = JsonPointerVariable::create((object) ['$data' => '/x', 'fallback' => 'test'], $this->schemaParser);
         $context = new ValidationContext('', $this->schemaLoader);
-        static::assertSame('test', $variable->getValue($context));
+        self::assertSame('test', $variable->getValue($context));
     }
 
     public function testFailOnUnresolved(): void

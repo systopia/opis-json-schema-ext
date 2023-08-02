@@ -34,6 +34,6 @@ final class IdentityVariableTest extends TestCase
     {
         $variable = new IdentityVariable('test');
         $context = new ValidationContext('', new SchemaLoader());
-        static::assertSame('test', $variable->getValue($context));
+        self::assertSame('test', $variable->getValue($context));
     }
 }

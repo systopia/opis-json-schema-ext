@@ -42,14 +42,14 @@ final class MaxDateTest extends TestCase
 JSON;
 
         $validator = new SystopiaValidator();
-        static::assertTrue($validator->validate('1970-01-01', $schema)->isValid());
-        static::assertTrue($validator->validate('1970-01-02', $schema)->isValid());
+        self::assertTrue($validator->validate('1970-01-01', $schema)->isValid());
+        self::assertTrue($validator->validate('1970-01-02', $schema)->isValid());
 
         $validationResult = $validator->validate('1970-01-03', $schema);
         $error = $validationResult->error();
-        static::assertNotNull($error);
-        static::assertErrorKeyword('maxDate', $error);
-        static::assertFormattedErrorMessage('Date must not be after 1970-01-02', $error);
+        self::assertNotNull($error);
+        self::assertErrorKeyword('maxDate', $error);
+        self::assertFormattedErrorMessage('Date must not be after 1970-01-02', $error);
     }
 
     public function testInvalidMaxDate(): void
@@ -66,8 +66,8 @@ JSON;
 JSON;
 
         $validator = new SystopiaValidator();
-        static::expectException(InvalidKeywordException::class);
-        static::expectExceptionMessage('maxDate must contain a date in the form YYYY-MM-DD');
+        self::expectException(InvalidKeywordException::class);
+        self::expectExceptionMessage('maxDate must contain a date in the form YYYY-MM-DD');
 
         $validator->validate([1], $schema);
     }
@@ -82,7 +82,7 @@ JSON;
 JSON;
 
         $validator = new SystopiaValidator();
-        static::assertTrue($validator->validate('1970-01-01', $schema)->isValid());
+        self::assertTrue($validator->validate('1970-01-01', $schema)->isValid());
     }
 
     public function testMaxDateReferencesMissingValue(): void
@@ -104,12 +104,12 @@ JSON;
         $validator = new SystopiaValidator();
         $validationResult = $validator->validate((object) ['value' => '1970-01-01'], $schema);
         $error = $validationResult->error();
-        static::assertNotNull($error);
-        static::assertCount(1, $error->subErrors());
+        self::assertNotNull($error);
+        self::assertCount(1, $error->subErrors());
         $maxDateError = $error->subErrors()[0];
-        static::assertNotNull($maxDateError);
-        static::assertErrorKeyword('maxDate', $maxDateError);
-        static::assertFormattedErrorMessage('Failed to resolve maxDate', $maxDateError);
+        self::assertNotNull($maxDateError);
+        self::assertErrorKeyword('maxDate', $maxDateError);
+        self::assertFormattedErrorMessage('Failed to resolve maxDate', $maxDateError);
     }
 
     public function testMaxDateReferencesInvalidValue(): void
@@ -131,12 +131,12 @@ JSON;
         $validator = new SystopiaValidator();
         $validationResult = $validator->validate((object) ['value' => '1970-01-01', 'maxDate' => 'invalid'], $schema);
         $error = $validationResult->error();
-        static::assertNotNull($error);
-        static::assertCount(1, $error->subErrors());
+        self::assertNotNull($error);
+        self::assertCount(1, $error->subErrors());
         $maxDateError = $error->subErrors()[0];
-        static::assertNotNull($maxDateError);
-        static::assertErrorKeyword('maxDate', $maxDateError);
-        static::assertFormattedErrorMessage('Invalid maxDate invalid', $maxDateError);
+        self::assertNotNull($maxDateError);
+        self::assertErrorKeyword('maxDate', $maxDateError);
+        self::assertFormattedErrorMessage('Invalid maxDate invalid', $maxDateError);
     }
 
     public function testMaxDateFallback(): void
@@ -158,11 +158,11 @@ JSON;
         $validator = new SystopiaValidator();
         $validationResult = $validator->validate((object) ['value' => '1970-01-03'], $schema);
         $error = $validationResult->error();
-        static::assertNotNull($error);
-        static::assertCount(1, $error->subErrors());
+        self::assertNotNull($error);
+        self::assertCount(1, $error->subErrors());
         $maxDateError = $error->subErrors()[0];
-        static::assertNotNull($maxDateError);
-        static::assertErrorKeyword('maxDate', $maxDateError);
-        static::assertFormattedErrorMessage('Date must not be after 1970-01-02', $maxDateError);
+        self::assertNotNull($maxDateError);
+        self::assertErrorKeyword('maxDate', $maxDateError);
+        self::assertFormattedErrorMessage('Date must not be after 1970-01-02', $maxDateError);
     }
 }

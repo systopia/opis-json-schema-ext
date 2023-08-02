@@ -48,9 +48,9 @@ final class EvaluationTest extends TestCase
     {
         $evaluation = Evaluation::parse('2 * 5 == data', $this->schemaParser);
 
-        static::assertSame('2 * 5 == data', $evaluation->getExpression());
-        static::assertSame([], $evaluation->getVariableNames());
-        static::assertSame([], $evaluation->getVariables($this->validationContext));
+        self::assertSame('2 * 5 == data', $evaluation->getExpression());
+        self::assertSame([], $evaluation->getVariableNames());
+        self::assertSame([], $evaluation->getVariables($this->validationContext));
     }
 
     public function testParseSimple(): void
@@ -60,9 +60,9 @@ final class EvaluationTest extends TestCase
         ];
         $evaluation = Evaluation::parse($data, $this->schemaParser);
 
-        static::assertSame('2 * 5', $evaluation->getExpression());
-        static::assertSame([], $evaluation->getVariableNames());
-        static::assertSame([], $evaluation->getVariables($this->validationContext));
+        self::assertSame('2 * 5', $evaluation->getExpression());
+        self::assertSame([], $evaluation->getVariableNames());
+        self::assertSame([], $evaluation->getVariables($this->validationContext));
     }
 
     public function testParse(): void
@@ -76,9 +76,9 @@ final class EvaluationTest extends TestCase
         ];
         $evaluation = Evaluation::parse($data, $this->schemaParser);
 
-        static::assertSame('a * b == data', $evaluation->getExpression());
-        static::assertSame(['a', 'b'], $evaluation->getVariableNames());
-        static::assertSame(['a' => 3, 'b' => 2], $evaluation->getVariables($this->validationContext));
+        self::assertSame('a * b == data', $evaluation->getExpression());
+        self::assertSame(['a', 'b'], $evaluation->getVariableNames());
+        self::assertSame(['a' => 3, 'b' => 2], $evaluation->getVariables($this->validationContext));
     }
 
     public function testParseNoExpression(): void

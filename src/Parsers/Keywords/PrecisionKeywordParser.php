@@ -39,7 +39,7 @@ final class PrecisionKeywordParser extends KeywordParser
      */
     public function type(): string
     {
-        return static::TYPE_NUMBER;
+        return self::TYPE_NUMBER;
     }
 
     /**

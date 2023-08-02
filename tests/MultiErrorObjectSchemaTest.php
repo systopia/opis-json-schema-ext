@@ -32,15 +32,15 @@ final class MultiErrorObjectSchemaTest extends TestCase
         $result = $validator->validate($data, $schema);
 
         $rootError = $result->error();
-        static::assertNotNull($rootError);
-        static::assertSame('schema', $rootError->keyword());
-        static::assertSame('The data must match schema: {data}', $rootError->message());
-        static::assertSame($data, $rootError->args()['data']);
-        static::assertSame([], $rootError->data()->fullPath());
+        self::assertNotNull($rootError);
+        self::assertSame('schema', $rootError->keyword());
+        self::assertSame('The data must match schema: {data}', $rootError->message());
+        self::assertSame($data, $rootError->args()['data']);
+        self::assertSame([], $rootError->data()->fullPath());
 
         $subErrors = $rootError->subErrors();
-        static::assertCount(2, $subErrors);
-        static::assertSame('required', $subErrors[0]->keyword());
-        static::assertSame('properties', $subErrors[1]->keyword());
+        self::assertCount(2, $subErrors);
+        self::assertSame('required', $subErrors[0]->keyword());
+        self::assertSame('properties', $subErrors[1]->keyword());
     }
 }

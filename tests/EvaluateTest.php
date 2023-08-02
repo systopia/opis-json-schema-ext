@@ -55,10 +55,10 @@ final class EvaluateTest extends TestCase
 
         $validator = new SystopiaValidator();
         $validationResult = $validator->validate((object) ['evaluated' => 11], $schema);
-        static::assertTrue($validationResult->isValid());
+        self::assertTrue($validationResult->isValid());
 
         $validationResult = $validator->validate((object) ['evaluated' => 10], $schema);
-        static::assertNotNull($validationResult->error());
+        self::assertNotNull($validationResult->error());
         self::assertSubErrorsCount(1, $validationResult->error());
         $error = $validationResult->error()->subErrors()[0];
         self::assertErrorKeyword('evaluate', $error);
@@ -84,10 +84,10 @@ final class EvaluateTest extends TestCase
 
         $validator = new SystopiaValidator();
         $validationResult = $validator->validate((object) ['evaluated' => 11], $schema);
-        static::assertTrue($validationResult->isValid());
+        self::assertTrue($validationResult->isValid());
 
         $validationResult = $validator->validate((object) ['evaluated' => 10], $schema);
-        static::assertNotNull($validationResult->error());
+        self::assertNotNull($validationResult->error());
         self::assertSubErrorsCount(1, $validationResult->error());
         $error = $validationResult->error()->subErrors()[0];
         self::assertErrorKeyword('evaluate', $error);
@@ -114,10 +114,10 @@ final class EvaluateTest extends TestCase
 
         $validator = new SystopiaValidator();
         $validationResult = $validator->validate((object) ['a' => 3, 'evaluated' => 3], $schema);
-        static::assertTrue($validationResult->isValid());
+        self::assertTrue($validationResult->isValid());
 
         $validationResult = $validator->validate((object) ['a' => 4, 'evaluated' => 3], $schema);
-        static::assertNotNull($validationResult->error());
+        self::assertNotNull($validationResult->error());
         self::assertSubErrorsCount(1, $validationResult->error());
         $error = $validationResult->error()->subErrors()[0];
         self::assertErrorKeyword('evaluate', $error);
@@ -143,10 +143,10 @@ final class EvaluateTest extends TestCase
 
         $validator = new SystopiaValidator();
         $validationResult = $validator->validate((object) ['evaluated' => 11], $schema);
-        static::assertTrue($validationResult->isValid());
+        self::assertTrue($validationResult->isValid());
 
         $validationResult = $validator->validate((object) ['evaluated' => 10], $schema);
-        static::assertNotNull($validationResult->error());
+        self::assertNotNull($validationResult->error());
         self::assertSubErrorsCount(1, $validationResult->error());
         $error = $validationResult->error()->subErrors()[0];
         self::assertErrorKeyword('evaluate', $error);
@@ -173,7 +173,7 @@ final class EvaluateTest extends TestCase
 
         $validator = new SystopiaValidator();
         $validationResult = $validator->validate((object) ['evaluated' => 3], $schema);
-        static::assertNotNull($validationResult->error());
+        self::assertNotNull($validationResult->error());
         self::assertSubErrorsCount(1, $validationResult->error());
         $error = $validationResult->error()->subErrors()[0];
         self::assertErrorKeyword('evaluate', $error);
@@ -204,7 +204,7 @@ final class EvaluateTest extends TestCase
         $validator = new SystopiaValidator();
         $validator->setMaxErrors(2);
         $validationResult = $validator->validate((object) ['a' => null, 'evaluated' => 3], $schema);
-        static::assertNotNull($validationResult->error());
+        self::assertNotNull($validationResult->error());
         self::assertSubErrorsCount(1, $validationResult->error());
         $error = $validationResult->error()->subErrors()[0];
         self::assertErrorKeyword('type', $error);
@@ -232,14 +232,14 @@ final class EvaluateTest extends TestCase
         $validator = new SystopiaValidator();
         $validator->setMaxErrors(2);
         $validationResult = $validator->validate((object) ['evaluated' => 3], $schema);
-        static::assertNotNull($validationResult->error());
+        self::assertNotNull($validationResult->error());
         self::assertErrorKeyword('schema', $validationResult->error());
         $subErrors = $validationResult->error()->subErrors();
-        static::assertCount(2, $subErrors);
+        self::assertCount(2, $subErrors);
         self::assertErrorKeyword('required', $subErrors[0]);
         self::assertErrorKeyword('properties', $subErrors[1]);
         $propertiesErrors = $subErrors[1]->subErrors();
-        static::assertCount(1, $propertiesErrors);
+        self::assertCount(1, $propertiesErrors);
         self::assertErrorKeyword('evaluate', $propertiesErrors[0]);
     }
 
@@ -270,7 +270,7 @@ final class EvaluateTest extends TestCase
             JSON;
 
         $validationResult = $validator->validate((object) ['evaluated' => 2], $schema);
-        static::assertTrue($validationResult->isValid());
+        self::assertTrue($validationResult->isValid());
     }
 
     public function testInvalidExpression(): void

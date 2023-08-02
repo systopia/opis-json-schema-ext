@@ -53,18 +53,18 @@ final class ValidationsTest extends TestCase
             JSON;
 
         $validationResult = $validator->validate((object) ['foo' => 10], $schema);
-        static::assertTrue($validationResult->isValid());
+        self::assertTrue($validationResult->isValid());
 
         $validationResult = $validator->validate((object) ['foo' => 9], $schema);
-        static::assertNotNull($validationResult->error());
-        static::assertCount(1, $validationResult->error()->subErrors());
+        self::assertNotNull($validationResult->error());
+        self::assertCount(1, $validationResult->error()->subErrors());
         $error = $validationResult->error()->subErrors()[0];
-        static::assertErrorKeyword('$validations', $error);
-        static::assertFormattedErrorMessage('The property must match validations', $error);
-        static::assertCount(1, $error->subErrors());
+        self::assertErrorKeyword('$validations', $error);
+        self::assertFormattedErrorMessage('The property must match validations', $error);
+        self::assertCount(1, $error->subErrors());
         $minimumError = $error->subErrors()[0];
-        static::assertErrorKeyword('minimum', $minimumError);
-        static::assertFormattedErrorMessage('Number must be greater than or equal to 10', $minimumError);
+        self::assertErrorKeyword('minimum', $minimumError);
+        self::assertFormattedErrorMessage('Number must be greater than or equal to 10', $minimumError);
     }
 
     public function testSimpleValidationWithCustomMessage(): void
@@ -89,18 +89,18 @@ final class ValidationsTest extends TestCase
             JSON;
 
         $validationResult = $validator->validate((object) ['foo' => 10], $schema);
-        static::assertTrue($validationResult->isValid());
+        self::assertTrue($validationResult->isValid());
 
         $validationResult = $validator->validate((object) ['foo' => 9], $schema);
-        static::assertNotNull($validationResult->error());
-        static::assertCount(1, $validationResult->error()->subErrors());
+        self::assertNotNull($validationResult->error());
+        self::assertCount(1, $validationResult->error()->subErrors());
         $error = $validationResult->error()->subErrors()[0];
-        static::assertErrorKeyword('$validations', $error);
-        static::assertFormattedErrorMessage('The property must match validations', $error);
-        static::assertCount(1, $error->subErrors());
+        self::assertErrorKeyword('$validations', $error);
+        self::assertFormattedErrorMessage('The property must match validations', $error);
+        self::assertCount(1, $error->subErrors());
         $minimumError = $error->subErrors()[0];
-        static::assertErrorKeyword('minimum', $minimumError);
-        static::assertFormattedErrorMessage('Number must be at least 10', $minimumError);
+        self::assertErrorKeyword('minimum', $minimumError);
+        self::assertFormattedErrorMessage('Number must be at least 10', $minimumError);
     }
 
     public function testCalculatedValidation(): void
@@ -124,18 +124,18 @@ final class ValidationsTest extends TestCase
             JSON;
 
         $validationResult = $validator->validate((object) ['foo' => 10], $schema);
-        static::assertTrue($validationResult->isValid());
+        self::assertTrue($validationResult->isValid());
 
         $validationResult = $validator->validate((object) ['foo' => 9], $schema);
-        static::assertNotNull($validationResult->error());
-        static::assertCount(1, $validationResult->error()->subErrors());
+        self::assertNotNull($validationResult->error());
+        self::assertCount(1, $validationResult->error()->subErrors());
         $error = $validationResult->error()->subErrors()[0];
-        static::assertErrorKeyword('$validations', $error);
-        static::assertFormattedErrorMessage('The property must match validations', $error);
-        static::assertCount(1, $error->subErrors());
+        self::assertErrorKeyword('$validations', $error);
+        self::assertFormattedErrorMessage('The property must match validations', $error);
+        self::assertCount(1, $error->subErrors());
         $minimumError = $error->subErrors()[0];
-        static::assertErrorKeyword('minimum', $minimumError);
-        static::assertFormattedErrorMessage('Number must be greater than or equal to 10', $minimumError);
+        self::assertErrorKeyword('minimum', $minimumError);
+        self::assertFormattedErrorMessage('Number must be greater than or equal to 10', $minimumError);
     }
 
     public function testEvaluateValidation(): void
@@ -162,18 +162,18 @@ final class ValidationsTest extends TestCase
             JSON;
 
         $validationResult = $validator->validate((object) ['foo' => 10], $schema);
-        static::assertTrue($validationResult->isValid());
+        self::assertTrue($validationResult->isValid());
 
         $validationResult = $validator->validate((object) ['foo' => 9], $schema);
-        static::assertNotNull($validationResult->error());
-        static::assertCount(1, $validationResult->error()->subErrors());
+        self::assertNotNull($validationResult->error());
+        self::assertCount(1, $validationResult->error()->subErrors());
         $error = $validationResult->error()->subErrors()[0];
-        static::assertErrorKeyword('$validations', $error);
-        static::assertFormattedErrorMessage('The property must match validations', $error);
-        static::assertCount(1, $error->subErrors());
+        self::assertErrorKeyword('$validations', $error);
+        self::assertFormattedErrorMessage('The property must match validations', $error);
+        self::assertCount(1, $error->subErrors());
         $minimumError = $error->subErrors()[0];
-        static::assertErrorKeyword('evaluate', $minimumError);
-        static::assertFormattedErrorMessage('Evaluation of "2 * a == data" failed', $minimumError);
+        self::assertErrorKeyword('evaluate', $minimumError);
+        self::assertFormattedErrorMessage('Evaluation of "2 * a == data" failed', $minimumError);
     }
 
     public function testEvaluateValidationWithCustomMessage(): void
@@ -201,18 +201,18 @@ final class ValidationsTest extends TestCase
             JSON;
 
         $validationResult = $validator->validate((object) ['foo' => 10], $schema);
-        static::assertTrue($validationResult->isValid());
+        self::assertTrue($validationResult->isValid());
 
         $validationResult = $validator->validate((object) ['foo' => 9], $schema);
-        static::assertNotNull($validationResult->error());
-        static::assertCount(1, $validationResult->error()->subErrors());
+        self::assertNotNull($validationResult->error());
+        self::assertCount(1, $validationResult->error()->subErrors());
         $error = $validationResult->error()->subErrors()[0];
-        static::assertErrorKeyword('$validations', $error);
-        static::assertFormattedErrorMessage('The property must match validations', $error);
-        static::assertCount(1, $error->subErrors());
+        self::assertErrorKeyword('$validations', $error);
+        self::assertFormattedErrorMessage('The property must match validations', $error);
+        self::assertCount(1, $error->subErrors());
         $minimumError = $error->subErrors()[0];
-        static::assertErrorKeyword('evaluate', $minimumError);
-        static::assertFormattedErrorMessage('Number is not equal to 2 * 5', $minimumError);
+        self::assertErrorKeyword('evaluate', $minimumError);
+        self::assertFormattedErrorMessage('Number is not equal to 2 * 5', $minimumError);
     }
 
     public function testValidationWithReferencedVariable(): void
@@ -237,18 +237,18 @@ final class ValidationsTest extends TestCase
             JSON;
 
         $validationResult = $validator->validate((object) ['a' => 10, 'foo' => 10], $schema);
-        static::assertTrue($validationResult->isValid());
+        self::assertTrue($validationResult->isValid());
 
         $validationResult = $validator->validate((object) ['a' => 10, 'foo' => 9], $schema);
-        static::assertNotNull($validationResult->error());
-        static::assertCount(1, $validationResult->error()->subErrors());
+        self::assertNotNull($validationResult->error());
+        self::assertCount(1, $validationResult->error()->subErrors());
         $error = $validationResult->error()->subErrors()[0];
-        static::assertErrorKeyword('$validations', $error);
-        static::assertFormattedErrorMessage('The property must match validations', $error);
-        static::assertCount(1, $error->subErrors());
+        self::assertErrorKeyword('$validations', $error);
+        self::assertFormattedErrorMessage('The property must match validations', $error);
+        self::assertCount(1, $error->subErrors());
         $minimumError = $error->subErrors()[0];
-        static::assertErrorKeyword('minimum', $minimumError);
-        static::assertFormattedErrorMessage('Number must be greater than or equal to 10', $minimumError);
+        self::assertErrorKeyword('minimum', $minimumError);
+        self::assertFormattedErrorMessage('Number must be greater than or equal to 10', $minimumError);
     }
 
     public function testValidationWithReferencedVariableWithFallback(): void
@@ -273,18 +273,18 @@ final class ValidationsTest extends TestCase
             JSON;
 
         $validationResult = $validator->validate((object) ['a' => 10, 'foo' => 10], $schema);
-        static::assertTrue($validationResult->isValid());
+        self::assertTrue($validationResult->isValid());
 
         $validationResult = $validator->validate((object) ['a' => 10, 'foo' => 9], $schema);
-        static::assertNotNull($validationResult->error());
-        static::assertCount(1, $validationResult->error()->subErrors());
+        self::assertNotNull($validationResult->error());
+        self::assertCount(1, $validationResult->error()->subErrors());
         $error = $validationResult->error()->subErrors()[0];
-        static::assertErrorKeyword('$validations', $error);
-        static::assertFormattedErrorMessage('The property must match validations', $error);
-        static::assertCount(1, $error->subErrors());
+        self::assertErrorKeyword('$validations', $error);
+        self::assertFormattedErrorMessage('The property must match validations', $error);
+        self::assertCount(1, $error->subErrors());
         $minimumError = $error->subErrors()[0];
-        static::assertErrorKeyword('minimum', $minimumError);
-        static::assertFormattedErrorMessage('Number must be greater than or equal to 10', $minimumError);
+        self::assertErrorKeyword('minimum', $minimumError);
+        self::assertFormattedErrorMessage('Number must be greater than or equal to 10', $minimumError);
     }
 
     public function testNoValidationWithReferencedVariableNotSet(): void
@@ -309,7 +309,7 @@ final class ValidationsTest extends TestCase
             JSON;
 
         $validationResult = $validator->validate((object) ['foo' => 10], $schema);
-        static::assertTrue($validationResult->isValid());
+        self::assertTrue($validationResult->isValid());
     }
 
     public function testMultipleValidations(): void
@@ -339,35 +339,35 @@ final class ValidationsTest extends TestCase
             JSON;
 
         $validationResult = $validator->validate((object) ['foo' => 10], $schema);
-        static::assertNotNull($validationResult->error());
-        static::assertCount(1, $validationResult->error()->subErrors());
+        self::assertNotNull($validationResult->error());
+        self::assertCount(1, $validationResult->error()->subErrors());
         $error = $validationResult->error()->subErrors()[0];
-        static::assertErrorKeyword('$validations', $error);
-        static::assertFormattedErrorMessage('The property must match validations', $error);
-        static::assertCount(1, $error->subErrors());
+        self::assertErrorKeyword('$validations', $error);
+        self::assertFormattedErrorMessage('The property must match validations', $error);
+        self::assertCount(1, $error->subErrors());
         $exclusiveMinimumError = $error->subErrors()[0];
-        static::assertErrorKeyword('exclusiveMinimum', $exclusiveMinimumError);
-        static::assertFormattedErrorMessage('Number must be greater than 10', $exclusiveMinimumError);
+        self::assertErrorKeyword('exclusiveMinimum', $exclusiveMinimumError);
+        self::assertFormattedErrorMessage('Number must be greater than 10', $exclusiveMinimumError);
 
         $validationResult = $validator->validate((object) ['foo' => 9], $schema);
-        static::assertNotNull($validationResult->error());
-        static::assertCount(1, $validationResult->error()->subErrors());
+        self::assertNotNull($validationResult->error());
+        self::assertCount(1, $validationResult->error()->subErrors());
         $error = $validationResult->error()->subErrors()[0];
-        static::assertErrorKeyword('$validations', $error);
-        static::assertFormattedErrorMessage('The property must match validations', $error);
-        static::assertCount(2, $error->subErrors());
+        self::assertErrorKeyword('$validations', $error);
+        self::assertFormattedErrorMessage('The property must match validations', $error);
+        self::assertCount(2, $error->subErrors());
         $minimumError = $error->subErrors()[0];
-        static::assertErrorKeyword('minimum', $minimumError);
-        static::assertFormattedErrorMessage('Number must be greater than or equal to 10', $minimumError);
+        self::assertErrorKeyword('minimum', $minimumError);
+        self::assertFormattedErrorMessage('Number must be greater than or equal to 10', $minimumError);
         $exclusiveMinimumError = $error->subErrors()[1];
-        static::assertErrorKeyword('exclusiveMinimum', $exclusiveMinimumError);
-        static::assertFormattedErrorMessage('Number must be greater than 10', $exclusiveMinimumError);
+        self::assertErrorKeyword('exclusiveMinimum', $exclusiveMinimumError);
+        self::assertFormattedErrorMessage('Number must be greater than 10', $exclusiveMinimumError);
     }
 
     public function testValueMissing(): void
     {
-        static::expectException(InvalidKeywordException::class);
-        static::expectExceptionMessage('$validations entries must contain property "value"');
+        self::expectException(InvalidKeywordException::class);
+        self::expectExceptionMessage('$validations entries must contain property "value"');
         $validator = new SystopiaValidator();
 
         $schema = <<<'JSON'

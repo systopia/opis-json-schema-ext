@@ -56,8 +56,8 @@ final class CalculateTest extends TestCase
 
         $validator = new SystopiaValidator();
         $validationResult = $validator->validate($data, $schema);
-        static::assertTrue($validationResult->isValid());
-        static::assertSame(6, $data->calculated);
+        self::assertTrue($validationResult->isValid());
+        self::assertSame(6, $data->calculated);
     }
 
     public function testCalculationWithVariable(): void
@@ -82,8 +82,8 @@ final class CalculateTest extends TestCase
 
         $validator = new SystopiaValidator();
         $validationResult = $validator->validate($data, $schema);
-        static::assertTrue($validationResult->isValid());
-        static::assertSame(8, $data->calculated);
+        self::assertTrue($validationResult->isValid());
+        self::assertSame(8, $data->calculated);
     }
 
     public function testCalculationWithReferencedVariable(): void
@@ -109,8 +109,8 @@ final class CalculateTest extends TestCase
 
         $validator = new SystopiaValidator();
         $validationResult = $validator->validate($data, $schema);
-        static::assertTrue($validationResult->isValid());
-        static::assertSame(10, $data->calculated);
+        self::assertTrue($validationResult->isValid());
+        self::assertSame(10, $data->calculated);
     }
 
     public function testCalculationFail(): void
@@ -135,8 +135,8 @@ final class CalculateTest extends TestCase
 
         $validator = new SystopiaValidator();
         $validationResult = $validator->validate($data, $schema);
-        static::assertTrue($validationResult->isValid());
-        static::assertObjectNotHasAttribute('calculated', $data);
+        self::assertTrue($validationResult->isValid());
+        self::assertFalse(property_exists($data, 'calculated'));
     }
 
     public function testCalculationFailRequired(): void
@@ -162,9 +162,9 @@ final class CalculateTest extends TestCase
 
         $validator = new SystopiaValidator();
         $validationResult = $validator->validate($data, $schema);
-        static::assertNotNull($validationResult->error());
-        static::assertSame('$calculate', $validationResult->error()->subErrors()[0]->keyword());
-        static::assertObjectNotHasAttribute('calculated', $data);
+        self::assertNotNull($validationResult->error());
+        self::assertSame('$calculate', $validationResult->error()->subErrors()[0]->keyword());
+        self::assertFalse(property_exists($data, 'calculated'));
     }
 
     public function testCalculationWVariableFallback(): void
@@ -190,8 +190,8 @@ final class CalculateTest extends TestCase
 
         $validator = new SystopiaValidator();
         $validationResult = $validator->validate($data, $schema);
-        static::assertTrue($validationResult->isValid());
-        static::assertSame(12, $data->calculated);
+        self::assertTrue($validationResult->isValid());
+        self::assertSame(12, $data->calculated);
     }
 
     public function testCalculationFallback(): void
@@ -217,8 +217,8 @@ final class CalculateTest extends TestCase
 
         $validator = new SystopiaValidator();
         $validationResult = $validator->validate($data, $schema);
-        static::assertTrue($validationResult->isValid());
-        static::assertSame(-1, $data->calculated);
+        self::assertTrue($validationResult->isValid());
+        self::assertSame(-1, $data->calculated);
     }
 
     public function testKeywordIgnoredWithoutCalculator(): void
@@ -247,8 +247,8 @@ final class CalculateTest extends TestCase
         $data = (object) ['calculated' => 2];
 
         $validationResult = $validator->validate($data, $schema);
-        static::assertTrue($validationResult->isValid());
-        static::assertSame(2, $data->calculated);
+        self::assertTrue($validationResult->isValid());
+        self::assertSame(2, $data->calculated);
     }
 
     public function testInvalidExpression(): void

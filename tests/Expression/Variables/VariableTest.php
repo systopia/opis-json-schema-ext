@@ -48,14 +48,14 @@ final class VariableTest extends TestCase
     public function testCreateIdentity(): void
     {
         $variable = Variable::create('foo', $this->schemaParser);
-        static::assertEquals(new IdentityVariable('foo'), $variable);
+        self::assertEquals(new IdentityVariable('foo'), $variable);
     }
 
     public function testCreateIdentityWithObject(): void
     {
         $data = (object) ['a' => 'b'];
         $variable = Variable::create($data, $this->schemaParser);
-        static::assertEquals(new IdentityVariable($data), $variable);
+        self::assertEquals(new IdentityVariable($data), $variable);
     }
 
     public function testCreatePointer(): void
@@ -63,7 +63,7 @@ final class VariableTest extends TestCase
         $variable = Variable::create((object) ['$data' => '/x', 'fallback' => 'test'], $this->schemaParser);
         $pointer = JsonPointer::parse('/x');
         Assertion::notNull($pointer);
-        static::assertEquals(new JsonPointerVariable($pointer, 'test'), $variable);
+        self::assertEquals(new JsonPointerVariable($pointer, 'test'), $variable);
     }
 
     public function testCreatePointerNotAllowed(): void
@@ -76,7 +76,7 @@ final class VariableTest extends TestCase
     {
         $variable = Variable::create((object) ['$calculate' => '2 * 5'], $this->schemaParser);
         $expectedVariable = new CalculationVariable(Calculation::parse('2 * 5', $this->schemaParser));
-        static::assertEquals($expectedVariable, $variable);
+        self::assertEquals($expectedVariable, $variable);
     }
 
     public function testCreateCalculationNotAllowed(): void

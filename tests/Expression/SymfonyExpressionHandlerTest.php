@@ -46,28 +46,30 @@ final class SymfonyExpressionHandlerTest extends TestCase
 
     public function testIsAvailable(): void
     {
-        static::assertTrue(SymfonyExpressionHandler::isAvailable());
+        self::assertTrue(SymfonyExpressionHandler::isAvailable());
     }
 
     public function testEvaluate(): void
     {
-        $this->expressionLanguage->expects(static::once())->method('evaluate')
-            ->with('a == 2', ['a' => 2])->willReturn(false);
-        static::assertFalse($this->expressionHandler->evaluate('a == 2', ['a' => 2]));
+        $this->expressionLanguage->expects(self::once())->method('evaluate')
+            ->with('a == 2', ['a' => 2])->willReturn(false)
+        ;
+        self::assertFalse($this->expressionHandler->evaluate('a == 2', ['a' => 2]));
     }
 
     public function testValidateEvaluationExpressionFail(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('test');
-        $this->expressionLanguage->expects(static::once())->method('parse')
-            ->with('a == 2', ['a'])->willThrowException(new \Exception('test'));
+        $this->expressionLanguage->expects(self::once())->method('parse')
+            ->with('a == 2', ['a'])->willThrowException(new \Exception('test'))
+        ;
         $this->expressionHandler->validateEvaluationExpression('a == 2', ['a']);
     }
 
     public function testValidateEvaluationExpressionSuccess(): void
     {
-        $this->expressionLanguage->expects(static::once())->method('parse')
+        $this->expressionLanguage->expects(self::once())->method('parse')
             ->with('a == 2', ['a'])
         ;
         $this->expressionHandler->validateEvaluationExpression('a == 2', ['a']);
@@ -75,23 +77,25 @@ final class SymfonyExpressionHandlerTest extends TestCase
 
     public function testCalculate(): void
     {
-        $this->expressionLanguage->expects(static::once())->method('evaluate')
-            ->with('a * 2', ['a' => 2])->willReturn(123);
-        static::assertSame(123, $this->expressionHandler->calculate('a * 2', ['a' => 2]));
+        $this->expressionLanguage->expects(self::once())->method('evaluate')
+            ->with('a * 2', ['a' => 2])->willReturn(123)
+        ;
+        self::assertSame(123, $this->expressionHandler->calculate('a * 2', ['a' => 2]));
     }
 
     public function testValidateCalcExpressionFail(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('test');
-        $this->expressionLanguage->expects(static::once())->method('parse')
-            ->with('a * 2', ['a'])->willThrowException(new \Exception('test'));
+        $this->expressionLanguage->expects(self::once())->method('parse')
+            ->with('a * 2', ['a'])->willThrowException(new \Exception('test'))
+        ;
         $this->expressionHandler->validateCalcExpression('a * 2', ['a']);
     }
 
     public function testValidateCalcExpressionSuccess(): void
     {
-        $this->expressionLanguage->expects(static::once())->method('parse')
+        $this->expressionLanguage->expects(self::once())->method('parse')
             ->with('a * 2', ['a'])
         ;
         $this->expressionHandler->validateCalcExpression('a * 2', ['a']);
@@ -100,7 +104,7 @@ final class SymfonyExpressionHandlerTest extends TestCase
     public function testWithoutMock(): void
     {
         $expressionHandler = new SymfonyExpressionHandler();
-        static::assertSame(4, $expressionHandler->calculate('2 * a', ['a' => 2]));
-        static::assertTrue($expressionHandler->evaluate('a == 2', ['a' => 2]));
+        self::assertSame(4, $expressionHandler->calculate('2 * a', ['a' => 2]));
+        self::assertTrue($expressionHandler->evaluate('a == 2', ['a' => 2]));
     }
 }

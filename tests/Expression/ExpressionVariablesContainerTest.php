@@ -50,34 +50,34 @@ final class ExpressionVariablesContainerTest extends TestCase
     public function testParseSimple(): void
     {
         $variableContainer = ExpressionVariablesContainer::parse((object) ['a' => 'b'], $this->schemaParser);
-        static::assertSame(['a'], $variableContainer->getNames());
+        self::assertSame(['a'], $variableContainer->getNames());
 
-        static::assertEquals(['a' => new IdentityVariable('b')], $variableContainer->getVariables());
+        self::assertEquals(['a' => new IdentityVariable('b')], $variableContainer->getVariables());
 
         $validationContext = new ValidationContext('', $this->schemaLoader);
-        static::assertSame(['a' => 'b'], $variableContainer->getValues($validationContext));
+        self::assertSame(['a' => 'b'], $variableContainer->getValues($validationContext));
     }
 
     public function testParsePointer(): void
     {
         $data = (object) ['a' => (object) ['$data' => '/a']];
         $variableContainer = ExpressionVariablesContainer::parse($data, $this->schemaParser);
-        static::assertSame(['a'], $variableContainer->getNames());
+        self::assertSame(['a'], $variableContainer->getNames());
 
         $pointer = JsonPointer::parse('/a');
         Assertion::notNull($pointer);
-        static::assertEquals(['a' => new JsonPointerVariable($pointer)], $variableContainer->getVariables());
+        self::assertEquals(['a' => new JsonPointerVariable($pointer)], $variableContainer->getVariables());
 
         $validationContext = new ValidationContext((object) ['a' => 'b'], $this->schemaLoader);
-        static::assertSame(['a' => 'b'], $variableContainer->getValues($validationContext));
+        self::assertSame(['a' => 'b'], $variableContainer->getValues($validationContext));
     }
 
     public function testCreateEmpty(): void
     {
         $variableContainer = ExpressionVariablesContainer::createEmpty();
-        static::assertSame([], $variableContainer->getNames());
+        self::assertSame([], $variableContainer->getNames());
 
         $validationContext = new ValidationContext('', $this->schemaLoader);
-        static::assertSame([], $variableContainer->getValues($validationContext));
+        self::assertSame([], $variableContainer->getValues($validationContext));
     }
 }

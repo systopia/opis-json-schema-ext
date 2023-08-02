@@ -36,20 +36,20 @@ final class CalculatorUtilTest extends TestCase
     {
         $calculator = $this->createMock(CalculatorInterface::class);
         $parser = new SchemaParser([], ['calculator' => $calculator]);
-        static::assertTrue(CalculatorUtil::hasCalculator($parser));
-        static::assertSame($calculator, CalculatorUtil::getCalculator($parser));
+        self::assertTrue(CalculatorUtil::hasCalculator($parser));
+        self::assertSame($calculator, CalculatorUtil::getCalculator($parser));
 
         $context = new ValidationContext('', new SchemaLoader($parser));
-        static::assertTrue(CalculatorUtil::hasCalculatorInContext($context));
-        static::assertSame($calculator, CalculatorUtil::getCalculatorFromContext($context));
+        self::assertTrue(CalculatorUtil::hasCalculatorInContext($context));
+        self::assertSame($calculator, CalculatorUtil::getCalculatorFromContext($context));
     }
 
     public function testWithoutCalculator(): void
     {
         $parser = new SchemaParser();
-        static::assertFalse(CalculatorUtil::hasCalculator($parser));
+        self::assertFalse(CalculatorUtil::hasCalculator($parser));
 
         $context = new ValidationContext('', new SchemaLoader($parser));
-        static::assertFalse(CalculatorUtil::hasCalculatorInContext($context));
+        self::assertFalse(CalculatorUtil::hasCalculatorInContext($context));
     }
 }
