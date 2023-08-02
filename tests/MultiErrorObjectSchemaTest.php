@@ -34,7 +34,7 @@ final class MultiErrorObjectSchemaTest extends TestCase
         $rootError = $result->error();
         self::assertNotNull($rootError);
         self::assertSame('schema', $rootError->keyword());
-        self::assertSame('The data must match schema: {data}', $rootError->message());
+        self::assertSame('The data does not match the schema', $rootError->message());
         self::assertSame($data, $rootError->args()['data']);
         self::assertSame([], $rootError->data()->fullPath());
 
