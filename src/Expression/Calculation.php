@@ -68,11 +68,13 @@ final class Calculation
             throw new ParseException('fallback must not be null');
         }
 
-        return new self(
-            $data->expression,
-            ExpressionVariablesContainer::parse($data->variables ?? (object) [], $parser),
-            $data->fallback ?? null
-        );
+        if ([] === ($data->variables ?? [])) {
+            $variablesContainer = ExpressionVariablesContainer::createEmpty();
+        } else {
+            $variablesContainer = ExpressionVariablesContainer::parse($data->variables, $parser);
+        }
+
+        return new self($data->expression, $variablesContainer, $data->fallback ?? null);
     }
 
     public function getExpression(): string
