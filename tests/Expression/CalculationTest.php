@@ -85,6 +85,21 @@ final class CalculationTest extends TestCase
         self::assertSame(['a' => 3, 'b' => 2], $calculation->getVariables($this->validationContext));
     }
 
+    public function testParseWithoutVariables(): void
+    {
+        $data = (object) [
+            'expression' => '2 + 3',
+            'fallback' => 4,
+            'variables' => [],
+        ];
+        $calculation = Calculation::parse($data, $this->schemaParser);
+
+        self::assertSame('2 + 3', $calculation->getExpression());
+        self::assertSame(4, $calculation->getFallback());
+        self::assertSame([], $calculation->getVariableNames());
+        self::assertSame([], $calculation->getVariables($this->validationContext));
+    }
+
     public function testParseNoExpression(): void
     {
         $data = (object) [
