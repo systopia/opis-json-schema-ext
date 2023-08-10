@@ -24,6 +24,7 @@ use Opis\JsonSchema\Parsers\SchemaParser;
 use Opis\JsonSchema\ValidationContext;
 use Systopia\JsonSchema\Exceptions\ReferencedDataHasViolationException;
 use Systopia\JsonSchema\Exceptions\VariableResolveException;
+use Systopia\JsonSchema\Expression\Variables\Variable;
 
 final class Calculation
 {
@@ -31,18 +32,12 @@ final class Calculation
 
     private ExpressionVariablesContainer $variablesContainer;
 
-    /**
-     * @var null|mixed
-     */
-    private $fallback;
+    private ?Variable $fallback;
 
-    /**
-     * @param null|mixed $fallback
-     */
     private function __construct(
         string $expression,
         ExpressionVariablesContainer $variablesContainer = null,
-        $fallback = null
+        ?Variable $fallback = null
     ) {
         $this->expression = $expression;
         $this->variablesContainer = $variablesContainer ?? ExpressionVariablesContainer::createEmpty();
@@ -67,6 +62,7 @@ final class Calculation
         if (property_exists($data, 'fallback') && null === $data->fallback) {
             throw new ParseException('fallback must not be null');
         }
+        $fallback = null === ($data->fallback ?? null) ? null : Variable::create($data->fallback, $parser);
 
         if ([] === ($data->variables ?? [])) {
             $variablesContainer = ExpressionVariablesContainer::createEmpty();
@@ -74,7 +70,7 @@ final class Calculation
             $variablesContainer = ExpressionVariablesContainer::parse($data->variables, $parser);
         }
 
-        return new self($data->expression, $variablesContainer, $data->fallback ?? null);
+        return new self($data->expression, $variablesContainer, $fallback);
     }
 
     public function getExpression(): string
@@ -100,10 +96,7 @@ final class Calculation
         return $this->variablesContainer->getNames();
     }
 
-    /**
-     * @return null|mixed
-     */
-    public function getFallback()
+    public function getFallback(): ?Variable
     {
         return $this->fallback;
     }

@@ -80,7 +80,8 @@ final class CalculationTest extends TestCase
         $calculation = Calculation::parse($data, $this->schemaParser);
 
         self::assertSame('a * b', $calculation->getExpression());
-        self::assertSame(4, $calculation->getFallback());
+        self::assertNotNull($calculation->getFallback());
+        self::assertSame(4, $calculation->getFallback()->getValue($this->validationContext));
         self::assertSame(['a', 'b'], $calculation->getVariableNames());
         self::assertSame(['a' => 3, 'b' => 2], $calculation->getVariables($this->validationContext));
     }
@@ -95,7 +96,24 @@ final class CalculationTest extends TestCase
         $calculation = Calculation::parse($data, $this->schemaParser);
 
         self::assertSame('2 + 3', $calculation->getExpression());
-        self::assertSame(4, $calculation->getFallback());
+        self::assertNotNull($calculation->getFallback());
+        self::assertSame(4, $calculation->getFallback()->getValue($this->validationContext));
+        self::assertSame([], $calculation->getVariableNames());
+        self::assertSame([], $calculation->getVariables($this->validationContext));
+    }
+
+    public function testParseFallbackDataPointer(): void
+    {
+        $data = (object) [
+            'expression' => '2 + 3',
+            'fallback' => (object) ['$data' => '/fallback', 'fallback' => 4],
+            'variables' => [],
+        ];
+        $calculation = Calculation::parse($data, $this->schemaParser);
+
+        self::assertSame('2 + 3', $calculation->getExpression());
+        self::assertNotNull($calculation->getFallback());
+        self::assertSame(4, $calculation->getFallback()->getValue($this->validationContext));
         self::assertSame([], $calculation->getVariableNames());
         self::assertSame([], $calculation->getVariables($this->validationContext));
     }
@@ -107,7 +125,7 @@ final class CalculationTest extends TestCase
         ];
 
         $this->expectException(SchemaException::class);
-        $calculation = Calculation::parse($data, $this->schemaParser);
+        Calculation::parse($data, $this->schemaParser);
     }
 
     public function testParseFallbackNull(): void

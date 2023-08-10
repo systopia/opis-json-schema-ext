@@ -93,6 +93,20 @@ final class CalculationVariableTest extends TestCase
         self::assertSame(5, $variable->getValue($context));
     }
 
+    public function testFallbackCalculate(): void
+    {
+        $data = (object) [
+            '$calculate' => (object) [
+                'expression' => '2 * a',
+                'variables' => (object) ['a' => (object) ['$data' => '/a']],
+            ],
+            'fallback' => (object) ['$calculate' => '1 + 2'],
+        ];
+        $variable = CalculationVariable::parse($data, $this->schemaParser);
+        $context = new ValidationContext((object) [], $this->schemaLoader);
+        self::assertSame(3, $variable->getValue($context));
+    }
+
     public function testFailOnUnresolved(): void
     {
         $data = (object) [

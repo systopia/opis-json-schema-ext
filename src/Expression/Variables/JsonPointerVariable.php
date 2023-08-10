@@ -32,18 +32,12 @@ final class JsonPointerVariable extends Variable
 {
     private JsonPointer $pointer;
 
-    /**
-     * @var null|mixed
-     */
-    private $fallback;
+    private Variable $fallback;
 
-    /**
-     * @param null|mixed $fallback
-     */
-    public function __construct(JsonPointer $pointer, $fallback = null)
+    public function __construct(JsonPointer $pointer, ?Variable $fallback = null)
     {
         $this->pointer = $pointer;
-        $this->fallback = $fallback;
+        $this->fallback = null === $fallback ? new IdentityVariable($fallback) : $fallback;
     }
 
     public static function isAllowed(SchemaParser $parser): bool
@@ -63,6 +57,7 @@ final class JsonPointerVariable extends Variable
         if (property_exists($data, 'fallback') && null === $data->fallback) {
             throw new ParseException('fallback must not be null');
         }
+        $fallback = null === ($data->fallback ?? null) ? null : Variable::create($data->fallback, $parser);
 
         if (!property_exists($data, '$data')) {
             throw new ParseException('keyword "$data" is required');
@@ -73,7 +68,7 @@ final class JsonPointerVariable extends Variable
             throw new ParseException(sprintf('Invalid JSON pointer "%s"', $data->{'$data'}));
         }
 
-        return new self($pointer, $data->fallback ?? null);
+        return new self($pointer, $fallback);
     }
 
     /**
@@ -92,7 +87,8 @@ final class JsonPointerVariable extends Variable
             }
         }
 
-        $value = $this->pointer->data($context->rootData(), $context->currentDataPath()) ?? $this->fallback;
+        $value = $this->pointer->data($context->rootData(), $context->currentDataPath())
+            ?? $this->fallback->getValue($context, $flags);
         if (null === $value && 0 !== ($flags & Variable::FLAG_FAIL_ON_UNRESOLVED)) {
             $path = $this->pointer->absolutePath($context->fullDataPath());
             Assertion::notNull($path);
