@@ -84,6 +84,19 @@ final class JsonPointerVariableTest extends TestCase
         self::assertSame('test', $variable->getValue($context));
     }
 
+    public function testFallbackDataPointer(): void
+    {
+        $variable = JsonPointerVariable::create(
+            (object) [
+                '$data' => '/x',
+                'fallback' => (object) ['$data' => '/fallback'],
+            ],
+            $this->schemaParser
+        );
+        $context = new ValidationContext((object) ['fallback' => 'foo'], $this->schemaLoader);
+        self::assertSame('foo', $variable->getValue($context));
+    }
+
     public function testFailOnUnresolved(): void
     {
         $variable = JsonPointerVariable::parse((object) ['$data' => '/x'], $this->schemaParser);

@@ -63,7 +63,7 @@ final class VariableTest extends TestCase
         $variable = Variable::create((object) ['$data' => '/x', 'fallback' => 'test'], $this->schemaParser);
         $pointer = JsonPointer::parse('/x');
         Assertion::notNull($pointer);
-        self::assertEquals(new JsonPointerVariable($pointer, 'test'), $variable);
+        self::assertEquals(new JsonPointerVariable($pointer, new IdentityVariable('test')), $variable);
     }
 
     public function testCreatePointerNotAllowed(): void

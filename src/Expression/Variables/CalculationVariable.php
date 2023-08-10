@@ -31,15 +31,9 @@ final class CalculationVariable extends Variable
 {
     private Calculation $calculation;
 
-    /**
-     * @var null|mixed
-     */
-    private $fallback;
+    private ?Variable $fallback;
 
-    /**
-     * @param null|mixed $fallback
-     */
-    public function __construct(Calculation $calculation, $fallback = null)
+    public function __construct(Calculation $calculation, ?Variable $fallback = null)
     {
         $this->calculation = $calculation;
         $this->fallback = $fallback;
@@ -62,6 +56,7 @@ final class CalculationVariable extends Variable
         if (property_exists($data, 'fallback') && null === $data->fallback) {
             throw new ParseException('fallback must not be null');
         }
+        $fallback = null === ($data->fallback ?? null) ? null : Variable::create($data->fallback, $parser);
 
         if (!property_exists($data, '$calculate')) {
             throw new ParseException('keyword "$calculate" is required');
@@ -78,7 +73,7 @@ final class CalculationVariable extends Variable
             throw new ParseException(sprintf('Validating calculation expression failed: %s', $e->getMessage()));
         }
 
-        return new self($calculation, $data->fallback ?? null);
+        return new self($calculation, $fallback);
     }
 
     /**
@@ -99,7 +94,7 @@ final class CalculationVariable extends Variable
                     $flags | Variable::FLAG_FAIL_ON_UNRESOLVED
                 );
             } catch (VariableResolveException|ReferencedDataHasViolationException $e) {
-                return $fallback;
+                return $fallback->getValue($context, $flags);
             }
         }
 
@@ -108,6 +103,6 @@ final class CalculationVariable extends Variable
         return $calculator->calculate(
             $this->calculation->getExpression(),
             $variables,
-        ) ?? $fallback;
+        ) ?? (null === $fallback ? null : $fallback->getValue($context, $flags));
     }
 }
