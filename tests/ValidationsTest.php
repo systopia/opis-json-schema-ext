@@ -22,6 +22,7 @@ namespace Systopia\JsonSchema\Test;
 
 use Opis\JsonSchema\Exceptions\InvalidKeywordException;
 use PHPUnit\Framework\TestCase;
+use Systopia\JsonSchema\Errors\ErrorCollector;
 use Systopia\JsonSchema\SystopiaValidator;
 
 /**
@@ -91,7 +92,8 @@ final class ValidationsTest extends TestCase
         $validationResult = $validator->validate((object) ['foo' => 10], $schema);
         self::assertTrue($validationResult->isValid());
 
-        $validationResult = $validator->validate((object) ['foo' => 9], $schema);
+        $errorCollector = new ErrorCollector();
+        $validationResult = $validator->validate((object) ['foo' => 9], $schema, ['errorCollector' => $errorCollector]);
         self::assertNotNull($validationResult->error());
         self::assertCount(1, $validationResult->error()->subErrors());
         $error = $validationResult->error()->subErrors()[0];
@@ -101,6 +103,12 @@ final class ValidationsTest extends TestCase
         $minimumError = $error->subErrors()[0];
         self::assertErrorKeyword('minimum', $minimumError);
         self::assertFormattedErrorMessage('Number must be at least 10', $minimumError);
+
+        // Test that error collector contains error with custom message.
+        self::assertCount(1, $errorCollector->getLeafErrorsAt('/foo'));
+        $leafError = $errorCollector->getLeafErrorsAt('/foo')[0];
+        self::assertErrorKeyword('minimum', $leafError);
+        self::assertFormattedErrorMessage('Number must be at least 10', $leafError);
     }
 
     public function testCalculatedValidation(): void

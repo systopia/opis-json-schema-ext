@@ -27,6 +27,8 @@ use Opis\JsonSchema\Keyword;
 use Opis\JsonSchema\Keywords\ErrorTrait;
 use Opis\JsonSchema\Schema;
 use Opis\JsonSchema\ValidationContext;
+use Systopia\JsonSchema\Errors\ErrorCollector;
+use Systopia\JsonSchema\Errors\ErrorCollectorUtil;
 use Systopia\JsonSchema\Exceptions\ReferencedDataHasViolationException;
 use Systopia\JsonSchema\Exceptions\VariableResolveException;
 use Systopia\JsonSchema\Expression\ExpressionVariablesContainer;
@@ -51,15 +53,26 @@ final class ValidationsKeyword implements Keyword
 
     public function validate(ValidationContext $context, Schema $schema): ?ValidationError
     {
-        $errors = new ErrorContainer($context->maxErrors());
-        foreach ($this->validations as $validation) {
-            $validationSchema = $this->createValidationSchema($context, $schema->info(), $validation);
-            if (null !== $error = $context->validateSchemaWithoutEvaluated($validationSchema)) {
-                $errors->add($this->createError($validationSchema, $context, $validation, $error));
-                if ($errors->isFull()) {
-                    break;
+        $errorCollector = ErrorCollectorUtil::getErrorCollector($context);
+
+        try {
+            // Change error collector, so we have the chance to add the error
+            // (if any) with the custom message specified in schema.
+            ErrorCollectorUtil::setErrorCollector($context, new ErrorCollector());
+            $errors = new ErrorContainer($context->maxErrors());
+            foreach ($this->validations as $validation) {
+                $validationSchema = $this->createValidationSchema($context, $schema->info(), $validation);
+                if (null !== $error = $context->validateSchemaWithoutEvaluated($validationSchema)) {
+                    $error = $this->createError($validationSchema, $context, $validation, $error);
+                    $errorCollector->addError($error);
+                    $errors->add($error);
+                    if ($errors->isFull()) {
+                        break;
+                    }
                 }
             }
+        } finally {
+            ErrorCollectorUtil::setErrorCollector($context, $errorCollector);
         }
 
         if (!$errors->isEmpty()) {

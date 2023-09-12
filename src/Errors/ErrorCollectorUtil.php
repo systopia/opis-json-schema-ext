@@ -27,4 +27,9 @@ final class ErrorCollectorUtil
     {
         return $context->globals()['errorCollector'];
     }
+
+    public static function setErrorCollector(ValidationContext $context, ErrorCollectorInterface $errorCollector): void
+    {
+        $context->setGlobals(['errorCollector' => $errorCollector]);
+    }
 }
