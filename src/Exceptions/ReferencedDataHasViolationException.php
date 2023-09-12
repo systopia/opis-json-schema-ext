@@ -19,6 +19,4 @@ declare(strict_types=1);
 
 namespace Systopia\JsonSchema\Exceptions;
 
-class ReferencedDataHasViolationException extends VariableException
-{
-}
+class ReferencedDataHasViolationException extends VariableException {}
