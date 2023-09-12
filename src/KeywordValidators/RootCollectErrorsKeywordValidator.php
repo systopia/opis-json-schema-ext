@@ -22,6 +22,7 @@ namespace Systopia\JsonSchema\KeywordValidators;
 use Opis\JsonSchema\Errors\ValidationError;
 use Opis\JsonSchema\ValidationContext;
 use Systopia\JsonSchema\Errors\ErrorCollector;
+use Systopia\JsonSchema\Errors\ErrorCollectorUtil;
 
 final class RootCollectErrorsKeywordValidator extends CollectErrorsKeywordValidator
 {
@@ -29,7 +30,7 @@ final class RootCollectErrorsKeywordValidator extends CollectErrorsKeywordValida
     {
         if (!isset($context->globals()['errorCollector'])) {
             // @codeCoverageIgnoreStart
-            $context->setGlobals(['errorCollector' => new ErrorCollector()]);
+            ErrorCollectorUtil::setErrorCollector($context, new ErrorCollector());
             // @codeCoverageIgnoreEnd
         }
 

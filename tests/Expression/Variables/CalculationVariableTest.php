@@ -30,6 +30,7 @@ use Opis\JsonSchema\Schemas\EmptySchema;
 use Opis\JsonSchema\ValidationContext;
 use PHPUnit\Framework\TestCase;
 use Systopia\JsonSchema\Errors\ErrorCollector;
+use Systopia\JsonSchema\Errors\ErrorCollectorUtil;
 use Systopia\JsonSchema\Exceptions\ReferencedDataHasViolationException;
 use Systopia\JsonSchema\Exceptions\VariableResolveException;
 use Systopia\JsonSchema\Expression\Variables\CalculationVariable;
@@ -134,7 +135,7 @@ final class CalculationVariableTest extends TestCase
 
         $context = new ValidationContext('', $this->schemaLoader);
         $errorCollector = new ErrorCollector();
-        $context->setGlobals(['errorCollector' => $errorCollector]);
+        ErrorCollectorUtil::setErrorCollector($context, $errorCollector);
         $context->pushDataPath('a');
         $schemaInfo = new SchemaInfo(true, null);
         $error = new ValidationError('test', new EmptySchema($schemaInfo), DataInfo::fromContext($context), '');
