@@ -68,7 +68,7 @@ final class ExpressionVariablesContainer
     public function getValues(ValidationContext $context, int $flags = 0): array
     {
         return array_map(
-            fn (Variable $variable) => $variable->getValue($context, $flags),
+            static fn (Variable $variable) => $variable->getValue($context, $flags),
             $this->variables
         );
     }

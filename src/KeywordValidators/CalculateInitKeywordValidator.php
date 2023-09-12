@@ -52,7 +52,7 @@ final class CalculateInitKeywordValidator extends AbstractKeywordValidator
         foreach ($this->calculatedProperties as $property) {
             if (!property_exists($data, $property)) {
                 $context->pushDataPath($property);
-                $this->setValue($context, fn () => '$calculated');
+                $this->setValue($context, static fn () => '$calculated');
                 $context->popDataPath();
             }
         }

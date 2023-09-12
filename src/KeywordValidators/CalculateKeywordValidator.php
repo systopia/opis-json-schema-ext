@@ -60,7 +60,7 @@ final class CalculateKeywordValidator extends AbstractKeywordValidator
             return $this->handleCalculationFailed($context);
         }
 
-        $this->setValue($context, fn () => $value);
+        $this->setValue($context, static fn () => $value);
 
         return null === $this->next ? null : $this->next->validate($context);
     }
