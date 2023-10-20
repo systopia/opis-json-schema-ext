@@ -13,8 +13,8 @@
     "license": "Apache-2.0",
     "authors": [
         {
-            "name": "Dominic Tubach",
-            "email": "tubach@systopia.de"
+            "name": "SYSTOPIA GmbH",
+            "email": "info@systopia.de"
         }
     ],
     "require": {
