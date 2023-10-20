@@ -105,7 +105,7 @@ final class ValidationsKeyword implements Keyword
     {
         try {
             $value = $this->getValidationValue($context, $validation->value);
-        } catch (VariableResolveException|ReferencedDataHasViolationException $e) {
+        } catch (ReferencedDataHasViolationException|VariableResolveException $e) {
             $value = null;
         }
 

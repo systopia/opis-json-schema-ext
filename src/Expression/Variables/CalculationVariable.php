@@ -93,7 +93,7 @@ final class CalculationVariable extends Variable
                     $context,
                     $flags | Variable::FLAG_FAIL_ON_UNRESOLVED
                 );
-            } catch (VariableResolveException|ReferencedDataHasViolationException $e) {
+            } catch (ReferencedDataHasViolationException|VariableResolveException $e) {
                 return $fallback->getValue($context, $flags);
             }
         }
