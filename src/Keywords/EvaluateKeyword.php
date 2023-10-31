@@ -29,6 +29,7 @@ use Systopia\JsonSchema\Exceptions\VariableResolveException;
 use Systopia\JsonSchema\Expression\Evaluation;
 use Systopia\JsonSchema\Expression\EvaluatorInterface;
 use Systopia\JsonSchema\Expression\Variables\Variable;
+use Systopia\JsonSchema\Translation\ErrorTranslator;
 
 final class EvaluateKeyword implements Keyword
 {
@@ -65,7 +66,10 @@ final class EvaluateKeyword implements Keyword
                 $context,
                 'evaluate',
                 'Evaluation of "{expression}" failed: Not all variables could be resolved',
-                ['expression' => $this->evaluation->getExpression()]
+                [
+                    'expression' => $this->evaluation->getExpression(),
+                    ErrorTranslator::TRANSLATION_ID_ARG_KEY => 'evaluate.resolve',
+                ]
             );
         }
 

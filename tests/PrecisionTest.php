@@ -64,8 +64,6 @@ JSON;
 
     public function testInvalidPrecision(): void
     {
-        $validator = new SystopiaValidator();
-
         $schema = <<<'JSON'
 {
     "type": "array",
