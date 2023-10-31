@@ -27,6 +27,7 @@ use Opis\JsonSchema\Schema;
 use Opis\JsonSchema\ValidationContext;
 use Systopia\JsonSchema\Exceptions\VariableResolveException;
 use Systopia\JsonSchema\Expression\Variables\Variable;
+use Systopia\JsonSchema\Translation\ErrorTranslator;
 
 final class MinDateKeyword implements Keyword
 {
@@ -50,12 +51,18 @@ final class MinDateKeyword implements Keyword
                 Variable::FLAG_FAIL_ON_UNRESOLVED
             );
         } catch (VariableResolveException $e) {
-            return $this->error($schema, $context, 'minDate', 'Failed to resolve minDate');
+            return $this->error($schema, $context, 'minDate', 'Failed to resolve {keyword}', [
+                'keyword' => 'minDate',
+                'message' => $e->getMessage(),
+                ErrorTranslator::TRANSLATION_ID_ARG_KEY => '_resolveFailed',
+            ]);
         }
 
         if (!\is_string($minDate) || 1 !== preg_match(DateTimeFormats::DATE_REGEX, $minDate)) {
             return $this->error($schema, $context, 'minDate', 'Invalid minDate {minDate}', [
                 'minDate' => $minDate,
+                ErrorTranslator::TRANSLATION_ID_ARG_KEY => '_invalidKeywordValue',
+                'value' => $minDate,
             ]);
         }
 
@@ -66,6 +73,7 @@ final class MinDateKeyword implements Keyword
 
         return $this->error($schema, $context, 'minDate', 'Date must not be before {minDate}', [
             'minDate' => $minDate,
+            'minDateTimestamp' => strtotime($minDate),
         ]);
     }
 }

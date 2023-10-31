@@ -30,6 +30,7 @@ use Systopia\JsonSchema\Expression\Calculation;
 use Systopia\JsonSchema\Expression\Variables\CalculationVariable;
 use Systopia\JsonSchema\Expression\Variables\Variable;
 use Systopia\JsonSchema\Keywords\SetValueTrait;
+use Systopia\JsonSchema\Translation\ErrorTranslator;
 
 final class CalculateKeywordValidator extends AbstractKeywordValidator
 {
@@ -77,6 +78,7 @@ final class CalculateKeywordValidator extends AbstractKeywordValidator
                 $context,
                 '$calculate',
                 'The property is required, but could not be calculated because of unresolvable variables',
+                [ErrorTranslator::TRANSLATION_ID_ARG_KEY => '$calculate.required.unresolved'],
             );
         }
 

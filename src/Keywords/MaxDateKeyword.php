@@ -27,6 +27,7 @@ use Opis\JsonSchema\Schema;
 use Opis\JsonSchema\ValidationContext;
 use Systopia\JsonSchema\Exceptions\VariableResolveException;
 use Systopia\JsonSchema\Expression\Variables\Variable;
+use Systopia\JsonSchema\Translation\ErrorTranslator;
 
 final class MaxDateKeyword implements Keyword
 {
@@ -50,7 +51,11 @@ final class MaxDateKeyword implements Keyword
                 Variable::FLAG_FAIL_ON_UNRESOLVED
             );
         } catch (VariableResolveException $e) {
-            return $this->error($schema, $context, 'maxDate', 'Failed to resolve maxDate');
+            return $this->error($schema, $context, 'maxDate', 'Failed to resolve {keyword}', [
+                'keyword' => 'maxDate',
+                'message' => $e->getMessage(),
+                ErrorTranslator::TRANSLATION_ID_ARG_KEY => '_resolveFailed',
+            ]);
         }
 
         if (!\is_string($maxDate) || 1 !== preg_match(DateTimeFormats::DATE_REGEX, $maxDate)) {
@@ -66,6 +71,7 @@ final class MaxDateKeyword implements Keyword
 
         return $this->error($schema, $context, 'maxDate', 'Date must not be after {maxDate}', [
             'maxDate' => $maxDate,
+            'maxDateTimestamp' => strtotime($maxDate),
         ]);
     }
 }

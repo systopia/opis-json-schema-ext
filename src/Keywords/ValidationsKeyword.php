@@ -33,6 +33,7 @@ use Systopia\JsonSchema\Exceptions\ReferencedDataHasViolationException;
 use Systopia\JsonSchema\Exceptions\VariableResolveException;
 use Systopia\JsonSchema\Expression\ExpressionVariablesContainer;
 use Systopia\JsonSchema\Expression\Variables\Variable;
+use Systopia\JsonSchema\Translation\ErrorTranslator;
 
 final class ValidationsKeyword implements Keyword
 {
@@ -162,6 +163,7 @@ final class ValidationsKeyword implements Keyword
         } else {
             $args = [$validation->keyword => $validationValue];
         }
+        $args[ErrorTranslator::TRANSLATED_ARG_KEY] = true;
 
         return $this->error($validationSchema, $context, $validation->keyword, $validation->message, $args);
     }

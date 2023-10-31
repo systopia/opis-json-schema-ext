@@ -26,6 +26,7 @@
         "symfony/expression-language": "^5 || ^6"
     },
     "suggest": {
+        "ext-intl": "For error translation",
         "symfony/expression-language": "To use Symfony ExpressionLanguage Component for calculations and evaluations"
     },
     "autoload": {
