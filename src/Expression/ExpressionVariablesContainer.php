@@ -52,6 +52,7 @@ final class ExpressionVariablesContainer
     public static function parse(\stdClass $data, SchemaParser $parser): self
     {
         $variables = [];
+        /** @var string $name */
         // @phpstan-ignore-next-line
         foreach ($data as $name => $variable) {
             $variables[$name] = Variable::create($variable, $parser);
