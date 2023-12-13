@@ -24,7 +24,8 @@ use Opis\JsonSchema\ValidationContext;
 trait SetValueTrait
 {
     /**
-     * @param callable(ValidationContext): mixed $transform
+     * @param callable(mixed $data): mixed $transform
+     *                                                Gets the current data and returns the data to set
      */
     public function setValue(ValidationContext $context, callable $transform): void
     {
