@@ -30,6 +30,7 @@ use Systopia\JsonSchema\Parsers\Keywords\PrecisionKeywordParser;
 use Systopia\JsonSchema\Parsers\Keywords\ValidationsKeywordParser;
 use Systopia\JsonSchema\Parsers\KeywordValidators\CalculateKeywordValidationParser;
 use Systopia\JsonSchema\Parsers\KeywordValidators\CollectErrorsKeywordValidatorParser;
+use Systopia\JsonSchema\Parsers\KeywordValidators\TypeKeywordValidatorParser;
 
 /**
  * @codeCoverageIgnore
@@ -52,7 +53,10 @@ class SystopiaVocabulary extends DefaultVocabulary
         ]);
 
         $keywordValidators = array_merge(
-            [new CollectErrorsKeywordValidatorParser()],
+            [
+                new CollectErrorsKeywordValidatorParser(),
+                new TypeKeywordValidatorParser(),
+            ],
             $keywordValidators,
             [new CalculateKeywordValidationParser()]
         );

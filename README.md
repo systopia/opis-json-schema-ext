@@ -18,6 +18,13 @@ keywords. To use them in a different validator class you might want to use
 [`SystopiaSchemaParser`](./src/Parsers/SystopiaSchemaParser.php) or
 [`SystopiaVocabulary`](./src/Parsers/SystopiaVocabulary.php).
 
+## Empty array to object conversion
+
+If the option `convertEmptyArrays` is set to `true` (disabled by default), empty
+arrays will be  converted to objects if the schema type contains `object`, but
+not `array`. This might be necessary if the data to validate was already
+decoded.
+
 ## Translation
 
 This extension allows to translate `ValidationError`s:

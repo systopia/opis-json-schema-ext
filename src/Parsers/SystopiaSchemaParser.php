@@ -51,6 +51,8 @@ class SystopiaSchemaParser extends SchemaParser
      */
     protected function buildOptions(array $options): array
     {
+        $options['convertEmptyArrays'] ??= false;
+
         if (!isset($options['calculator']) || !isset($options['evaluator'])) {
             if (SymfonyExpressionHandler::isAvailable()) {
                 $expressionHandler = new SymfonyExpressionHandler();
