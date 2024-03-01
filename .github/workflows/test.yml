@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['7.4', '8.0', '8.2']
+        php-versions: ['7.4', '8.0', '8.3']
         prefer: ['prefer-stable', 'prefer-lowest']
     name: Test PHP ${{ matrix.php-versions }} ${{ matrix.prefer }}
 
