@@ -49,6 +49,10 @@ class CollectErrorsKeywordValidator extends AbstractKeywordValidator
         }
 
         $path = $schema->info()->path();
+        if (\in_array('if', $path, true)) {
+            return true;
+        }
+
         foreach (ErrorCollector::getExtraLeafErrorKeywords() as $leafErrorKeyword) {
             if (\in_array($leafErrorKeyword, $path, true)) {
                 return true;

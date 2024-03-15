@@ -242,4 +242,66 @@ final class CollectErrorsTest extends TestCase
         self::assertCount(1, $errors);
         self::assertSame($leafErrors, $errors);
     }
+
+    public function testIf(): void
+    {
+        $schema = <<<'JSON'
+            {
+                "type": "object",
+                "properties": {
+                    "boolean": { "type": "boolean" }
+                },
+                "if": {
+                    "properties":  {
+                        "boolean": { "const": true }
+                    }
+                },
+                "then": {
+                    "properties": {
+                        "string": { "type": "string" }
+                    }
+                }
+            }
+            JSON;
+
+        $data = (object) [
+            'boolean' => false,
+            'string' => 2,
+        ];
+
+        $errorCollector = new ErrorCollector();
+        $globals = ['errorCollector' => $errorCollector];
+
+        $validator = new SystopiaValidator();
+        $validator->setMaxErrors(2);
+        $validator->validate($data, $schema, $globals);
+
+        // There should be no errors for the keywords below "if".
+        self::assertFalse($errorCollector->hasErrors());
+
+        $data = (object) [
+            'boolean' => true,
+            'string' => 2,
+        ];
+        $validator->validate($data, $schema, $globals);
+
+        self::assertCount(2, $errorCollector->getErrors());
+        self::assertTrue($errorCollector->hasErrorAt([]));
+        self::assertTrue($errorCollector->hasErrorAt(['string']));
+        self::assertTrue($errorCollector->hasErrorAt('/string'));
+
+        $expectedErrorKeys = [
+            '/string',
+            '/',
+        ];
+        self::assertSame($expectedErrorKeys, array_keys($errorCollector->getErrors()));
+
+        $stringErrors = $errorCollector->getErrorsAt(['string']);
+        self::assertCount(1, $stringErrors);
+        self::assertErrorKeyword('type', $stringErrors[0]);
+
+        self::assertCount(1, $errorCollector->getLeafErrors());
+        self::assertTrue($errorCollector->hasLeafErrorAt(['string']));
+        self::assertSame(['/string'], array_keys($errorCollector->getLeafErrors()));
+    }
 }
