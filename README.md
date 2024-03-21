@@ -11,7 +11,10 @@ The following additional keywords are provided:
 * `maxDate`
 * `minDate`
 * `precision`
+* `$tag` Tagged data can be fetched from a data container after validation.
 * `$validations`
+
+See [tests](tests/) for how to use them.
 
 The [`SystopiaValidator`](./src/SystopiaValidator.php) already provides those
 keywords. To use them in a different validator class you might want to use

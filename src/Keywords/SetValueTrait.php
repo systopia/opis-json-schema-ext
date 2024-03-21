@@ -32,6 +32,9 @@ trait SetValueTrait
         $path = $context->currentDataPath();
         $target = &$this->getDataReference($context, $path);
         $target = $transform($target);
+        if ([] === $path) {
+            $context->setCurrentData($target);
+        }
         $this->resetCurrentData($context);
     }
 
