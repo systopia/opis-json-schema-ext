@@ -33,7 +33,7 @@ final class Evaluation
 
     private function __construct(
         string $expression,
-        ExpressionVariablesContainer $variablesContainer = null
+        ?ExpressionVariablesContainer $variablesContainer = null
     ) {
         $this->expression = $expression;
         $this->variablesContainer = $variablesContainer ?? ExpressionVariablesContainer::createEmpty();

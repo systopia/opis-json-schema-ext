@@ -36,7 +36,7 @@ final class Calculation
 
     private function __construct(
         string $expression,
-        ExpressionVariablesContainer $variablesContainer = null,
+        ?ExpressionVariablesContainer $variablesContainer = null,
         ?Variable $fallback = null
     ) {
         $this->expression = $expression;
