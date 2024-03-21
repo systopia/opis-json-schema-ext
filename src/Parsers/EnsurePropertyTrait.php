@@ -34,7 +34,7 @@ trait EnsurePropertyTrait
         \stdClass $data,
         string $property,
         SchemaInfo $info,
-        string $keyword = null
+        ?string $keyword = null
     ): void {
         if (!property_exists($data, $property)) {
             throw $this->keywordException(
