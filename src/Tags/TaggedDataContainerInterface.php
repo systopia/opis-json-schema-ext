@@ -22,6 +22,10 @@ namespace Systopia\JsonSchema\Tags;
 interface TaggedDataContainerInterface
 {
     /**
+     * If the method is called multiple times with the same pair of tag and data
+     * pointer, the last data will be available. This might happen e.g. in case
+     * of sub schemas.
+     *
      * @param null|mixed $data
      * @param null|mixed $extra
      */

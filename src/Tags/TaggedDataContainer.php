@@ -19,8 +19,6 @@ declare(strict_types=1);
 
 namespace Systopia\JsonSchema\Tags;
 
-use Systopia\JsonSchema\Exceptions\InvalidArgumentException;
-
 final class TaggedDataContainer implements TaggedDataContainerInterface
 {
     /**
@@ -33,31 +31,42 @@ final class TaggedDataContainer implements TaggedDataContainerInterface
      */
     private array $extra = [];
 
+    /**
+     * {@inheritDoc}
+     */
     public function add(string $tag, string $dataPointer, $data, $extra): void
     {
-        if ($this->has($tag, $dataPointer)) {
-            throw new InvalidArgumentException(sprintf('Data for tag "%s" at "%s" already exists', $tag, $dataPointer));
-        }
-
         $this->data[$tag][$dataPointer] = $data;
         $this->extra[$tag][$dataPointer] = $extra;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function get(string $tag, string $dataPointer)
     {
         return $this->data[$tag][$dataPointer] ?? null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function has(string $tag, string $dataPointer): bool
     {
         return \array_key_exists($dataPointer, $this->data[$tag] ?? []);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getAll(): array
     {
         return $this->data;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getByTag(string $tag): array
     {
         return $this->data[$tag] ?? [];
@@ -68,6 +77,9 @@ final class TaggedDataContainer implements TaggedDataContainerInterface
         return isset($this->data[$tag]);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getExtra(string $tag, string $dataPointer)
     {
         return $this->extra[$tag][$dataPointer] ?? null;

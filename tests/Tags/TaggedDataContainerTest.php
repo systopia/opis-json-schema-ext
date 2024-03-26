@@ -20,7 +20,6 @@ declare(strict_types=1);
 namespace Systopia\JsonSchema\Test\Tags;
 
 use PHPUnit\Framework\TestCase;
-use Systopia\JsonSchema\Exceptions\InvalidArgumentException;
 use Systopia\JsonSchema\Tags\TaggedDataContainer;
 
 /**
@@ -66,9 +65,5 @@ final class TaggedDataContainerTest extends TestCase
         self::assertSame(['/foo' => null], $container->getByTag('test2'));
         self::assertTrue($container->has('test2', '/foo'));
         self::assertNull($container->get('test2', '/foo'));
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Data for tag "test" at "/foo" already exists');
-        $container->add('test', '/foo', 'exists', null);
     }
 }
