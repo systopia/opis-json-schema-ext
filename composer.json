@@ -17,6 +17,11 @@
             "email": "info@systopia.de"
         }
     ],
+    "extra": {
+        "branch-alias": {
+            "dev-main": "0.5.x-dev"
+        }
+    },
     "require": {
         "php": "^7.4 || ^8",
         "beberlei/assert": "^3 || ^4",
