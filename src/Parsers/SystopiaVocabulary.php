@@ -26,6 +26,7 @@ use Opis\JsonSchema\Parsers\PragmaParser;
 use Systopia\JsonSchema\Parsers\Keywords\EvaluateKeywordParser;
 use Systopia\JsonSchema\Parsers\Keywords\MaxDateKeywordParser;
 use Systopia\JsonSchema\Parsers\Keywords\MinDateKeywordParser;
+use Systopia\JsonSchema\Parsers\Keywords\OrderKeywordParser;
 use Systopia\JsonSchema\Parsers\Keywords\PrecisionKeywordParser;
 use Systopia\JsonSchema\Parsers\Keywords\ValidationsKeywordParser;
 use Systopia\JsonSchema\Parsers\KeywordValidators\CalculateKeywordValidationParser;
@@ -51,6 +52,7 @@ class SystopiaVocabulary extends DefaultVocabulary
             new MinDateKeywordParser(),
             new PrecisionKeywordParser(),
             new ValidationsKeywordParser(),
+            new OrderKeywordParser(),
         ]);
 
         $keywordValidators = array_merge(
