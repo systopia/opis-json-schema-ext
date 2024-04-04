@@ -94,6 +94,7 @@ return [
     'evaluate.resolve' => 'Die Auswertung einer Berechnung war nicht möglich, da nicht alle Variablen aufgelöst werden konnten.',
     'maxDate' => 'Das Datum darf nicht nach dem {maxDateTimestamp, date} sein.',
     'minDate' => 'Das Datum darf nicht vor dem {minDateTimestamp, date} sein.',
+    'noIntersect' => 'Die Intervalle dürfen sich nicht überschneiden.',
     'precision' => '{precision, plural, {
         =1 {Die Zahl darf nicht mehr als eine Dezimalstelle haben.}
         other {Die Zahl darf nicht mehr als # Dezimalstellen haben.}
