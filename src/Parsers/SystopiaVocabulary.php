@@ -26,6 +26,7 @@ use Opis\JsonSchema\Parsers\PragmaParser;
 use Systopia\JsonSchema\Parsers\Keywords\EvaluateKeywordParser;
 use Systopia\JsonSchema\Parsers\Keywords\MaxDateKeywordParser;
 use Systopia\JsonSchema\Parsers\Keywords\MinDateKeywordParser;
+use Systopia\JsonSchema\Parsers\Keywords\NoIntersectKeywordParser;
 use Systopia\JsonSchema\Parsers\Keywords\OrderKeywordParser;
 use Systopia\JsonSchema\Parsers\Keywords\PrecisionKeywordParser;
 use Systopia\JsonSchema\Parsers\Keywords\ValidationsKeywordParser;
@@ -50,6 +51,7 @@ class SystopiaVocabulary extends DefaultVocabulary
             new EvaluateKeywordParser(),
             new MaxDateKeywordParser(),
             new MinDateKeywordParser(),
+            new NoIntersectKeywordParser(),
             new PrecisionKeywordParser(),
             new ValidationsKeywordParser(),
             new OrderKeywordParser(),

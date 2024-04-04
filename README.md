@@ -10,6 +10,7 @@ The following additional keywords are provided:
 * `evaluate`
 * `maxDate`
 * `minDate`
+* `noIntersect` An array must not contain intersecting intervals.
 * `$order` Order arrays. (Only performed, if array has no violations.)
 * `precision`
 * `$tag` Tagged data can be fetched from a data container after validation.
