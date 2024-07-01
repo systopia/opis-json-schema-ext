@@ -59,13 +59,13 @@ class SystopiaVocabulary extends DefaultVocabulary
 
         $keywordValidators = array_merge(
             [
+                new TagKeywordValidatorParser(),
                 new CollectErrorsKeywordValidatorParser(),
                 new TypeKeywordValidatorParser(),
             ],
             $keywordValidators,
             [
                 new CalculateKeywordValidationParser(),
-                new TagKeywordValidatorParser(),
             ]
         );
 

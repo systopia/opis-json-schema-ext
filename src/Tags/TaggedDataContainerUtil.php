@@ -27,4 +27,14 @@ final class TaggedDataContainerUtil
     {
         return $context->globals()['taggedDataContainer'] ?? DummyTaggedDataContainer::getInstance();
     }
+
+    public static function getTaggedPathsContainer(ValidationContext $context): TaggedPathsContainer
+    {
+        return $context->globals()['taggedPathsContainer'];
+    }
+
+    public static function setTaggedPathsContainer(ValidationContext $context, TaggedPathsContainer $taggedPathsContainer): void
+    {
+        $context->setGlobals(['taggedPathsContainer' => $taggedPathsContainer]);
+    }
 }

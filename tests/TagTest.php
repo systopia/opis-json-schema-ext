@@ -25,9 +25,11 @@ use Systopia\JsonSchema\SystopiaValidator;
 use Systopia\JsonSchema\Tags\TaggedDataContainer;
 
 /**
+ * @covers \Systopia\JsonSchema\KeywordValidators\RootTagKeywordValidator
  * @covers \Systopia\JsonSchema\KeywordValidators\TagKeywordValidator
  * @covers \Systopia\JsonSchema\Parsers\KeywordValidators\TagKeywordValidatorParser
  * @covers \Systopia\JsonSchema\Tags\TaggedDataContainerUtil
+ * @covers \Systopia\JsonSchema\Tags\TaggedPathsContainer
  */
 final class TagTest extends TestCase
 {
@@ -120,6 +122,36 @@ JSON;
 
         self::assertSame(['test' => ['/' => 3]], $taggedDataContainer->getAll());
         self::assertNull($taggedDataContainer->getExtra('test', '/'));
+    }
+
+    /**
+     * Tests that the tagged data container contains the final, i.e. ordered
+     * values.
+     */
+    public function testOrderBy(): void
+    {
+        $schema = <<<'JSON'
+{
+    "type": "object",
+    "properties": {
+      "array": {
+        "type": "array",
+        "items": { "type":  ["number"], "$tag": {"test": "extra"} },
+        "$order": "ASC"
+    }
+  }
+}
+JSON;
+
+        $taggedDataContainer = new TaggedDataContainer();
+        $globals = ['taggedDataContainer' => $taggedDataContainer];
+        $validator = new SystopiaValidator();
+        $data = (object) ['array' => [3, 2]];
+        self::assertTrue($validator->validate($data, $schema, $globals)->isValid());
+
+        self::assertSame(['test' => ['/array/0' => 2, '/array/1' => 3]], $taggedDataContainer->getAll());
+        self::assertSame('extra', $taggedDataContainer->getExtra('test', '/array/0'));
+        self::assertSame('extra', $taggedDataContainer->getExtra('test', '/array/1'));
     }
 
     /**
