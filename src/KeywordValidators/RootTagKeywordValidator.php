@@ -20,11 +20,13 @@ declare(strict_types=1);
 namespace Systopia\JsonSchema\KeywordValidators;
 
 use Opis\JsonSchema\Errors\ValidationError;
+use Opis\JsonSchema\JsonPointer;
 use Opis\JsonSchema\KeywordValidators\AbstractKeywordValidator;
 use Opis\JsonSchema\ValidationContext;
 use Systopia\JsonSchema\Tags\TaggedDataContainerUtil;
+use Systopia\JsonSchema\Tags\TaggedPathsContainer;
 
-class TagKeywordValidator extends AbstractKeywordValidator
+final class RootTagKeywordValidator extends AbstractKeywordValidator
 {
     /**
      * @var array<string, null|mixed>
@@ -41,10 +43,24 @@ class TagKeywordValidator extends AbstractKeywordValidator
 
     public function validate(ValidationContext $context): ?ValidationError
     {
-        foreach ($this->tags as $tag => $extra) {
-            TaggedDataContainerUtil::getTaggedPathsContainer($context)->add($tag, $context->currentDataPath(), $extra);
+        $taggedPathsContainer = new TaggedPathsContainer();
+        TaggedDataContainerUtil::setTaggedPathsContainer($context, $taggedPathsContainer);
+
+        $error = null === $this->next ? null : $this->next->validate($context);
+        $taggedDataContainer = TaggedDataContainerUtil::getTaggedDataContainer($context);
+        $taggedPathsContainer->fillDataContainer($context->rootData(), $taggedDataContainer);
+
+        // The root data in context cannot be changed, so we have to use the
+        // current data here to have the actual value (in case it has been
+        // changed by some keyword).
+        if ([] !== $this->tags) {
+            $data = $context->currentData();
+            $dataPointer = JsonPointer::pathToString($context->currentDataPath());
+            foreach ($this->tags as $tag => $extra) {
+                $taggedDataContainer->add($tag, $dataPointer, $data, $extra);
+            }
         }
 
-        return null === $this->next ? null : $this->next->validate($context);
+        return $error;
     }
 }

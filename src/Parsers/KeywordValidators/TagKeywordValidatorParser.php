@@ -23,6 +23,7 @@ use Opis\JsonSchema\Info\SchemaInfo;
 use Opis\JsonSchema\KeywordValidator;
 use Opis\JsonSchema\Parsers\KeywordValidatorParser;
 use Opis\JsonSchema\Parsers\SchemaParser;
+use Systopia\JsonSchema\KeywordValidators\RootTagKeywordValidator;
 use Systopia\JsonSchema\KeywordValidators\TagKeywordValidator;
 
 final class TagKeywordValidatorParser extends KeywordValidatorParser
@@ -35,7 +36,7 @@ final class TagKeywordValidatorParser extends KeywordValidatorParser
     public function parse(SchemaInfo $info, SchemaParser $parser, object $shared): ?KeywordValidator
     {
         if (!$this->keywordExists($info)) {
-            return null;
+            return $info->isDocumentRoot() ? new RootTagKeywordValidator([]) : null;
         }
 
         $tags = (array) $this->keywordValue($info);
@@ -48,6 +49,10 @@ final class TagKeywordValidatorParser extends KeywordValidatorParser
             } else {
                 throw $this->keywordException('Invalid value for keyword {keyword}', $info);
             }
+        }
+
+        if ($info->isDocumentRoot()) {
+            return new RootTagKeywordValidator($parsedTags);
         }
 
         return [] === $parsedTags ? null : new TagKeywordValidator($parsedTags);
