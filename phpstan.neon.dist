@@ -36,10 +36,6 @@ parameters:
 			paths:
 				- src/Expression/ExpressionVariablesContainer.php
 		-
-			message: "#^Method [^ ]+\\\\ExpressionVariablesContainer::getValues\\(\\) has [^ ]+\\\\(ReferencedDataHasViolationException|VariableResolveException) in PHPDoc @throws tag but it's not thrown.$#"
-			paths:
-				- src/Expression/ExpressionVariablesContainer.php
-		-
 			message: "~^Parameter #6 \\$errors of method [^ ]+::error\\(\\) expects .+ [^ ]+\\\\ErrorContainer given.$~"
 			paths:
 				- src/Keywords/*.php
