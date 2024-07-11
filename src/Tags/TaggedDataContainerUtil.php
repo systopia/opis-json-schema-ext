@@ -32,9 +32,4 @@ final class TaggedDataContainerUtil
     {
         return $context->globals()['taggedPathsContainer'];
     }
-
-    public static function setTaggedPathsContainer(ValidationContext $context, TaggedPathsContainer $taggedPathsContainer): void
-    {
-        $context->setGlobals(['taggedPathsContainer' => $taggedPathsContainer]);
-    }
 }
