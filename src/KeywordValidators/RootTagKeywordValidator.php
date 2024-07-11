@@ -43,12 +43,19 @@ final class RootTagKeywordValidator extends AbstractKeywordValidator
 
     public function validate(ValidationContext $context): ?ValidationError
     {
-        $taggedPathsContainer = new TaggedPathsContainer();
-        TaggedDataContainerUtil::setTaggedPathsContainer($context, $taggedPathsContainer);
+        if (!isset($context->globals()['taggedPathsContainer'])) {
+            $taggedPathsContainer = new TaggedPathsContainer();
+            $context->setGlobals(['taggedPathsContainer' => $taggedPathsContainer]);
+        }
 
         $error = null === $this->next ? null : $this->next->validate($context);
         $taggedDataContainer = TaggedDataContainerUtil::getTaggedDataContainer($context);
-        $taggedPathsContainer->fillDataContainer($context->rootData(), $taggedDataContainer);
+
+        // On sub schema validation this method is called again, so we want to
+        // fill the data container only at the end of the overall validation.
+        if (isset($taggedPathsContainer)) {
+            $taggedPathsContainer->fillDataContainer($context->rootData(), $taggedDataContainer);
+        }
 
         // The root data in context cannot be changed, so we have to use the
         // current data here to have the actual value (in case it has been
