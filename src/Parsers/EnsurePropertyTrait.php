@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2022 SYSTOPIA GmbH
  *
@@ -38,7 +39,7 @@ trait EnsurePropertyTrait
     ): void {
         if (!property_exists($data, $property)) {
             throw $this->keywordException(
-                sprintf('{keyword} entries must contain property "%s"', $property),
+                \sprintf('{keyword} entries must contain property "%s"', $property),
                 $info,
                 $keyword
             );

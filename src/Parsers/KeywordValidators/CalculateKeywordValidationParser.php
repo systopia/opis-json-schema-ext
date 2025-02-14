@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2022 SYSTOPIA GmbH
  *
@@ -56,7 +57,7 @@ final class CalculateKeywordValidationParser extends KeywordValidatorParser
                 );
             } catch (\Exception $e) {
                 throw new InvalidKeywordException(
-                    sprintf('Validating calculation failed: %s', $e->getMessage()),
+                    \sprintf('Validating calculation failed: %s', $e->getMessage()),
                     $this->keyword,
                     $info
                 );

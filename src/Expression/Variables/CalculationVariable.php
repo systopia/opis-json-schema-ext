@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2022 SYSTOPIA GmbH
  *
@@ -70,7 +71,7 @@ final class CalculationVariable extends Variable
                 $calculation->getVariableNames()
             );
         } catch (\Exception $e) {
-            throw new ParseException(sprintf('Validating calculation expression failed: %s', $e->getMessage()));
+            throw new ParseException(\sprintf('Validating calculation expression failed: %s', $e->getMessage()));
         }
 
         return new self($calculation, $fallback);

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2023 SYSTOPIA GmbH
  *
@@ -35,14 +36,14 @@ final class TranslatorFactory
 
     private static function getTranslationFile(string $locale): ?string
     {
-        $filename = sprintf(__DIR__.'/../../messages/%s.php', $locale);
+        $filename = \sprintf(__DIR__.'/../../messages/%s.php', $locale);
         if (file_exists($filename)) {
             return $filename;
         }
 
         [$lang] = explode('_', $locale, 2);
         if ($lang !== $locale) {
-            $filename = sprintf(__DIR__.'/../../messages/%s.php', $lang);
+            $filename = \sprintf(__DIR__.'/../../messages/%s.php', $lang);
             if (file_exists($filename)) {
                 return $filename;
             }

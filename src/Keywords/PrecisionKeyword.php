@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2022 SYSTOPIA GmbH
  *
@@ -77,7 +78,7 @@ final class PrecisionKeyword implements Keyword
             ]);
         }
 
-        $pattern = sprintf('/^-?\d+(\.\d{0,%d})?$/', $precision);
+        $pattern = \sprintf('/^-?\d+(\.\d{0,%d})?$/', $precision);
 
         return 1 !== preg_match($pattern, (string) $data) ? $this->error(
             $schema,
