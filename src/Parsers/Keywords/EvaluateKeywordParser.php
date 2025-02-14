@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2022 SYSTOPIA GmbH
  *
@@ -65,7 +66,7 @@ final class EvaluateKeywordParser extends KeywordParser
             );
         } catch (\Exception $e) {
             throw new InvalidKeywordException(
-                sprintf('Validating evaluation expression failed: %s', $e->getMessage()),
+                \sprintf('Validating evaluation expression failed: %s', $e->getMessage()),
                 $this->keyword,
                 $info
             );

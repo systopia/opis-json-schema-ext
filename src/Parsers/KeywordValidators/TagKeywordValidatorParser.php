@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2024 SYSTOPIA GmbH
  *

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2022 SYSTOPIA GmbH
  *
@@ -65,7 +66,7 @@ final class JsonPointerVariable extends Variable
 
         $pointer = JsonPointer::parse($data->{'$data'});
         if (null === $pointer) {
-            throw new ParseException(sprintf('Invalid JSON pointer "%s"', $data->{'$data'}));
+            throw new ParseException(\sprintf('Invalid JSON pointer "%s"', $data->{'$data'}));
         }
 
         return new self($pointer, $fallback);
@@ -82,7 +83,7 @@ final class JsonPointerVariable extends Variable
 
             if (ErrorCollectorUtil::getErrorCollector($context)->hasErrorAt($path)) {
                 throw new ReferencedDataHasViolationException(
-                    sprintf('The property at path "%s" has violations', JsonPointer::pathToString($path))
+                    \sprintf('The property at path "%s" has violations', JsonPointer::pathToString($path))
                 );
             }
         }
@@ -94,7 +95,7 @@ final class JsonPointerVariable extends Variable
             Assertion::notNull($path);
 
             throw new VariableResolveException(
-                sprintf('The property at path "%s" could not be resolved', JsonPointer::pathToString($path))
+                \sprintf('The property at path "%s" could not be resolved', JsonPointer::pathToString($path))
             );
         }
 
