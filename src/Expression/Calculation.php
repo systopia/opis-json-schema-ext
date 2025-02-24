@@ -80,13 +80,16 @@ final class Calculation
     }
 
     /**
+     * @param bool $violated Will be set to true, if false is given and one of
+     *                       the variables is violated
+     *
      * @return array<string, mixed>
      *
      * @throws ReferencedDataHasViolationException|VariableResolveException
      */
-    public function getVariables(ValidationContext $context, int $flags = 0): array
+    public function getVariables(ValidationContext $context, int $flags = 0, ?bool &$violated = null): array
     {
-        return $this->variablesContainer->getValues($context, $flags);
+        return $this->variablesContainer->getValues($context, $flags, $violated);
     }
 
     /**

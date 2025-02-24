@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Systopia\JsonSchema\Expression;
 
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use Systopia\JsonSchema\Exceptions\CalculationFailedException;
 
 final class SymfonyExpressionHandler implements CalculatorInterface, EvaluatorInterface
 {
@@ -41,7 +42,13 @@ final class SymfonyExpressionHandler implements CalculatorInterface, EvaluatorIn
      */
     public function calculate(string $expression, array $variables = [])
     {
-        return $this->expressionLanguage->evaluate($expression, $variables);
+        try {
+            return $this->expressionLanguage->evaluate($expression, $variables);
+        }
+        // @phpstan-ignore catch.neverThrown
+        catch (\Throwable $e) {
+            throw new CalculationFailedException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 
     /**

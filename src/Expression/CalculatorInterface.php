@@ -26,6 +26,8 @@ interface CalculatorInterface
      * @param array<string, mixed> $variables
      *
      * @return mixed
+     *
+     * @throws \Systopia\JsonSchema\Exceptions\CalculationFailedException
      */
     public function calculate(string $expression, array $variables = []);
 

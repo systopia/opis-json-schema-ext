@@ -69,7 +69,41 @@ final class JsonPointerVariableTest extends TestCase
         self::assertEquals(new JsonPointerVariable($pointer), $variable);
 
         $context = new ValidationContext((object) ['x' => 'foo'], $this->schemaLoader);
-        self::assertSame('foo', $variable->getValue($context));
+        $violated = false;
+        self::assertSame('foo', $variable->getValue($context, 0, $violated));
+        self::assertFalse($violated);
+    }
+
+    public function testViolatedIsNotReset(): void
+    {
+        $variable = JsonPointerVariable::parse((object) ['$data' => '/x'], $this->schemaParser);
+        $pointer = JsonPointer::parse('/x');
+        Assertion::notNull($pointer);
+        self::assertEquals(new JsonPointerVariable($pointer), $variable);
+
+        $context = new ValidationContext((object) ['x' => 'foo'], $this->schemaLoader);
+        $violated = true;
+        self::assertSame('foo', $variable->getValue($context, 0, $violated));
+        // $violated shall not be reset to false.
+        self::assertTrue($violated);
+    }
+
+    public function testOnViolation(): void
+    {
+        $variable = JsonPointerVariable::parse((object) ['$data' => '/x'], $this->schemaParser);
+
+        $context = new ValidationContext((object) ['x' => 'foo'], $this->schemaLoader);
+        $errorCollector = new ErrorCollector();
+        ErrorCollectorUtil::setErrorCollector($context, $errorCollector);
+        $context->pushDataPath('x');
+        $schemaInfo = new SchemaInfo(true, null);
+        $error = new ValidationError('test', new EmptySchema($schemaInfo), DataInfo::fromContext($context), '');
+        $errorCollector->addError($error);
+        $context->popDataPath();
+
+        $violated = false;
+        self::assertSame('foo', $variable->getValue($context, 0, $violated));
+        self::assertTrue($violated);
     }
 
     public function testUnresolved(): void

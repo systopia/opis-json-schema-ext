@@ -22,11 +22,17 @@ declare(strict_types=1);
 namespace Systopia\JsonSchema\Test\Expression;
 
 use Assert\Assertion;
+use Opis\JsonSchema\Errors\ValidationError;
+use Opis\JsonSchema\Info\DataInfo;
+use Opis\JsonSchema\Info\SchemaInfo;
 use Opis\JsonSchema\JsonPointer;
 use Opis\JsonSchema\Parsers\SchemaParser;
 use Opis\JsonSchema\SchemaLoader;
+use Opis\JsonSchema\Schemas\EmptySchema;
 use Opis\JsonSchema\ValidationContext;
 use PHPUnit\Framework\TestCase;
+use Systopia\JsonSchema\Errors\ErrorCollector;
+use Systopia\JsonSchema\Errors\ErrorCollectorUtil;
 use Systopia\JsonSchema\Expression\ExpressionVariablesContainer;
 use Systopia\JsonSchema\Expression\Variables\IdentityVariable;
 use Systopia\JsonSchema\Expression\Variables\JsonPointerVariable;
@@ -56,7 +62,9 @@ final class ExpressionVariablesContainerTest extends TestCase
         self::assertEquals(['a' => new IdentityVariable('b')], $variableContainer->getVariables());
 
         $validationContext = new ValidationContext('', $this->schemaLoader);
-        self::assertSame(['a' => 'b'], $variableContainer->getValues($validationContext));
+        $violated = false;
+        self::assertSame(['a' => 'b'], $variableContainer->getValues($validationContext, 0, $violated));
+        self::assertFalse($violated);
     }
 
     public function testParsePointer(): void
@@ -70,7 +78,20 @@ final class ExpressionVariablesContainerTest extends TestCase
         self::assertEquals(['a' => new JsonPointerVariable($pointer)], $variableContainer->getVariables());
 
         $validationContext = new ValidationContext((object) ['a' => 'b'], $this->schemaLoader);
-        self::assertSame(['a' => 'b'], $variableContainer->getValues($validationContext));
+        $violated = false;
+        self::assertSame(['a' => 'b'], $variableContainer->getValues($validationContext, 0, $violated));
+        self::assertFalse($violated);
+
+        $errorCollector = new ErrorCollector();
+        ErrorCollectorUtil::setErrorCollector($validationContext, $errorCollector);
+        $validationContext->pushDataPath('a');
+        $schemaInfo = new SchemaInfo(true, null);
+        $error = new ValidationError('test', new EmptySchema($schemaInfo), DataInfo::fromContext($validationContext), '');
+        $errorCollector->addError($error);
+        $validationContext->popDataPath();
+
+        self::assertSame(['a' => 'b'], $variableContainer->getValues($validationContext, 0, $violated));
+        self::assertTrue($violated);
     }
 
     public function testCreateEmpty(): void

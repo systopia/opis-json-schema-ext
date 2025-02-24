@@ -59,9 +59,12 @@ abstract class Variable
     }
 
     /**
+     * @param bool $violated Will be set to true, if false is given and the
+     *                       variable has violated data
+     *
      * @return null|mixed
      *
      * @throws ReferencedDataHasViolationException|VariableResolveException
      */
-    abstract public function getValue(ValidationContext $context, int $flags = 0);
+    abstract public function getValue(ValidationContext $context, int $flags = 0, ?bool &$violated = null);
 }

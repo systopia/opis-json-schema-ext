@@ -32,6 +32,7 @@ use Opis\JsonSchema\ValidationContext;
 use PHPUnit\Framework\TestCase;
 use Systopia\JsonSchema\Errors\ErrorCollector;
 use Systopia\JsonSchema\Errors\ErrorCollectorUtil;
+use Systopia\JsonSchema\Exceptions\CalculationFailedException;
 use Systopia\JsonSchema\Exceptions\ReferencedDataHasViolationException;
 use Systopia\JsonSchema\Exceptions\VariableResolveException;
 use Systopia\JsonSchema\Expression\Variables\CalculationVariable;
@@ -130,11 +131,12 @@ final class CalculationVariableTest extends TestCase
             '$calculate' => (object) [
                 'expression' => '2 * a',
                 'variables' => (object) ['a' => (object) ['$data' => '/a']],
+                'fallback' => 123,
             ],
         ];
         $variable = CalculationVariable::parse($data, $this->schemaParser);
 
-        $context = new ValidationContext('', $this->schemaLoader);
+        $context = new ValidationContext((object) ['a' => 'b'], $this->schemaLoader);
         $errorCollector = new ErrorCollector();
         ErrorCollectorUtil::setErrorCollector($context, $errorCollector);
         $context->pushDataPath('a');
@@ -144,7 +146,84 @@ final class CalculationVariableTest extends TestCase
         $context->popDataPath();
 
         $this->expectException(ReferencedDataHasViolationException::class);
+        $this->expectExceptionMessage('The calculation at path "/" failed because of violations in the referenced data');
         $variable->getValue($context, Variable::FLAG_FAIL_ON_VIOLATION);
+    }
+
+    public function testFailOnViolationWithoutFallback(): void
+    {
+        $data = (object) [
+            '$calculate' => (object) [
+                'expression' => '2 * a',
+                'variables' => (object) ['a' => (object) ['$data' => '/a']],
+            ],
+        ];
+        $variable = CalculationVariable::parse($data, $this->schemaParser);
+
+        $context = new ValidationContext((object) ['a' => 'b'], $this->schemaLoader);
+        $errorCollector = new ErrorCollector();
+        ErrorCollectorUtil::setErrorCollector($context, $errorCollector);
+        $context->pushDataPath('a');
+        $schemaInfo = new SchemaInfo(true, null);
+        $error = new ValidationError('test', new EmptySchema($schemaInfo), DataInfo::fromContext($context), '');
+        $errorCollector->addError($error);
+        $context->popDataPath();
+
+        $this->expectException(ReferencedDataHasViolationException::class);
+        $this->expectExceptionMessage('The calculation at path "/" failed because of violations in the referenced data');
+        $variable->getValue($context);
+    }
+
+    public function testFallbackOnViolation(): void
+    {
+        $data = (object) [
+            '$calculate' => (object) [
+                'expression' => '2 * a',
+                'fallback' => 3,
+                'variables' => (object) ['a' => (object) ['$data' => '/a']],
+            ],
+        ];
+        $variable = CalculationVariable::parse($data, $this->schemaParser);
+
+        $context = new ValidationContext((object) ['a' => 'b'], $this->schemaLoader);
+        $errorCollector = new ErrorCollector();
+        ErrorCollectorUtil::setErrorCollector($context, $errorCollector);
+        $context->pushDataPath('a');
+        $schemaInfo = new SchemaInfo(true, null);
+        $error = new ValidationError('test', new EmptySchema($schemaInfo), DataInfo::fromContext($context), '');
+        $errorCollector->addError($error);
+        $context->popDataPath();
+
+        $violated = false;
+        self::assertSame(3, $variable->getValue($context, 0, $violated));
+        self::assertTrue($violated);
+    }
+
+    public function testExceptionWithoutViolation(): void
+    {
+        $data = (object) [
+            '$calculate' => (object) [
+                'expression' => '2 * a',
+                'fallback' => 3,
+                'variables' => (object) ['a' => (object) ['$data' => '/a']],
+            ],
+        ];
+        $variable = CalculationVariable::parse($data, $this->schemaParser);
+
+        $context = new ValidationContext((object) ['a' => 'b'], $this->schemaLoader);
+
+        self::expectException(CalculationFailedException::class);
+        self::expectExceptionMessage('');
+
+        try {
+            // @phpstan-ignore binaryOp.invalid
+            2 * 'b';
+            // @phpstan-ignore catch.neverThrown
+        } catch (\Throwable $e) {
+            self::expectExceptionMessage($e->getMessage());
+        }
+
+        $variable->getValue($context);
     }
 
     public function testParseWithoutCalculator(): void
