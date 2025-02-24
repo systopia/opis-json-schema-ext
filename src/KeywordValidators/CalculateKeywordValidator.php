@@ -26,10 +26,10 @@ use Opis\JsonSchema\Keywords\ErrorTrait;
 use Opis\JsonSchema\KeywordValidators\AbstractKeywordValidator;
 use Opis\JsonSchema\Schema;
 use Opis\JsonSchema\ValidationContext;
+use Systopia\JsonSchema\Exceptions\ReferencedDataHasViolationException;
 use Systopia\JsonSchema\Exceptions\VariableResolveException;
 use Systopia\JsonSchema\Expression\Calculation;
 use Systopia\JsonSchema\Expression\Variables\CalculationVariable;
-use Systopia\JsonSchema\Expression\Variables\Variable;
 use Systopia\JsonSchema\Keywords\SetValueTrait;
 use Systopia\JsonSchema\Translation\ErrorTranslator;
 
@@ -50,11 +50,8 @@ final class CalculateKeywordValidator extends AbstractKeywordValidator
         $calculationVariable = new CalculationVariable($this->calculation);
 
         try {
-            $value = $calculationVariable->getValue(
-                $context,
-                Variable::FLAG_FAIL_ON_UNRESOLVED
-            );
-        } catch (VariableResolveException $e) {
+            $value = $calculationVariable->getValue($context);
+        } catch (ReferencedDataHasViolationException|VariableResolveException $e) {
             $value = null;
         }
 
@@ -78,7 +75,7 @@ final class CalculateKeywordValidator extends AbstractKeywordValidator
                 $schema,
                 $context,
                 '$calculate',
-                'The property is required, but could not be calculated because of unresolvable variables',
+                'The property is required, but could not be calculated because of invalid data or unresolvable variables',
                 [ErrorTranslator::TRANSLATION_ID_ARG_KEY => '$calculate.required.unresolved'],
             );
         }

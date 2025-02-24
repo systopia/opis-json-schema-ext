@@ -64,14 +64,20 @@ final class ExpressionVariablesContainer
     }
 
     /**
+     * @param bool $violated Will be set to true, if false is given and one of
+     *                       the variables is violated
+     *
      * @return array<string, mixed>
      *
      * @throws ReferencedDataHasViolationException|VariableResolveException
      */
-    public function getValues(ValidationContext $context, int $flags = 0): array
+    public function getValues(ValidationContext $context, int $flags = 0, ?bool &$violated = null): array
     {
         return array_map(
-            static fn (Variable $variable) => $variable->getValue($context, $flags),
+            // With lambda function $violated would not be set.
+            static function (Variable $variable) use ($context, $flags, &$violated) {
+                return $variable->getValue($context, $flags, $violated);
+            },
             $this->variables
         );
     }

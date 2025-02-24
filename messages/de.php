@@ -100,7 +100,7 @@ return [
         other {Die Zahl darf nicht mehr als # Dezimalstellen haben.}
     }',
 
-    '$calculate.required.unresolved' => 'Der Wert wird benötigt, aber konnte nicht ermittelt werden aufgrund von nicht aufgelösten Variablen.',
+    '$calculate.required' => 'Der Wert wird benötigt, aber konnte nicht ermittelt werden aufgrund von ungültigen Daten oder nicht aufgelösten Variablen.',
 
     '_invalidData' => 'Ungültiger Wert für Schlüsselwort "{keyword}".',
     '_resolveFailed' => 'Auflösen des Werts für Schlüsselwort "{keyword}" ist fehlgeschlagen.',

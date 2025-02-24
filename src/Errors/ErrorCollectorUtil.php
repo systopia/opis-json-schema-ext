@@ -26,6 +26,10 @@ final class ErrorCollectorUtil
 {
     public static function getErrorCollector(ValidationContext $context): ErrorCollectorInterface
     {
+        if (!isset($context->globals()['errorCollector'])) {
+            self::setErrorCollector($context, new ErrorCollector());
+        }
+
         return $context->globals()['errorCollector'];
     }
 

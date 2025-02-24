@@ -75,13 +75,18 @@ final class JsonPointerVariable extends Variable
     /**
      * {@inheritDoc}
      */
-    public function getValue(ValidationContext $context, int $flags = 0)
+    public function getValue(ValidationContext $context, int $flags = 0, ?bool &$violated = null)
     {
-        if (0 !== ($flags & self::FLAG_FAIL_ON_VIOLATION)) {
-            $path = $this->pointer->absolutePath($context->fullDataPath());
-            Assertion::notNull($path);
+        $path = $this->pointer->absolutePath($context->fullDataPath());
+        Assertion::notNull($path);
 
-            if (ErrorCollectorUtil::getErrorCollector($context)->hasErrorAt($path)) {
+        $hasError = ErrorCollectorUtil::getErrorCollector($context)->hasErrorAt($path);
+        if (false === $violated) {
+            $violated = $hasError;
+        }
+
+        if (0 !== ($flags & self::FLAG_FAIL_ON_VIOLATION)) {
+            if ($hasError) {
                 throw new ReferencedDataHasViolationException(
                     \sprintf('The property at path "%s" has violations', JsonPointer::pathToString($path))
                 );
@@ -91,9 +96,6 @@ final class JsonPointerVariable extends Variable
         $value = $this->pointer->data($context->rootData(), $context->currentDataPath())
             ?? $this->fallback->getValue($context, $flags);
         if (null === $value && 0 !== ($flags & Variable::FLAG_FAIL_ON_UNRESOLVED)) {
-            $path = $this->pointer->absolutePath($context->fullDataPath());
-            Assertion::notNull($path);
-
             throw new VariableResolveException(
                 \sprintf('The property at path "%s" could not be resolved', JsonPointer::pathToString($path))
             );

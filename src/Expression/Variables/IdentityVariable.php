@@ -40,7 +40,7 @@ final class IdentityVariable extends Variable
     /**
      * {@inheritDoc}
      */
-    public function getValue(ValidationContext $context, int $flags = 0)
+    public function getValue(ValidationContext $context, int $flags = 0, ?bool &$violated = null)
     {
         return $this->value;
     }

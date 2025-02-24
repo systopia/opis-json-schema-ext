@@ -21,8 +21,10 @@ declare(strict_types=1);
 namespace Systopia\JsonSchema\Expression\Variables;
 
 use Opis\JsonSchema\Exceptions\ParseException;
+use Opis\JsonSchema\JsonPointer;
 use Opis\JsonSchema\Parsers\SchemaParser;
 use Opis\JsonSchema\ValidationContext;
+use Systopia\JsonSchema\Exceptions\CalculationFailedException;
 use Systopia\JsonSchema\Exceptions\ReferencedDataHasViolationException;
 use Systopia\JsonSchema\Exceptions\VariableResolveException;
 use Systopia\JsonSchema\Expression\Calculation;
@@ -79,31 +81,72 @@ final class CalculationVariable extends Variable
 
     /**
      * {@inheritDoc}
+     *
+     * The calculation is tried, even if one of the variables has a violation,
+     * because in case of objects the violated value might not be involved.
+     *
+     * @throws ReferencedDataHasViolationException if calculation fails, one of the variables has a violation, and the
+     *                                             flag Variable::FLAG_FAIL_ON_VIOLATION is set or no fallback is
+     *                                             defined
+     * @throws VariableResolveException if one of the variables cannot be resolved and the flag
+     *                                  Variable::FLAG_FAIL_ON_UNRESOLVED is set or no fallback is defined
      */
-    public function getValue(ValidationContext $context, int $flags = 0)
+    public function getValue(ValidationContext $context, int $flags = 0, ?bool &$violated = null)
     {
+        if (false === $violated) {
+            $variableViolated = &$violated;
+        } else {
+            $variableViolated = false;
+        }
+
         $fallback = $this->calculation->getFallback() ?? $this->fallback;
-        if (null === $fallback) {
+        if (null === $fallback || 0 !== ($flags & Variable::FLAG_FAIL_ON_UNRESOLVED)) {
             $variables = $this->calculation->getVariables(
                 $context,
-                $flags | Variable::FLAG_FAIL_ON_UNRESOLVED
+                Variable::FLAG_FAIL_ON_UNRESOLVED,
+                $variableViolated
             );
         } else {
             try {
                 $variables = $this->calculation->getVariables(
                     $context,
-                    $flags | Variable::FLAG_FAIL_ON_UNRESOLVED
+                    Variable::FLAG_FAIL_ON_UNRESOLVED,
+                    $variableViolated
                 );
-            } catch (ReferencedDataHasViolationException|VariableResolveException $e) {
-                return $fallback->getValue($context, $flags);
+            } catch (VariableResolveException $e) {
+                return $fallback->getValue($context, $flags, $violated);
             }
         }
 
         $calculator = CalculatorUtil::getCalculatorFromContext($context);
 
-        return $calculator->calculate(
-            $this->calculation->getExpression(),
-            $variables,
-        ) ?? (null === $fallback ? null : $fallback->getValue($context, $flags));
+        try {
+            // The calculation is tried, even if one of the variable has a
+            // violation, because in case of objects the violated value might
+            // not be involved.
+            $result = $calculator->calculate(
+                $this->calculation->getExpression(),
+                $variables,
+            );
+        } catch (CalculationFailedException $e) {
+            // Evaluating the expression might fail in case of violations so we
+            // only re-throw the exception if there was no violation.
+            if (!$variableViolated) {
+                throw $e;
+            }
+
+            if (null === $fallback || 0 !== ($flags & Variable::FLAG_FAIL_ON_VIOLATION)) {
+                throw new ReferencedDataHasViolationException(
+                    \sprintf(
+                        'The calculation at path "%s" failed because of violations in the referenced data',
+                        JsonPointer::pathToString($context->currentDataPath())
+                    ),
+                    0,
+                    $e
+                );
+            }
+        }
+
+        return $result ?? (null === $fallback ? null : $fallback->getValue($context, $flags, $violated));
     }
 }

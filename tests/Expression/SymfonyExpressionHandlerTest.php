@@ -24,6 +24,7 @@ namespace Systopia\JsonSchema\Test\Expression;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use Systopia\JsonSchema\Exceptions\CalculationFailedException;
 use Systopia\JsonSchema\Expression\SymfonyExpressionHandler;
 
 /**
@@ -82,6 +83,16 @@ final class SymfonyExpressionHandlerTest extends TestCase
             ->with('a * 2', ['a' => 2])->willReturn(123)
         ;
         self::assertSame(123, $this->expressionHandler->calculate('a * 2', ['a' => 2]));
+    }
+
+    public function testCalculateFail(): void
+    {
+        $exception = new \Exception('test', 123);
+        self::expectExceptionObject(new CalculationFailedException('test', 123, $exception));
+        $this->expressionLanguage->expects(self::once())->method('evaluate')
+            ->with('a * 2', ['a' => 2])->willThrowException($exception)
+        ;
+        $this->expressionHandler->calculate('a * 2', ['a' => 2]);
     }
 
     public function testValidateCalcExpressionFail(): void
