@@ -168,7 +168,7 @@ final class CalculateTest extends TestCase
         self::assertFalse(property_exists($data, 'calculated'));
     }
 
-    public function testCalculationWVariableFallback(): void
+    public function testCalculationVariableFallback(): void
     {
         $schema = <<<'JSON'
             {
