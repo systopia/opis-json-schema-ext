@@ -33,6 +33,7 @@ use Systopia\JsonSchema\Parsers\Keywords\PrecisionKeywordParser;
 use Systopia\JsonSchema\Parsers\Keywords\ValidationsKeywordParser;
 use Systopia\JsonSchema\Parsers\KeywordValidators\CalculateKeywordValidationParser;
 use Systopia\JsonSchema\Parsers\KeywordValidators\CollectErrorsKeywordValidatorParser;
+use Systopia\JsonSchema\Parsers\KeywordValidators\LimitValidationKeywordParser;
 use Systopia\JsonSchema\Parsers\KeywordValidators\TagKeywordValidatorParser;
 use Systopia\JsonSchema\Parsers\KeywordValidators\TypeKeywordValidatorParser;
 
@@ -62,6 +63,7 @@ class SystopiaVocabulary extends DefaultVocabulary
             [
                 new TagKeywordValidatorParser(),
                 new CollectErrorsKeywordValidatorParser(),
+                new LimitValidationKeywordParser(),
                 new TypeKeywordValidatorParser(),
             ],
             $keywordValidators,

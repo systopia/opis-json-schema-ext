@@ -234,7 +234,7 @@ final class EvaluateTest extends TestCase
         $validator->setMaxErrors(2);
         $validationResult = $validator->validate((object) ['evaluated' => 3], $schema);
         self::assertNotNull($validationResult->error());
-        self::assertErrorKeyword('schema', $validationResult->error());
+        self::assertErrorKeyword('', $validationResult->error());
         $subErrors = $validationResult->error()->subErrors();
         self::assertCount(2, $subErrors);
         self::assertErrorKeyword('required', $subErrors[0]);

@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Systopia\JsonSchema\SystopiaValidator;
 
 /**
- * Tests that multiple errors on the same level are possible.
+ * Tests that multiple errors on the same depth are possible.
  *
  * @covers \Systopia\JsonSchema\Schemas\MultiErrorObjectSchema
  */
@@ -33,9 +33,9 @@ final class MultiErrorObjectSchemaTest extends TestCase
 
         $rootError = $result->error();
         self::assertNotNull($rootError);
-        self::assertSame('schema', $rootError->keyword());
-        self::assertSame('The data does not match the schema', $rootError->message());
-        self::assertSame($data, $rootError->args()['data']);
+        self::assertSame('', $rootError->keyword());
+        self::assertSame('Data must match schema', $rootError->message());
+        self::assertSame([], $rootError->args());
         self::assertSame([], $rootError->data()->fullPath());
 
         $subErrors = $rootError->subErrors();

@@ -37,17 +37,12 @@ final class MultiErrorObjectSchema extends ObjectSchema
         /** @var Schema $schema */
         $schema = $context->schema();
 
-        /*
-         * message must not contain data as placeholder because \stdClass is not
-         * handled by Opis\JsonSchema\Errors\ErrorFormatter (and it probably
-         * makes no sense in most cases).
-         */
         return new ValidationError(
-            'schema',
+            '',
             $schema,
             DataInfo::fromContext($context),
-            'The data does not match the schema',
-            ['data' => $context->currentData()],
+            'Data must match schema',
+            [],
             $errors
         );
     }
