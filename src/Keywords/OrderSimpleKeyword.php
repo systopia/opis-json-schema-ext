@@ -46,6 +46,7 @@ final class OrderSimpleKeyword implements Keyword
     public function validate(ValidationContext $context, Schema $schema): ?ValidationError
     {
         if (!ErrorCollectorUtil::getErrorCollector($context)->hasErrorAt($context->currentDataPath())
+            && !ErrorCollectorUtil::getIgnoredErrorCollector($context)->hasErrorAt($context->currentDataPath())
             && 'array' === $context->currentDataType()
         ) {
             $this->setValue($context, function (array $array) {

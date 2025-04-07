@@ -22,6 +22,7 @@ namespace Systopia\JsonSchema\KeywordValidators;
 
 use Assert\Assertion;
 use Opis\JsonSchema\Errors\ValidationError;
+use Opis\JsonSchema\JsonPointer;
 use Opis\JsonSchema\Keywords\ErrorTrait;
 use Opis\JsonSchema\KeywordValidators\AbstractKeywordValidator;
 use Opis\JsonSchema\Schema;
@@ -32,6 +33,7 @@ use Systopia\JsonSchema\Expression\Calculation;
 use Systopia\JsonSchema\Expression\Variables\CalculationVariable;
 use Systopia\JsonSchema\Keywords\SetValueTrait;
 use Systopia\JsonSchema\Translation\ErrorTranslator;
+use Systopia\JsonSchema\Util\CalculateUtil;
 
 final class CalculateKeywordValidator extends AbstractKeywordValidator
 {
@@ -49,14 +51,22 @@ final class CalculateKeywordValidator extends AbstractKeywordValidator
     {
         $calculationVariable = new CalculationVariable($this->calculation);
 
+        $violatedDataUsed = false;
+
         try {
-            $value = $calculationVariable->getValue($context);
+            $value = $calculationVariable->getValue($context, 0, $violatedDataUsed);
         } catch (ReferencedDataHasViolationException|VariableResolveException $e) {
             $value = null;
         }
 
+        CalculateUtil::setCalculatedValueUsedViolatedData(
+            $context,
+            JsonPointer::pathToString($context->fullDataPath()),
+            $violatedDataUsed
+        );
+
         if (null === $value) {
-            return $this->handleCalculationFailed($context);
+            return $this->handleCalculationFailed($context, $violatedDataUsed);
         }
 
         $this->setValue($context, static fn () => $value);
@@ -64,12 +74,12 @@ final class CalculateKeywordValidator extends AbstractKeywordValidator
         return null === $this->next ? null : $this->next->validate($context);
     }
 
-    private function handleCalculationFailed(ValidationContext $context): ?ValidationError
+    private function handleCalculationFailed(ValidationContext $context, bool $violatedDataUsed): ?ValidationError
     {
         $schema = $context->schema();
         Assertion::notNull($schema);
         $this->unsetValue($context);
-        if ($this->isRequired($context)) {
+        if ($this->isRequired($context) && !$violatedDataUsed) {
             // "required" is checked before calculation
             return $this->error(
                 $schema,

@@ -37,4 +37,25 @@ final class ErrorCollectorUtil
     {
         $context->setGlobals(['errorCollector' => $errorCollector]);
     }
+
+    /**
+     * Returns an error collector for ignored errors when using the
+     * "$limitValidation" keyword.
+     */
+    public static function getIgnoredErrorCollector(ValidationContext $context): ErrorCollectorInterface
+    {
+        if (!isset($context->globals()['ignoredErrorCollector'])) {
+            self::setIgnoredErrorCollector($context, new ErrorCollector());
+        }
+
+        return $context->globals()['ignoredErrorCollector'];
+    }
+
+    /**
+     * Sets the error collector for ignored errors when using the "$limitValidation" keyword.
+     */
+    public static function setIgnoredErrorCollector(ValidationContext $context, ErrorCollectorInterface $errorCollector): void
+    {
+        $context->setGlobals(['ignoredErrorCollector' => $errorCollector]);
+    }
 }

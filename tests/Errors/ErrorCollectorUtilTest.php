@@ -31,9 +31,20 @@ use Systopia\JsonSchema\Errors\ErrorCollectorUtil;
  */
 final class ErrorCollectorUtilTest extends TestCase
 {
-    public function testGetErrorCollector(): void
+    public function testErrorCollector(): void
     {
         $schemaLoader = new SchemaLoader();
+        $context = new ValidationContext(
+            '',
+            $schemaLoader,
+            null,
+            null
+        );
+
+        // A new error collector is set.
+        $errorCollector = ErrorCollectorUtil::getErrorCollector($context);
+        self::assertSame($errorCollector, ErrorCollectorUtil::getErrorCollector($context));
+
         $errorCollector = new ErrorCollector();
         $context = new ValidationContext(
             '',
@@ -43,5 +54,38 @@ final class ErrorCollectorUtilTest extends TestCase
             ['errorCollector' => $errorCollector]
         );
         self::assertSame($errorCollector, ErrorCollectorUtil::getErrorCollector($context));
+
+        $newErrorCollector = new ErrorCollector();
+        ErrorCollectorUtil::setErrorCollector($context, $newErrorCollector);
+        self::assertSame($newErrorCollector, ErrorCollectorUtil::getErrorCollector($context));
+    }
+
+    public function testIgnoredErrorCollector(): void
+    {
+        $schemaLoader = new SchemaLoader();
+        $context = new ValidationContext(
+            '',
+            $schemaLoader,
+            null,
+            null
+        );
+
+        // A new error collector is set.
+        $errorCollector = ErrorCollectorUtil::getIgnoredErrorCollector($context);
+        self::assertSame($errorCollector, ErrorCollectorUtil::getIgnoredErrorCollector($context));
+
+        $errorCollector = new ErrorCollector();
+        $context = new ValidationContext(
+            '',
+            $schemaLoader,
+            null,
+            null,
+            ['ignoredErrorCollector' => $errorCollector]
+        );
+        self::assertSame($errorCollector, ErrorCollectorUtil::getIgnoredErrorCollector($context));
+
+        $newErrorCollector = new ErrorCollector();
+        ErrorCollectorUtil::setIgnoredErrorCollector($context, $newErrorCollector);
+        self::assertSame($newErrorCollector, ErrorCollectorUtil::getIgnoredErrorCollector($context));
     }
 }

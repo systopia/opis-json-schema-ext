@@ -51,10 +51,16 @@ final class LimitValidationTest extends TestCase
             JSON;
 
         $errorCollector = new ErrorCollector();
-        $globals = ['errorCollector' => $errorCollector];
+        $ignoredErrorCollector = new ErrorCollector();
+        $globals = [
+            'errorCollector' => $errorCollector,
+            'ignoredErrorCollector' => $ignoredErrorCollector,
+        ];
         $validator = new SystopiaValidator([], 10);
 
         self::assertTrue($validator->validate((object) ['val1' => null, 'val2' => ''], $schema, $globals)->isValid());
+        $ignoredErrorCollector->hasErrorAt('/val1');
+        $ignoredErrorCollector->hasErrorAt('/val2');
         self::assertTrue($validator->validate((object) ['val1' => null, 'val2' => null], $schema, $globals)->isValid());
         self::assertTrue($validator->validate(null, $schema, $globals)->isValid());
         self::assertFalse($errorCollector->hasErrors());
@@ -139,6 +145,7 @@ JSON;
         $schema = <<<'JSON'
 {
     "$limitValidation": {
+        "condition": true,
         "rules": [
             {
               "keyword": { "const":  "type" },
@@ -170,12 +177,13 @@ JSON;
         $schema = <<<'JSON'
 {
     "$limitValidation": {
-      "rules": [
-          {
-              "keywordValue": { "const":  "string" },
-              "validate": true
-          }
-      ]
+        "condition": true,
+        "rules": [
+            {
+                "keywordValue": { "const":  "string" },
+                "validate": true
+            }
+        ]
     },
     "type": "object",
     "properties": {
@@ -201,6 +209,7 @@ JSON;
         $schema = <<<'JSON'
 {
     "$limitValidation": {
+        "condition": true,
         "rules": [
             {
                 "value": { "const":  "test" },
@@ -247,12 +256,16 @@ JSON;
 JSON;
 
         $validator = new SystopiaValidator([], 10);
+        $errorCollector = new ErrorCollector();
+        $globals = ['errorCollector' => $errorCollector];
 
         // "type" should be validated because "condition" isn't matched.
-        $result = $validator->validate((object) ['val1' => false, 'val2' => null], $schema);
+        $result = $validator->validate((object) ['val1' => false, 'val2' => null], $schema, $globals);
         self::assertNotNull($result->error());
         self::assertSubErrorsCount(1, $result->error());
         self::assertErrorKeyword('type', $result->error()->subErrors()[0]);
+        // Test that errors on evaluation of condition schema are not added to error collector.
+        self::assertFalse($errorCollector->hasErrorAt('/val1'));
 
         // "type" should not be validated because "condition" is matched.
         self::assertTrue($validator->validate((object) ['val1' => true, 'val2' => null], $schema)->isValid());
@@ -304,8 +317,8 @@ JSON;
         $subError = $result->error()->subErrors()[0];
         self::assertErrorKeyword('', $subError);
         self::assertSubErrorsCount(2, $subError);
-        self::assertErrorKeyword('const', $subError->subErrors()[0]);
-        self::assertErrorKeyword('type', $subError->subErrors()[1]);
+        self::assertErrorKeyword('type', $subError->subErrors()[0]);
+        self::assertErrorKeyword('const', $subError->subErrors()[1]);
     }
 
     public function testSchema(): void
@@ -313,6 +326,7 @@ JSON;
         $schema = <<<'JSON'
 {
     "$limitValidation": {
+        "condition": true,
         "schema": {
             "required": ["test"]
         }
@@ -337,6 +351,53 @@ JSON;
         self::assertNotNull($result->error());
         self::assertSubErrorsCount(1, $result->error());
         self::assertErrorKeyword('type', $result->error()->subErrors()[0]);
+    }
+
+    public function testCalculatedValueWithViolatedData(): void
+    {
+        $schema = <<<'JSON'
+{
+    "$limitValidation": true,
+    "type": "object",
+    "properties": {
+        "foo": {
+            "type": "integer",
+            "minimum": 10
+        },
+        "calculated": {
+            "$calculate": {
+                "expression": "foo + 1",
+                "variables": {
+                    "foo": { "$data": "/foo" }
+                }
+            },
+            "minimum": 10
+        }
+    }
+}
+JSON;
+
+        $schema = json_decode($schema);
+        $validator = new SystopiaValidator([], 10);
+
+        $errorCollector = new ErrorCollector();
+        $globals = ['errorCollector' => $errorCollector];
+        self::assertFalse($validator->validate((object) ['foo' => 1], $schema, $globals)->isValid());
+        self::assertFalse($errorCollector->hasErrorAt('/calculated'));
+
+        $schema = clone $schema;
+        $schema->{'$limitValidation'} = (object) [
+            'condition' => true,
+            'rules' => [
+                (object) [
+                    'calculatedValueUsedViolatedData' => true,
+                    'validate' => true,
+                ],
+            ],
+        ];
+
+        $validator->validate((object) ['foo' => 1], $schema, $globals)->isValid();
+        self::assertTrue($errorCollector->hasErrorAt('/calculated'));
     }
 
     public function testInvalidKeyword(): void

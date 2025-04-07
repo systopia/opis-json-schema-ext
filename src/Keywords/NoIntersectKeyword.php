@@ -43,7 +43,9 @@ final class NoIntersectKeyword implements Keyword
 
     public function validate(ValidationContext $context, Schema $schema): ?ValidationError
     {
-        if (!ErrorCollectorUtil::getErrorCollector($context)->hasErrorAt($context->currentDataPath())) {
+        if (!ErrorCollectorUtil::getErrorCollector($context)->hasErrorAt($context->currentDataPath())
+            && !ErrorCollectorUtil::getIgnoredErrorCollector($context)->hasErrorAt($context->currentDataPath())
+        ) {
             /** @var list<\stdClass> $array */
             $array = $context->currentData();
             usort(

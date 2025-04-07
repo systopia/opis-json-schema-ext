@@ -23,6 +23,7 @@ namespace Systopia\JsonSchema\KeywordValidators;
 use Opis\JsonSchema\Errors\ValidationError;
 use Opis\JsonSchema\KeywordValidators\AbstractKeywordValidator;
 use Opis\JsonSchema\ValidationContext;
+use Systopia\JsonSchema\Errors\ErrorCollectorUtil;
 use Systopia\JsonSchema\LimitValidation\LimitValidationRule;
 
 class ApplyLimitValidationKeywordValidator extends AbstractKeywordValidator
@@ -52,7 +53,13 @@ class ApplyLimitValidationKeywordValidator extends AbstractKeywordValidator
     private function handleError(ValidationError $error, ValidationContext $context): ?ValidationError
     {
         if ('' !== $error->keyword()) {
-            return $this->shouldIgnoreError($error, $context) ? null : $error;
+            if ($this->shouldIgnoreError($error, $context)) {
+                ErrorCollectorUtil::getIgnoredErrorCollector($context)->addError($error);
+
+                return null;
+            }
+
+            return $error;
         }
 
         $subErrors = $error->subErrors();

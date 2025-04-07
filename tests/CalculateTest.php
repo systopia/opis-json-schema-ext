@@ -109,9 +109,41 @@ final class CalculateTest extends TestCase
         $data = (object) ['multiplicand' => 5];
 
         $validator = new SystopiaValidator();
-        $validationResult = $validator->validate($data, $schema);
+        $valueUsedViolatedData = new \ArrayObject();
+        $globals = ['calculatedValueUsedViolatedData' => $valueUsedViolatedData];
+        $validationResult = $validator->validate($data, $schema, $globals);
         self::assertTrue($validationResult->isValid());
         self::assertSame(10, $data->calculated);
+        self::assertFalse($valueUsedViolatedData['/calculated']);
+    }
+
+    public function testCalculationWithInvalidReferencedVariable(): void
+    {
+        $schema = <<<'JSON'
+            {
+                "type": "object",
+                "properties": {
+                    "multiplicand": { "type": "integer", "minimum": 10 },
+                    "calculated": {
+                        "type": "integer",
+                        "$calculate": {
+                            "expression": "2 * a",
+                            "variables": { "a": { "$data": "/multiplicand" } }
+                        }
+                    }
+                },
+                "required": ["multiplicand"]
+            }
+            JSON;
+
+        $data = (object) ['multiplicand' => 5];
+
+        $validator = new SystopiaValidator([], 2);
+        $valueUsedViolatedData = new \ArrayObject();
+        $globals = ['calculatedValueUsedViolatedData' => $valueUsedViolatedData];
+        $validator->validate($data, $schema, $globals);
+        self::assertSame(10, $data->calculated);
+        self::assertTrue($valueUsedViolatedData['/calculated']);
     }
 
     public function testCalculationFail(): void
