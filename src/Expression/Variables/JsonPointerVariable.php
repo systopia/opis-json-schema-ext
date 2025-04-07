@@ -80,7 +80,8 @@ final class JsonPointerVariable extends Variable
         $path = $this->pointer->absolutePath($context->fullDataPath());
         Assertion::notNull($path);
 
-        $hasError = ErrorCollectorUtil::getErrorCollector($context)->hasErrorAt($path);
+        $hasError = ErrorCollectorUtil::getErrorCollector($context)->hasErrorAt($path)
+            || ErrorCollectorUtil::getIgnoredErrorCollector($context)->hasErrorAt($path);
         if (false === $violated) {
             $violated = $hasError;
         }

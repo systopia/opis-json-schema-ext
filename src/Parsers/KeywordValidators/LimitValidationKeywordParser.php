@@ -68,7 +68,7 @@ final class LimitValidationKeywordParser extends KeywordValidatorParser
         } elseif (null !== LimitValidationKeywordValidator::getCurrentInstance()) {
             $condition = LimitValidationKeywordValidator::getCurrentInstance()->isConditionMatched();
         } else {
-            $condition = true;
+            $condition = false;
         }
 
         if (!\is_array($limitValidation->rules ?? [])) {
@@ -122,6 +122,9 @@ final class LimitValidationKeywordParser extends KeywordValidatorParser
                     'dependentRequired',
                 ],
             ],
+        ]);
+        $this->standardRules[] = LimitValidationRule::create([
+            'calculatedValueUsedViolatedData' => true,
         ]);
         $this->standardRules[] = LimitValidationRule::create(
             ['validate' => true]

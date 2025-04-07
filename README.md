@@ -41,10 +41,8 @@ The structure of the `$limitValidation` keyword is:
       "keyword": JSON Schema,
       "keywordValue": JSON Schema,
       "value": JSON Schema,
-      "propertyName": JSON Schema,
-      "propertyPath": JSON Schema,
-      "itemIndex": JSON Schema,
-      "validate": bool
+      "calculatedValueUsedViolatedData": boolean|null,
+      "validate": boolean
     }
   ],
   "schema": JSON Schema
@@ -56,11 +54,13 @@ The structure of the `$limitValidation` keyword is:
 If the schema at `condition` is matched, limited validation is performed. It is
 applied on the keywords at the same depth and the keywords below. If it's not
 set, the result of the condition evaluation on a higher level is used. If the
-`$limitValidation` keyword is not used at a higher level, `true` is used as
+`$limitValidation` keyword is not used at a higher level, `false` is used as
 fallback.
 
-Apart from `validate` all properties of a rule have the default value `true`.
-The default of `validate` is `false`.
+The properties of a rule have the following defaults:
+* `keyword`, `keywordValue`, `value`: `true`
+* `calculatedValueUsedViolatedData`: `null`
+* `validate`: `false`
 
 To the entries in `rules` the [default rules](#default-rules) are always
 appended. To prevent the execution of the default rules a rule with just the
@@ -80,7 +80,12 @@ The rule matching is done like this:
 * The value of the violated keyword is matched against the schema in `keywordValue`.
 * The invalid value is matched against the schema in `value`.
 
-If all schemas are matched, the rule is matched.
+All schemas must be matched for a rule to be matched. If
+`calculatedValueUsedViolatedData` is not `null`, the value has to be calculated
+(with the `$calculate` keyword) and must or must not have used violated data
+depending on the actual value of `calculatedValueUsedViolatedData`. Violated
+data is used, if the calculation references a value that has a validation error
+(including ignored ones).
 
 The keyword `schema` allows to specify a schema that is validated additionally,
 if the condition is matched. This allows for example to require some properties
@@ -151,6 +156,9 @@ The default rules are:
     }
   },
   {
+    "calculatedValueUsedViolatedData": true
+  },
+  {
     "validate": true
   }
 ]
@@ -162,7 +170,8 @@ The rules mean:
 2. No violation error, if the violated keyword is not `type` and the validated value is `false` or `""` (empty string).
 3. No violation error, if the validated keyword is one of:
    `minLength`, `minItems`, `minContains`, `minProperties`, `required`, `dependentRequired`
-4. Every other validation without limitation.
+4. No violation error, if value is calculated and calculation used data with violations (including ignored ones).
+5. Every other validation without limitation.
 
 ## Empty array to object conversion
 

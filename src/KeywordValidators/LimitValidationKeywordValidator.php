@@ -23,6 +23,7 @@ namespace Systopia\JsonSchema\KeywordValidators;
 use Opis\JsonSchema\Errors\ValidationError;
 use Opis\JsonSchema\Info\DataInfo;
 use Opis\JsonSchema\ValidationContext;
+use Systopia\JsonSchema\Errors\ErrorCollectorUtil;
 use Systopia\JsonSchema\LimitValidation\LimitValidationRule;
 use Systopia\JsonSchema\Util\SchemaUtil;
 
@@ -57,12 +58,20 @@ final class LimitValidationKeywordValidator extends ApplyLimitValidationKeywordV
 
         try {
             $conditionSchema = SchemaUtil::loadSchema($this->conditionSchema, $context->loader());
-            $this->conditionMatched = null === SchemaUtil::validateWithoutLimit($conditionSchema, $context);
+            $errorCollector = ErrorCollectorUtil::getErrorCollector($context);
+            ErrorCollectorUtil::setErrorCollector($context, clone $errorCollector);
+
+            try {
+                $this->conditionMatched = null === SchemaUtil::validateWithoutLimit($conditionSchema, $context);
+            } finally {
+                ErrorCollectorUtil::setErrorCollector($context, $errorCollector);
+            }
 
             if ($this->conditionMatched) {
+                // First continue with "normal" validation, so $schema might reference calculated data.
+                $error = parent::validate($context);
                 $schema = SchemaUtil::loadSchema($this->schema, $context->loader());
                 $subSchemaError = SchemaUtil::validateWithoutLimit($schema, $context);
-                $error = parent::validate($context);
 
                 if (null !== $subSchemaError) {
                     \assert(null !== $context->schema());
@@ -73,7 +82,7 @@ final class LimitValidationKeywordValidator extends ApplyLimitValidationKeywordV
                         DataInfo::fromContext($context),
                         'Data must match schema',
                         [],
-                        [$subSchemaError, $error]
+                        [$error, $subSchemaError]
                     );
                 }
 

@@ -60,7 +60,9 @@ abstract class Variable
 
     /**
      * @param bool $violated Will be set to true, if false is given and the
-     *                       variable has violated data
+     *                       variable has violated data. Ignored errors (when
+     *                       using "$limitValidation" keyword are regarded,
+     *                       too.)
      *
      * @return null|mixed
      *

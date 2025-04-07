@@ -21,8 +21,11 @@ declare(strict_types=1);
 namespace Systopia\JsonSchema\LimitValidation;
 
 use Opis\JsonSchema\Errors\ValidationError;
+use Opis\JsonSchema\JsonPointer;
 use Opis\JsonSchema\Schema;
 use Opis\JsonSchema\ValidationContext;
+use Systopia\JsonSchema\Errors\ErrorCollectorUtil;
+use Systopia\JsonSchema\Util\CalculateUtil;
 use Systopia\JsonSchema\Util\SchemaUtil;
 
 final class LimitValidationRule
@@ -33,17 +36,20 @@ final class LimitValidationRule
 
     private bool|Schema|\stdClass $valueSchema;
 
+    private ?bool $calculatedValueUsedViolatedData;
     private bool $validate;
 
-    public function __construct(
+    private function __construct(
         bool|\stdClass $keywordSchema,
         bool|\stdClass $keywordValueSchema,
         bool|\stdClass $valueSchema,
+        ?bool $calculatedValueUsedViolatedData,
         bool $validate
     ) {
         $this->keywordSchema = $keywordSchema;
         $this->keywordValueSchema = $keywordValueSchema;
         $this->valueSchema = $valueSchema;
+        $this->calculatedValueUsedViolatedData = $calculatedValueUsedViolatedData;
         $this->validate = $validate;
     }
 
@@ -52,6 +58,7 @@ final class LimitValidationRule
      *     keyword?: \stdClass|bool,
      *     keywordValue?: \stdClass|bool,
      *     value?: \stdClass|bool,
+     *     calculatedValueUsedViolatedData?: ?bool,
      *     validate?: bool,
      * } $rule
      */
@@ -61,6 +68,7 @@ final class LimitValidationRule
             $rule['keyword'] ?? true,
             $rule['keywordValue'] ?? true,
             $rule['value'] ?? true,
+            $rule['calculatedValueUsedViolatedData'] ?? null,
             $rule['validate'] ?? false
         );
     }
@@ -82,16 +90,38 @@ final class LimitValidationRule
             $this->valueSchema = SchemaUtil::loadSchema($this->valueSchema, $context->loader());
         }
 
-        return null === SchemaUtil::validateWithoutLimit(
-            $this->keywordSchema,
-            new ValidationContext($error->keyword(), $context->loader())
-        ) && null === SchemaUtil::validateWithoutLimit(
-            $this->keywordValueSchema,
-            // @phpstan-ignore property.dynamicName
-            new ValidationContext($error->schema()->info()->data()->{$error->keyword()}, $context->loader())
-        ) && null === SchemaUtil::validateWithoutLimit(
-            $this->valueSchema,
-            new ValidationContext($error->data()->value(), $context->loader())
+        return null === $this->subValidate($context, $this->keywordSchema, $error->keyword())
+            && null === $this->subValidate(
+                $context,
+                $this->keywordValueSchema,
+                // @phpstan-ignore property.dynamicName
+                $error->schema()->info()->data()->{$error->keyword()}
+            ) && null === $this->subValidate($context, $this->valueSchema, $error->data()->value())
+            && (
+                null === $this->calculatedValueUsedViolatedData
+                || $this->calculatedValueUsedViolatedData === CalculateUtil::wasViolatedDataUsedForCalculatedValue(
+                    $context,
+                    JsonPointer::pathToString($error->data()->fullPath())
+                )
+            );
+    }
+
+    /**
+     * @param mixed $data
+     */
+    private function subValidate(ValidationContext $context, Schema $schema, $data): ?ValidationError
+    {
+        $newContext = new ValidationContext($data, $context->loader());
+        // Use cloned error collectors so it is possible to check if referenced data has violations.
+        ErrorCollectorUtil::setIgnoredErrorCollector(
+            $newContext,
+            clone ErrorCollectorUtil::getIgnoredErrorCollector($context)
         );
+        ErrorCollectorUtil::setErrorCollector(
+            $newContext,
+            clone ErrorCollectorUtil::getIgnoredErrorCollector($context)
+        );
+
+        return SchemaUtil::validateWithoutLimit($schema, $newContext);
     }
 }
