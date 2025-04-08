@@ -86,7 +86,7 @@ final class CalculateKeywordValidator extends AbstractKeywordValidator
                 $context,
                 '$calculate',
                 'The property is required, but could not be calculated because of invalid data or unresolvable variables',
-                [ErrorTranslator::TRANSLATION_ID_ARG_KEY => '$calculate.required.unresolved'],
+                [ErrorTranslator::TRANSLATION_ID_ARG_KEY => '$calculate.required'],
             );
         }
 
