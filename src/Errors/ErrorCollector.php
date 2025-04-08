@@ -65,6 +65,13 @@ final class ErrorCollector implements ErrorCollectorInterface
             array_map(fn (ValidationError $subError) => $this->addError($subError), $error->subErrors());
         }
 
+        if ('additionalProperties' === $error->keyword() && $this->hasErrors()) {
+            // If there are other violations "additionalProperties" might be a
+            // false positive.
+            // See https://github.com/opis/json-schema/issues/148.
+            return;
+        }
+
         $path = $this->pathToString($error->data()->fullPath());
         if (isset($this->errors[$path])) {
             $this->errors[$path][] = $error;

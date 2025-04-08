@@ -305,4 +305,40 @@ final class CollectErrorsTest extends TestCase
         self::assertTrue($errorCollector->hasLeafErrorAt(['string']));
         self::assertSame(['/string'], array_keys($errorCollector->getLeafErrors()));
     }
+
+    /**
+     * An error for "additionalProperties" should not be added if there are
+     * other violations because of a possible false positive.
+     * See https://github.com/opis/json-schema/issues/148.
+     */
+    public function testAdditionalProperties(): void
+    {
+        $schema = <<<'JSON'
+
+            {
+                "type": "object",
+                "properties": {
+                    "boolean": { "type": "boolean" }
+                },
+                "additionalProperties": false
+            }
+            JSON;
+
+        $validator = new SystopiaValidator([], 10);
+
+        $errorCollector = new ErrorCollector();
+        $globals = ['errorCollector' => $errorCollector];
+        $validator->validate((object) ['boolean' => 123, 'foo' => 'bar'], $schema, $globals);
+        self::assertCount(1, $errorCollector->getLeafErrors());
+        self::assertTrue($errorCollector->hasLeafErrorAt('/boolean'));
+        self::assertErrorKeyword('type', $errorCollector->getLeafErrorsAt('/boolean')[0]);
+
+        // Test that "additionalProperties" error is added if there's no other violation.
+        $errorCollector = new ErrorCollector();
+        $globals = ['errorCollector' => $errorCollector];
+        $validator->validate((object) ['boolean' => true, 'foo' => 'bar'], $schema, $globals);
+        self::assertCount(1, $errorCollector->getLeafErrors());
+        self::assertTrue($errorCollector->hasLeafErrorAt('/'));
+        self::assertErrorKeyword('additionalProperties', $errorCollector->getLeafErrorsAt('/')[0]);
+    }
 }
