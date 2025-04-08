@@ -54,6 +54,14 @@ final class TranslationIdFactory
             if ([] === $error->subErrors()) {
                 return 'additionalProperties.notAllowed';
             }
+        } elseif ('const' === $error->keyword()) {
+            $keywordValue = ErrorUtil::getKeywordValue($error);
+            if (true === $keywordValue) {
+                return 'const.true';
+            }
+            if (false === $keywordValue) {
+                return 'const.false';
+            }
         } elseif ('contains' === $error->keyword()) {
             $keywordValue = ErrorUtil::getKeywordValue($error);
             if (false === $keywordValue) {
