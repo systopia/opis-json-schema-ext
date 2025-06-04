@@ -46,7 +46,7 @@ final class TranslatorFactoryTest extends TestCase
         );
 
         self::assertSame(
-            'Es ist nicht mehr als ein Eintrag erlaubt.',
+            'Es ist nur ein Eintrag erlaubt.',
             $translator->trans('maxContains', ['max' => 1], $error)
         );
 
@@ -71,6 +71,19 @@ final class TranslatorFactoryTest extends TestCase
         self::assertSame(
             'Der Wert muss größer oder gleich 12 sein.',
             $translator->trans('minimum', ['min' => 12], $error)
+        );
+    }
+
+    public function testEn(): void
+    {
+        $schema = new EmptySchema(new SchemaInfo(false, null));
+        $dataInfo = new DataInfo(null, null, null);
+        $error = new ValidationError('test', $schema, $dataInfo, 'message');
+
+        $translator = TranslatorFactory::createTranslator('en');
+        self::assertSame(
+            'The value must be at least 12 characters long (currently: 3).',
+            $translator->trans('minLength', ['min' => 12, 'length' => 3], $error)
         );
     }
 

@@ -9,6 +9,8 @@ return [
     'allOf' => 'Die Daten sind nicht gültig.',
     'anyOf' => 'Die Daten sind nicht gültig.',
     'const' => 'Der Wert muss "{const}" sein.',
+    'const.false' => 'Das Feld darf nicht ausgewählt sein.',
+    'const.true' => 'Das Feld muss ausgewählt sein.',
     'contains.false' => 'Es sind keine Einträge erlaubt.',
     'contains.true' => 'Es ist mindestens ein Eintrag erforderlich.',
     'contains' => 'Mindestens ein Eintrag muss zum Schema passen.',
@@ -22,7 +24,7 @@ return [
     }',
     'maxContains' => '{max, plural,
         =0 {Es sind keine Einträge erlaubt.}
-        =1 {Es ist nicht mehr als ein Eintrag erlaubt.}
+        =1 {Es ist nur ein Eintrag erlaubt.}
         other {Es sind nicht mehr als # Einträge erlaubt.}
     }',
     'maxContains.schema' => '{max, plural,
@@ -65,10 +67,13 @@ return [
         =1 {Es ist mindestens ein Eintrag erforderlich.}
         other {Es sind mindestens # Einträge erforderlich.}
     }',
-    'minLength' => 'Der Wert muss mindestens {min} Zeichen lang sein (aktuell: {length}).',
+    'minLength' => '{min, plural,
+        =1 {Der Wert ist erforderlich.}
+        other {Der Wert muss mindestens # Zeichen lang sein (aktuell: {length}).}
+    }',
     'minProperties' => '{min, plural,
-        =1 {Es ist mindestens ein Eintrag erforderlich.}
-        other {Es sind mindestens # Einträge erforderlich.}
+        =1 {Es ist mindestens eine Eigenschaft erforderlich.}
+        other {Es sind mindestens # Eigenschaften erforderlich.}
     }',
     'multipleOf' => 'Die Zahl muss ein Vielfaches von {divisor} sein.',
     'not' => 'Die Daten sind nicht gültig.',
@@ -82,8 +87,11 @@ return [
     'propertyNames' => 'Die Eigenschaft "{property}" passt nicht zum Schema.',
     'propertyNames.notAllowed' => 'Es sind keine Eigenschaften erlaubt.',
     'required' => 'Folgende Eigenschaften fehlen: {missing}.',
-    'then' => 'Die Daten passen sind nicht gültig.',
-    'type' => 'Der Datentyp "{type}" entspricht nicht dem erwarteten Typ "{expected}".',
+    'then' => 'Die Daten sind nicht gültig.',
+    'type' => '{type, select,
+        null {Der Wert ist erforderlich.}
+        other {Der Datentyp "{type}" entspricht nicht dem erwarteten Typ "{expected}".}
+    }',
     'unevaluatedItems' => 'Folgende nicht evaluierte Einträge sind ungültig: {indexes}.',
     'unevaluatedItems.notAllowed' => 'Nicht evaluierte Einträge sind nicht erlaubt: {indexes}.',
     'unevaluatedProperties' => 'Folgende nicht evaluierte Eigenschaften sind ungültig: {properties}.',
@@ -96,8 +104,8 @@ return [
     'minDate' => 'Das Datum darf nicht vor dem {minDateTimestamp, date} sein.',
     'noIntersect' => 'Die Intervalle dürfen sich nicht überschneiden.',
     'precision' => '{precision, plural, {
-        =1 {Die Zahl darf nicht mehr als eine Dezimalstelle haben.}
-        other {Die Zahl darf nicht mehr als # Dezimalstellen haben.}
+        =1 {Die Zahl darf nicht mehr als eine Nachkommastelle haben.}
+        other {Die Zahl darf nicht mehr als # Nachkommastellen haben.}
     }',
 
     '$calculate.required' => 'Der Wert wird benötigt, aber konnte nicht ermittelt werden aufgrund von ungültigen Daten oder nicht aufgelösten Variablen.',
