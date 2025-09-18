@@ -9,8 +9,8 @@ return [
     'allOf' => 'The data is not valid.',
     'anyOf' => 'The data is not valid.',
     'const' => 'The value must be "{const}".',
-    'const.false' => 'The field must be checked.',
-    'const.true' => 'The field must not be checked.',
+    'const.false' => 'The field must not be checked.',
+    'const.true' => 'The field must be checked.',
     'contains.false' => 'No items are allowed.',
     'contains.true' => 'At least one item is required.',
     'contains' => 'At least one items must match the schema.',
@@ -62,7 +62,7 @@ return [
         =1 {Only one property is allowed.}
         other {More than # properties are not allowed.}
     }',
-    'minimum' => 'The value must be grater or equal {min}.',
+    'minimum' => 'The value must be greater or equal {min}.',
     'minItems' => '{min, plural,
         =1 {At least one item is required.}
         other {At least # items are required.}
