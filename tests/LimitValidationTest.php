@@ -340,10 +340,13 @@ JSON;
 
         $validator = new SystopiaValidator([], 10);
 
+        $errorCollector = new ErrorCollector();
+        $globals = ['errorCollector' => $errorCollector];
         // "schema" is applied additionally.
-        $result = $validator->validate((object) ['val' => false], $schema);
+        $result = $validator->validate((object) ['val' => false], $schema, $globals);
         self::assertNotNull($result->error());
         self::assertErrorKeyword('required', $result->error());
+        self::assertCount(1, $errorCollector->getLeafErrorsAt('/'));
 
         self::assertTrue($validator->validate((object) ['val' => true, 'test' => 'foo'], $schema)->isValid());
 

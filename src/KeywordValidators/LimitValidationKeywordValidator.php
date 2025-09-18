@@ -71,7 +71,13 @@ final class LimitValidationKeywordValidator extends ApplyLimitValidationKeywordV
                 // First continue with "normal" validation, so $schema might reference calculated data.
                 $error = parent::validate($context);
                 $schema = SchemaUtil::loadSchema($this->schema, $context->loader());
-                $subSchemaError = SchemaUtil::validateWithoutLimit($schema, $context);
+                ErrorCollectorUtil::setErrorCollector($context, clone $errorCollector);
+
+                try {
+                    $subSchemaError = SchemaUtil::validateWithoutLimit($schema, $context);
+                } finally {
+                    ErrorCollectorUtil::setErrorCollector($context, $errorCollector);
+                }
 
                 if (null !== $subSchemaError) {
                     \assert(null !== $context->schema());
