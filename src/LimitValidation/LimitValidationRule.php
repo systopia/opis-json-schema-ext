@@ -55,9 +55,9 @@ final class LimitValidationRule
 
     /**
      * @param array{
-     *     keyword?: \stdClass|bool,
-     *     keywordValue?: \stdClass|bool,
-     *     value?: \stdClass|bool,
+     *     keyword?: bool|\stdClass,
+     *     keywordValue?: bool|\stdClass,
+     *     value?: bool|\stdClass,
      *     calculatedValueUsedViolatedData?: ?bool,
      *     validate?: bool,
      * } $rule
