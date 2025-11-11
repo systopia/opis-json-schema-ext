@@ -53,14 +53,7 @@ JSON;
         $validator = new SystopiaValidator();
         $data = (object) ['array' => ['b', false, 3, 'c', null, 2, 'a', 1, 'a', true]];
         self::assertTrue($validator->validate($data, $schema)->isValid());
-        if (PHP_MAJOR_VERSION < 8) {
-            // Prior to PHP 8.0.0, if a string is compared to a number or a
-            // numeric string then the string was converted to a number before
-            // performing the comparison.
-            self::assertSame([false, null, 'a', 'a', 'b', 'c', 1, 2, 3, true], $data->array);
-        } else {
-            self::assertSame([false, null, 1, 2, 3, 'a', 'a', 'b', 'c', true], $data->array);
-        }
+        self::assertSame([false, null, 1, 2, 3, 'a', 'a', 'b', 'c', true], $data->array);
     }
 
     public function testSimpleDesc(): void
@@ -81,14 +74,7 @@ JSON;
         $validator = new SystopiaValidator();
         $data = (object) ['array' => ['b', false, 3, 'c', null, 2, 'a', 1, 'a', true]];
         self::assertTrue($validator->validate($data, $schema)->isValid());
-        if (PHP_MAJOR_VERSION < 8) {
-            // Prior to PHP 8.0.0, if a string is compared to a number or a
-            // numeric string then the string was converted to a number before
-            // performing the comparison.
-            self::assertSame([3, 2, 1, 'c', 'b', 'a', 'a', true, false, null], $data->array);
-        } else {
-            self::assertSame(['c', 'b', 'a', 'a', 3, 2, 1, true, false, null], $data->array);
-        }
+        self::assertSame(['c', 'b', 'a', 'a', 3, 2, 1, true, false, null], $data->array);
     }
 
     public function testSimpleInvalid(): void

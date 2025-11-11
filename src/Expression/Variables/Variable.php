@@ -68,5 +68,5 @@ abstract class Variable
      *
      * @throws ReferencedDataHasViolationException|VariableResolveException
      */
-    abstract public function getValue(ValidationContext $context, int $flags = 0, ?bool &$violated = null);
+    abstract public function getValue(ValidationContext $context, int $flags = 0, bool &$violated = false);
 }

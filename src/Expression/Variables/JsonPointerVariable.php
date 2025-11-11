@@ -75,7 +75,7 @@ final class JsonPointerVariable extends Variable
     /**
      * {@inheritDoc}
      */
-    public function getValue(ValidationContext $context, int $flags = 0, ?bool &$violated = null)
+    public function getValue(ValidationContext $context, int $flags = 0, bool &$violated = false)
     {
         $path = $this->pointer->absolutePath($context->fullDataPath());
         Assertion::notNull($path);

@@ -74,7 +74,9 @@ final class LimitValidationKeywordParser extends KeywordValidatorParser
             $condition = false;
         }
 
-        if (!\is_array($limitValidation->rules ?? [])) {
+        /** @var list<mixed>|scalar|\stdClass $limitValidationRules */
+        $limitValidationRules = $limitValidation->rules ?? [];
+        if (!\is_array($limitValidationRules)) {
             throw $this->keywordException('{keyword} must contain an array at "rules" ', $info);
         }
 
@@ -89,7 +91,7 @@ final class LimitValidationKeywordParser extends KeywordValidatorParser
 
                     return LimitValidationRule::create((array) $rule);
                 },
-                $limitValidation->rules ?? []
+                $limitValidationRules
             ),
             $this->getStandardRules($parser)
         );

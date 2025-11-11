@@ -71,7 +71,7 @@ final class ExpressionVariablesContainer
      *
      * @throws ReferencedDataHasViolationException|VariableResolveException
      */
-    public function getValues(ValidationContext $context, int $flags = 0, ?bool &$violated = null): array
+    public function getValues(ValidationContext $context, int $flags = 0, bool &$violated = false): array
     {
         return array_map(
             // With lambda function $violated would not be set.

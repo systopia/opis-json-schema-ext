@@ -91,7 +91,7 @@ final class CalculationVariable extends Variable
      * @throws VariableResolveException if one of the variables cannot be resolved and the flag
      *                                  Variable::FLAG_FAIL_ON_UNRESOLVED is set or no fallback is defined
      */
-    public function getValue(ValidationContext $context, int $flags = 0, ?bool &$violated = null)
+    public function getValue(ValidationContext $context, int $flags = 0, bool &$violated = false)
     {
         if (false === $violated) {
             $variableViolated = &$violated;

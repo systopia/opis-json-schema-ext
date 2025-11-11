@@ -30,7 +30,7 @@ class CollectErrorsKeywordValidator extends AbstractKeywordValidator
 {
     public function validate(ValidationContext $context): ?ValidationError
     {
-        $error = null === $this->next ? null : $this->next->validate($context);
+        $error = $this->next?->validate($context);
         if (null !== $error && !$this->shouldIgnoreError($context)) {
             ErrorCollectorUtil::getErrorCollector($context)->addError($error);
         }

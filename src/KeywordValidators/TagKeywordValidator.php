@@ -43,9 +43,11 @@ class TagKeywordValidator extends AbstractKeywordValidator
     public function validate(ValidationContext $context): ?ValidationError
     {
         foreach ($this->tags as $tag => $extra) {
-            TaggedDataContainerUtil::getTaggedPathsContainer($context)->add($tag, $context->currentDataPath(), $extra);
+            /** @var list<int|string> $currentDataPath */
+            $currentDataPath = $context->currentDataPath();
+            TaggedDataContainerUtil::getTaggedPathsContainer($context)->add($tag, $currentDataPath, $extra);
         }
 
-        return null === $this->next ? null : $this->next->validate($context);
+        return $this->next?->validate($context);
     }
 }
