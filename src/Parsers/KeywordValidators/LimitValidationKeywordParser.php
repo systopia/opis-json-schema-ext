@@ -50,7 +50,10 @@ final class LimitValidationKeywordParser extends KeywordValidatorParser
         if (!$this->keywordExists($info)) {
             $currentValidator = LimitValidationKeywordValidator::getCurrentInstance();
 
-            return (bool) $currentValidator?->isConditionMatched() ? new ApplyLimitValidationKeywordValidator($currentValidator->getRules()) : null;
+            return null === $currentValidator ? null : new ApplyLimitValidationKeywordValidator(
+                $currentValidator->getRules(),
+                static fn () => $currentValidator->isConditionMatched()
+            );
         }
 
         $limitValidation = $this->keywordValue($info);

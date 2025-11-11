@@ -36,18 +36,26 @@ class ApplyLimitValidationKeywordValidator extends AbstractKeywordValidator
     protected array $rules;
 
     /**
-     * @param list<LimitValidationRule> $rules
+     * @var callable(): bool
      */
-    public function __construct(array $rules)
+    private $conditionMatchedCallback;
+
+    /**
+     * @param list<LimitValidationRule> $rules
+     * @param callable(): bool $conditionMatchedCallback
+     */
+    public function __construct(array $rules, callable $conditionMatchedCallback)
     {
         $this->rules = $rules;
+        $this->conditionMatchedCallback = $conditionMatchedCallback;
     }
 
     public function validate(ValidationContext $context): ?ValidationError
     {
         $error = $this->next?->validate($context);
 
-        return (null === $error || self::$disabled) ? $error : $this->handleError($error, $context);
+        return (null === $error || self::$disabled || !\call_user_func($this->conditionMatchedCallback))
+            ? $error : $this->handleError($error, $context);
     }
 
     private function handleError(ValidationError $error, ValidationContext $context): ?ValidationError

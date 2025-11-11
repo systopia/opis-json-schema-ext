@@ -44,7 +44,7 @@ final class LimitValidationKeywordValidator extends ApplyLimitValidationKeywordV
     {
         $this->conditionSchema = $conditionSchema;
         $this->schema = $schema;
-        parent::__construct($rules);
+        parent::__construct($rules, [$this, 'isConditionMatched']);
     }
 
     public static function getCurrentInstance(): ?self
