@@ -216,7 +216,7 @@ final class CalculationVariableTest extends TestCase
         self::expectExceptionMessage('');
 
         try {
-            // @phpstan-ignore binaryOp.invalid
+            // @phpstan-ignore binaryOp.invalid, expr.resultUnused
             2 * 'b';
             // @phpstan-ignore catch.neverThrown
         } catch (\Throwable $e) {

@@ -87,7 +87,7 @@ final class Calculation
      *
      * @throws ReferencedDataHasViolationException|VariableResolveException
      */
-    public function getVariables(ValidationContext $context, int $flags = 0, ?bool &$violated = null): array
+    public function getVariables(ValidationContext $context, int $flags = 0, bool &$violated = false): array
     {
         return $this->variablesContainer->getValues($context, $flags, $violated);
     }
